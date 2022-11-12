@@ -1,0 +1,22 @@
+server:
+  port: 4048
+
+spring:
+  application:
+    name: pcr2
+  datasource:
+    username: 'mahabub'
+    url: jdbc:postgresql://localhost:5432/pcr2
+    password: 'babu980753'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+  zipkin:
+    base-url: http://localhost:9411/
+logging:
+  config: classpath:logback.xml

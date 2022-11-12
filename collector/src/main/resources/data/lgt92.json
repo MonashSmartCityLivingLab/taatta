@@ -1,0 +1,31 @@
+{
+  "applicationID": "1",
+  "applicationName": "Location-Monitoring",
+  "deviceName": "LGT-92-GPS",
+  "deviceProfileName": "lgt92",
+  "deviceProfileID": "819db754-cb68-4c85-a14c-7ff06bef88eb",
+  "devEUI": "a84041661182234c",
+  "rxInfo": [
+    {
+      "gatewayID": "a840411bd9bc4150",
+      "uplinkID": "044d03a8-fc7d-438f-bb94-2cda67505047",
+      "name": "LG308",
+      "time": "2022-10-25T12:21:42.849718Z",
+      "rssi": -41,
+      "loRaSNR": 10,
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "altitude": 0
+      }
+    }
+  ],
+  "txInfo": {
+    "frequency": 917000000,
+    "dr": 2
+  },
+  "adr": true,
+  "fCnt": 0,
+  "fPort": 2,
+  "data": "/bduTwi6UlAPO2M="
+}

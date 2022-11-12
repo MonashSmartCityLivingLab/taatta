@@ -1,0 +1,65 @@
+{
+  "applicationID": "2",
+  "applicationName": "People-Count",
+  "deviceName": "PCR2-People-Count",
+  "deviceProfileName": "pcr2",
+  "deviceProfileID": "21e36e4f-6fc0-48b9-b1aa-c65cec8bf5d7",
+  "devEUI": "3531313958379112",
+  "rxInfo": [
+    {
+      "gatewayID": "a840411bd9bc4150",
+      "uplinkID": "fd760270-9bf0-4871-aafa-e3ed8b6bf8cf",
+      "name": "LG308",
+      "time": "2022-10-25T10:11:14.24057Z",
+      "rssi": -92,
+      "loRaSNR": -5,
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "altitude": 0
+      }
+    }
+  ],
+  "txInfo": {
+    "frequency": 917800000,
+    "dr": 0
+  },
+  "adr": true,
+  "fCnt": 1,
+  "fPort": 14,
+  "data": "CgAAFgAAAQE9"
+},
+
+
+
+{
+  "applicationID": "2",
+  "applicationName": "People-Count",
+  "deviceName": "PCR2-People-Count",
+  "deviceProfileName": "pcr2",
+  "deviceProfileID": "21e36e4f-6fc0-48b9-b1aa-c65cec8bf5d7",
+  "devEUI": "3531313958379112",
+  "rxInfo": [
+    {
+      "gatewayID": "a840411bd9bc4150",
+      "uplinkID": "b9994225-083e-4290-bfc7-14d53a7bf2a6",
+      "name": "LG308",
+      "time": "2022-10-25T09:56:14.459231Z",
+      "rssi": -45,
+      "loRaSNR": 7.5,
+      "location": {
+        "latitude": 0,
+        "longitude": 0,
+        "altitude": 0
+      }
+    }
+  ],
+  "txInfo": {
+    "frequency": 918200000,
+    "dr": 0
+  },
+  "adr": true,
+  "fCnt": 0,
+  "fPort": 190,
+  "data": "AAMBAAAAAQACAAUAADI="
+}

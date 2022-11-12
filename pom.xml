@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>edu.monash.humanise.smartcity</groupId>
+  <artifactId>smart-city</artifactId>
+  <packaging>pom</packaging>
+  <version>1.1-SNAPSHOT</version>
+  <modules>
+    <module>collector</module>
+    <module>eureka-server</module>
+    <module>rhf1s001</module>
+    <module>wqm101</module>
+    <module>df702</module>
+    <module>notification</module>
+    <module>tbs220</module>
+    <module>pcr2</module>
+  </modules>
+
+  <name>smart-city</name>
+  <url>https://www.monash.edu</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <spring.boot.maven.plugin.version>2.7.5</spring.boot.maven.plugin.version>
+    <spring.boot.dependecies.version>2.7.5</spring.boot.dependecies.version>
+    <org.projectlombok.version>1.18.24</org.projectlombok.version>
+    <spring.cloud-version>2021.0.4</spring.cloud-version>
+<!--    <spring.cloud.dependecies>Greenwich.RELEASE</spring.cloud.dependecies>-->
+    <spring.cloud.zipkin.version>3.1.4</spring.cloud.zipkin.version>
+    <spring.cloud.starter.sleuth.versin>2.1.5.RELEASE</spring.cloud.starter.sleuth.versin>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring.boot.dependecies.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${org.projectlombok.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-dependencies</artifactId>
+      <version>${spring.cloud-version}</version>
+      <type>pom</type>
+      <scope>compile</scope>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.cloud</groupId>-->
+<!--      <artifactId>spring-cloud-starter-zipkin</artifactId>-->
+<!--      <version>2.2.8.RELEASE</version>-->
+<!--    </dependency>-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+      <version>3.1.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring.boot.maven.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>${org.projectlombok.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>delombok</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

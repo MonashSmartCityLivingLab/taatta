@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: collector
+  zipkin:
+    base-url: http://localhost:9411/
+
+server:
+  port: 3030
+
+logging:
+  config: classpath:logback-prod.xml
+
+smart:
+  city:
+    broker:
+      url: tcp://10.130.1.239:1883
+
