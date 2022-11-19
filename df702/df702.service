@@ -1,0 +1,15 @@
+[Unit]
+Description=DF702 Data collector
+Documentation=https://www.taatta.net/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=taatta
+Group=taatta
+ExecStart=java -jar -Dspring.profiles.active=prod /usr/local/taatta/df702.jar
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=df702.service

@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="notification" />
+        <module name="ems701" />
         <module name="wqm101" />
         <module name="df702" />
         <module name="tbs220" />
