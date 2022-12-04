@@ -1,8 +1,16 @@
 # Taatta
-LoraWAN sensor data storage service.
+It is basically a IoT device data logger to a database. Right now it is supporting PostgreSQL database. It has the capability to collect data from LoRaWAN and WiFi support devices. 
+
+## Architecture
+It is a Spring Boot application. Micro architecture methodology was followed to implement it. So you will be able to run multiple instance of the modules.
+
+## Features
+- Can decode PCR2 payload.
+- Can decode TBS220 payload.
+- Can decode df702 payload.
 
 ## Run taatta component in Linux server as a service.
-
+In order to run it as a service in Linux server Ubuntu 20.04 LTS you need to follow the below steps:
 
 ### Create new User and Group
 - Create a new user and group in the target machine.
