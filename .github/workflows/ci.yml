@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Chekout repository
+      uses: actions/checkout@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: "17"
+        cache: maven
+    - name: Build
+      run: mvn -e clean package spring-boot:repackage
+    - name: Save build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: taatta
+        path: /**/target/*.jar
