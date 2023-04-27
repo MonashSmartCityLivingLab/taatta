@@ -7,7 +7,7 @@ RUN mvn -e clean package spring-boot:repackage
 FROM eclipse-temurin:17 AS base
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /usr/local/taatta
-RUN mkdir -p
+RUN mkdir -p /var/log/smart-city/
 # TODO: not sure if the taatta user/group is needed
 
 FROM base AS collector
