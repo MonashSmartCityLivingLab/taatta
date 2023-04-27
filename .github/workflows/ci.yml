@@ -20,8 +20,8 @@ jobs:
         cache: maven
     - name: Build
       run: mvn -e clean package spring-boot:repackage
-    - name: Save build artifacts
+    - name: Save build jar files
       uses: actions/upload-artifact@v3
       with:
         name: taatta
-        path: /**/target/*.jar
+        path: "**/target/*.jar"
