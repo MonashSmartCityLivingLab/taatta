@@ -9,6 +9,21 @@ It is a Spring Boot application. Micro architecture methodology was followed to 
 - Can decode TBS220 payload.
 - Can decode df702 payload.
 
+## Development
+
+### Dependencies
+
+- Java 17
+- Maven
+
+### Building
+
+1. Clone the repository
+2. Run `mvn -e clean package spring-boot:repackage` to build
+<!-- TODO: a full rebuild is probably not needed, but the module READMEs suggest the above command so idk -->
+
+The output .jar files are located in `<module_name>/target/<module_name><version>.jar`. 
+
 ## Run taatta component in Linux server as a service.
 In order to run it as a service in Linux server Ubuntu 20.04 LTS you need to follow the below steps:
 

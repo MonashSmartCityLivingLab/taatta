@@ -1,0 +1,37 @@
+services:
+  collector:
+    build:
+      context: .
+      target: collector
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/collector.jar
+    restart: unless-stopped
+  df702:
+    build:
+      context: .
+      target: df702
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/df702.jar
+    restart: unless-stopped
+  pcr2:
+    build:
+      context: .
+      target: pcr2
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/pcr2.jar
+    restart: unless-stopped
+  rhf1s001:
+    build:
+      context: .
+      target: rhf1s001
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
+    restart: unless-stopped
+  tbs220:
+    build:
+      context: .
+      target: tbs220
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/tbs220.jar
+    restart: unless-stopped
+  wqm101:
+    build:
+      context: .
+      target: wqm101
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/wqm101.jar
+    restart: unless-stopped

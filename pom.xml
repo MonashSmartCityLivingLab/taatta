@@ -17,7 +17,7 @@
     <module>notification</module>
     <module>tbs220</module>
     <module>pcr2</module>
-    <module>env701</module>
+    <module>ems701</module>
   </modules>
 
   <name>smart-city</name>
