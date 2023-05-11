@@ -6,7 +6,7 @@ spring:
     name: tbs220
   datasource:
     username: ${POSTGRES_USER}
-    url: jdbc:postgresql://localhost:5432/tbs220
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/tbs220
     password: ${POSTGRES_PASSWORD}
   jpa:
     properties:
