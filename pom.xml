@@ -18,6 +18,7 @@
         <module>tbs220</module>
         <module>pcr2</module>
         <module>ems701</module>
+        <module>athom-smart-plug</module>
     </modules>
 
     <name>smart-city</name>
