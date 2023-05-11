@@ -5,7 +5,7 @@ spring:
   application:
     name: pcr2
   datasource:
-    username: 'mahabub'
+    username: ${POSTGRES_USER}
     url: jdbc:postgresql://localhost:5432/pcr2
     password: ${POSTGRES_PASSWORD}
   jpa:

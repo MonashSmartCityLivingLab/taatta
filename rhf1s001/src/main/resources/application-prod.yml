@@ -5,7 +5,7 @@ spring:
   application:
     name: rhf1s001
   datasource:
-    username: 'mahabub'
+    username: ${POSTGRES_USER}
     url: jdbc:postgresql://localhost:5432/rhf1s001
     password: ${POSTGRES_PASSWORD}
   jpa:
