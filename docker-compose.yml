@@ -1,54 +1,54 @@
 services:
-  collector:
-    build:
-      context: .
-      target: collector
-    command: java -jar /usr/local/taatta/collector.jar
-    environment:
-      - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
-    depends_on:
-      - mosquitto
-  rhf1s001:
-    build:
-      context: .
-      target: rhf1s001
-    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
-    environment:
-      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
-      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-    depends_on:
-      postgresql:
-        condition: service_healthy
-
-  # Chirpstack containers
-  # Based on the official template docker-compose.yml at
-  # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
-  chirpstack-network-server:
-    image: chirpstack/chirpstack-network-server:3
-    volumes:
-      - ./configuration/chirpstack-network-server/chirpstack-network-server.toml:/etc/chirpstack-network-server/chirpstack-network-server.toml
-    depends_on:
-      postgresql:
-        condition: service_healthy
-      mosquitto:
-        condition: service_started
-  chirpstack-application-server:
-    image: chirpstack/chirpstack-application-server:3
-    ports:
-      - 8080:8080
-    volumes:
-      - ./configuration/chirpstack-application-server/chirpstack-application-server.toml:/etc/chirpstack-application-server/chirpstack-application-server.toml
-    depends_on:
-      - chirpstack-network-server
-  chirpstack-gateway-bridge:
-    image: chirpstack/chirpstack-gateway-bridge:3
-    ports:
-      - 1700:1700/udp
-    volumes:
-      - ./configuration/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml:/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
-    depends_on:
-      - mosquitto
+#  collector:
+#    build:
+#      context: .
+#      target: collector
+#    command: java -jar /usr/local/taatta/collector.jar
+#    environment:
+#      - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
+#    depends_on:
+#      - mosquitto
+#  rhf1s001:
+#    build:
+#      context: .
+#      target: rhf1s001
+#    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
+#    environment:
+#      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+#      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+#      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+#    depends_on:
+#      postgresql:
+#        condition: service_healthy
+#
+#  # Chirpstack containers
+#  # Based on the official template docker-compose.yml at
+#  # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
+#  chirpstack-network-server:
+#    image: chirpstack/chirpstack-network-server:3
+#    volumes:
+#      - ./configuration/chirpstack-network-server/chirpstack-network-server.toml:/etc/chirpstack-network-server/chirpstack-network-server.toml
+#    depends_on:
+#      postgresql:
+#        condition: service_healthy
+#      mosquitto:
+#        condition: service_started
+#  chirpstack-application-server:
+#    image: chirpstack/chirpstack-application-server:3
+#    ports:
+#      - 8080:8080
+#    volumes:
+#      - ./configuration/chirpstack-application-server/chirpstack-application-server.toml:/etc/chirpstack-application-server/chirpstack-application-server.toml
+#    depends_on:
+#      - chirpstack-network-server
+#  chirpstack-gateway-bridge:
+#    image: chirpstack/chirpstack-gateway-bridge:3
+#    ports:
+#      - 1700:1700/udp
+#    volumes:
+#      - ./configuration/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml:/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+#    depends_on:
+#      - mosquitto
   postgresql:
     image: postgres:9.6-alpine
     environment:
@@ -59,21 +59,23 @@ services:
     volumes:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
-  redis:
-    image: redis:5-alpine
-    volumes:
-      - redisdata:/data
-  mosquitto:
-    image: eclipse-mosquitto:2
-    ports:
-      - 1883:1883
-    volumes:
-      - ./configuration/eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+#  redis:
+#    image: redis:5-alpine
+#    volumes:
+#      - redisdata:/data
+#  mosquitto:
+#    image: eclipse-mosquitto:2
+#    ports:
+#      - 1883:1883
+#    volumes:
+#      - ./configuration/eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
 volumes:
   postgresqldata:
