@@ -56,8 +56,10 @@ services:
     image: postgres:9.6-alpine
     environment:
       - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
     volumes:
-#      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
