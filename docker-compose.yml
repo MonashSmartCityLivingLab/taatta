@@ -1,18 +1,25 @@
 services:
-  collector:
-    build:
-      context: .
-      target: collector
-    command: java -jar /usr/local/taatta/collector.jar
-    environment:
-      - MOSQUITTO_HOST=${MOSQUITTO_HOST}
-    depends_on:
-      - mosquitto
-#  rhf1s001:
+#  collector:
 #    build:
 #      context: .
-#      target: rhf1s001
-#    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
+#      target: collector
+#    command: java -jar /usr/local/taatta/collector.jar
+#    environment:
+#      - TAATTA_TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
+#    depends_on:
+#      - mosquitto
+  rhf1s001:
+    build:
+      context: .
+      target: rhf1s001
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
 #  tbs220:
 #    build:
 #      context: .
@@ -48,11 +55,15 @@ services:
   postgresql:
     image: postgres:9.6-alpine
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
     volumes:
-      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+#      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 #  redis:
 #    image: redis:5-alpine
 #    volumes:
