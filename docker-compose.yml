@@ -38,61 +38,47 @@ services:
 
   # Chirpstack containers
   # Based on the official template docker-compose.yml at
-  # https://github.com/chirpstack/chirpstack-docker/blob/master/docker-compose.yml
-  chirpstack:
-    image: chirpstack/chirpstack:4
-    command: -c /etc/chirpstack
-    restart: unless-stopped
+  # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
+  chirpstack-network-server:
+    image: chirpstack/chirpstack-network-server:3
     volumes:
-      - ./chirpstack/configuration/chirpstack:/etc/chirpstack
-      - ./chirpstack/lorawan-devices:/opt/lorawan-devices
+      - ./configuration/chirpstack-network-server:/etc/chirpstack-network-server
     depends_on:
-      - postgres
+      - postgresql
       - mosquitto
-      - redis
-    environment:
-      - MQTT_BROKER_HOST=mosquitto
-      - REDIS_HOST=redis
-      - POSTGRESQL_HOST=postgres
+  chirpstack-application-server:
+    image: chirpstack/chirpstack-application-server:3
     ports:
       - 8080:8080
-  chirpstack-gateway-bridge-eu868:
-    image: chirpstack/chirpstack-gateway-bridge:4
-    restart: unless-stopped
+    volumes:
+      - ./configuration/chirpstack-application-server:/etc/chirpstack-application-server
+    depends_on:
+      - chirpstack-network-server
+  chirpstack-gateway-bridge:
+    image: chirpstack/chirpstack-gateway-bridge:3
     ports:
       - 1700:1700/udp
     volumes:
-      - ./chirpstack/configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
+      - ./configuration/chirpstack-gateway-bridge:/etc/chirpstack-gateway-bridge
     depends_on:
       - mosquitto
-  chirpstack-rest-api:
-    image: chirpstack/chirpstack-rest-api:4
-    restart: unless-stopped
-    command: --server chirpstack:8080 --bind 0.0.0.0:8090 --insecure
-    ports:
-      - 8090:8090
-    depends_on:
-      - chirpstack
-  postgres:
-    image: postgres:14-alpine
-    restart: unless-stopped
-    volumes:
-      - ./chirpstack/configuration/postgresql/initdb:/docker-entrypoint-initdb.d
-      - postgresqldata:/var/lib/postgresql/data
+  postgresql:
+    image: postgres:9.6-alpine
     environment:
       - POSTGRES_PASSWORD=root
+    volumes:
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - postgresqldata:/var/lib/postgresql/data
   redis:
-    image: redis:7-alpine
-    restart: unless-stopped
+    image: redis:5-alpine
     volumes:
       - redisdata:/data
   mosquitto:
     image: eclipse-mosquitto:2
-    restart: unless-stopped
     ports:
       - 1883:1883
     volumes:
-      - ./chirpstack/configuration/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./configuration/eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
 
 volumes:
   postgresqldata:
