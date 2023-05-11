@@ -6,7 +6,7 @@ spring:
     name: df702
   datasource:
     username: 'mahabub'
-    password: 'babu980753'
+    password: ${POSTGRES_PASSWORD}
     url: jdbc:postgresql://localhost:5432/df702
   jpa:
     properties:
