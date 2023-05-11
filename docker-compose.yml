@@ -55,6 +55,7 @@ services:
       - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
       - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+      - CHIRPSTACK_POSTGRES_PASSWORD=${CHIRPSTACK_POSTGRES_PASSWORD}
     volumes:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
