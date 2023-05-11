@@ -13,5 +13,5 @@ logging:
 smart:
   city:
     broker:
-      url: tcp://10.130.1.239:1883
+      url: tcp://localhost:1883
 
