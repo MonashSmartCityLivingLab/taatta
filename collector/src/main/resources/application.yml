@@ -13,6 +13,6 @@ logging:
 smart:
   city:
     broker:
-      url: tcp://localhost:1883
+      url: tcp://${MOSQUITTO_HOST}:1883
 
 
