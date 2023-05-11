@@ -5,9 +5,9 @@ spring:
   application:
     name: df702
   datasource:
-    username: 'mahabub'
-    password: 'fediot2019'
-    url: jdbc:postgresql://localhost:5432/df702
+    username: ${TAATTA_POSTGRES_USER}
+    password: ${TAATTA_POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:5432/df702
   jpa:
     properties:
       hibernate:
