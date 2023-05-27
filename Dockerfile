@@ -2,7 +2,7 @@ FROM maven:3-eclipse-temurin-17 AS builder
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /taatta
 COPY . .
-RUN mvn -e clean package spring-boot:repackage
+RUN mvn -e package spring-boot:repackage
 
 FROM eclipse-temurin:17 AS base
 ENV TAATTA_DOCKER=1
