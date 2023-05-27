@@ -12,7 +12,7 @@ open class Payload(
         @Id
         @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME)
         @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
-        val id: Long = 0,
+        var id: Long = 0,
         val deviceName: String,
         val data: String
 ) {
