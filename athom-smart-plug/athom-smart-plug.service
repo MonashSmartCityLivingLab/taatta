@@ -1,5 +1,5 @@
 [Unit]
-Description=TBS220 Data collector
+Description=Athom Smart Plug Data Collector
 Documentation=https://github.com/MonashSmartCityLivingLab/taatta
 Wants=network-online.target
 After=network-online.target
@@ -7,9 +7,9 @@ After=network-online.target
 [Service]
 User=taatta
 Group=taatta
-ExecStart=java -jar -Dspring.profiles.active=prod /usr/local/taatta/tbs220.jar
+ExecStart=java -jar /usr/local/taatta/athom-smart-plug.jar
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-Alias=tbs220.service
+Alias=athom-smart-plug.service

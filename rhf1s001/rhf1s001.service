@@ -1,6 +1,6 @@
 [Unit]
 Description=RHF1S001 Data collector
-Documentation=https://www.taatta.net/
+Documentation=https://github.com/MonashSmartCityLivingLab/taatta
 Wants=network-online.target
 After=network-online.target
 
