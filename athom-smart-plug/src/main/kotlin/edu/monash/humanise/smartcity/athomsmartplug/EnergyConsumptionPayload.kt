@@ -7,4 +7,4 @@ class EnergyConsumptionPayload(
         deviceName: String,
         data: String,
         val energyConsumption: Double?
-): Payload(0, deviceName, data)
+) : Payload(0, deviceName, data)

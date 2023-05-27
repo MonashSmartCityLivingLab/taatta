@@ -7,4 +7,4 @@ class PowerPayload(
         deviceName: String,
         data: String,
         val power: Double?
-): Payload(0, deviceName, data)
+) : Payload(0, deviceName, data)

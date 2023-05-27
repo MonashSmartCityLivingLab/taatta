@@ -7,4 +7,4 @@ class CurrentPayload(
         deviceName: String,
         data: String,
         val current: Double?
-): Payload(0, deviceName, data)
+) : Payload(0, deviceName, data)

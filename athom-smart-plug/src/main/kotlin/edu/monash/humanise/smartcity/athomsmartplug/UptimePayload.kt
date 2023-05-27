@@ -7,4 +7,4 @@ class UptimePayload(
         deviceName: String,
         data: String,
         val uptime: Long?
-): Payload(0, deviceName, data)
+) : Payload(0, deviceName, data)
