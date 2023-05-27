@@ -68,7 +68,7 @@ services:
 #    depends_on:
 #      - mosquitto
   postgresql:
-    image: postgres:9.6-alpine
+    image: postgres:15-alpine
     environment:
       - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
