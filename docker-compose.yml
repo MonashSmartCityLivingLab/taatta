@@ -6,6 +6,7 @@ services:
     command: java -jar /usr/local/taatta/collector.jar
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
+      - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
     depends_on:
       - mosquitto
     restart: unless-stopped
@@ -18,6 +19,7 @@ services:
       - 4050:4050
     environment:
       - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
       - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
     depends_on:
