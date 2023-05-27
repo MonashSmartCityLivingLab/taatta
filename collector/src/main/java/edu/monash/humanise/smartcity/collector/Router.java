@@ -17,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Builder
@@ -24,6 +25,8 @@ import java.util.Map;
 public class Router {
     @NonNull
     private final Message<?> message;
+
+    private final boolean isDocker = Objects.equals(System.getenv("TAATTA_DOCKER"), "1");
 
     public void route() {
         String payload = message.getPayload().toString();
@@ -44,8 +47,9 @@ public class Router {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 HttpEntity<?> request = new HttpEntity<>(jsonObject.toString(), headers);
-                ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4050/api/payload", request, String.class);
-                log.info("Response from {} is : {}", topicComponents[0], response);
+                String url = String.format("http://%s:4050/api/payload", isDocker? "athom-smart-plug" : "localhost");
+                ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
+                log.info("Response from {} is : {}",topicComponents[0], response);
             } catch (JSONException e) {
                 log.error("Cannot create JSON object for smart plug", e);
                 throw new RuntimeException(e);
@@ -66,19 +70,24 @@ public class Router {
                     String deviceProfile = jsonObject.getString("deviceProfileName");
 
                     if (deviceProfile.endsWith("rhf1s001")) {
-                        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4040/api/payload", request, String.class);
+                        String url = String.format("http://%s:4040/api/payload", isDocker? "rhf1s001" : "localhost");
+                        ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
                         log.info("Response from {} is : {}", deviceProfile, response.toString());
                     } else if (deviceProfile.endsWith("wqm101")) {
-                        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4042/api/payload", request, String.class);
+                        String url = String.format("http://%s:4042/api/payload", isDocker? "wqm101" : "localhost");
+                        ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
                         log.info("Response from {} is : {}", deviceProfile, response.toString());
                     } else if (deviceProfile.endsWith("df702")) {
-                        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4044/api/payload", request, String.class);
+                        String url = String.format("http://%s:4044/api/payload", isDocker? "df702" : "localhost");
+                        ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
                         log.info("Response from {} is : {}", deviceProfile, response.toString());
                     } else if (deviceProfile.endsWith("tbs220")) {
-                        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4046/api/payload", request, String.class);
+                        String url = String.format("http://%s:4046/api/payload", isDocker? "tbs220" : "localhost");
+                        ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
                         log.info("Response from {} is : {}", deviceProfile, response.toString());
                     } else if (deviceProfile.endsWith("pcr2")) {
-                        ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4048/api/payload", request, String.class);
+                        String url = String.format("http://%s:4048/api/payload", isDocker? "pcr2" : "localhost");
+                        ResponseEntity<?> response = restTemplate.postForEntity(url, request, String.class);
                         log.info("Response from {} is : {}", deviceProfile, response.toString());
                     } else {
                         log.error("This device type {} not implemented yet.", deviceProfile);

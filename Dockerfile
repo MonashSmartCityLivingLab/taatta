@@ -5,6 +5,7 @@ COPY . .
 RUN mvn -e clean package spring-boot:repackage
 
 FROM eclipse-temurin:17 AS base
+ENV TAATTA_DOCKER=1
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /usr/local/taatta
 RUN mkdir -p /var/log/smart-city/
