@@ -12,7 +12,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 } catch (e: NumberFormatException) {
                     null
                 }
-                val payload = VoltagePayload(payloadRequest.deviceName, voltage)
+                val payload = VoltagePayload(payloadRequest.deviceName, payloadRequest.data, voltage)
                 payloadRepository.save(payload)
             }
             else -> {
