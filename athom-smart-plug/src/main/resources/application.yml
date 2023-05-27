@@ -6,7 +6,7 @@ spring:
     name: athom-smart-plug
   datasource:
     username: ${TAATTA_POSTGRES_USER}
-    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:5432/rhf1s001
+    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:5432/athom_smart_plug
     password: ${TAATTA_POSTGRES_PASSWORD}
   jpa:
     properties:

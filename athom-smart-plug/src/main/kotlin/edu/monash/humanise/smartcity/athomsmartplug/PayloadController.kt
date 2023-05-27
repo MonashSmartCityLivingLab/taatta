@@ -10,9 +10,10 @@ private val logger = KotlinLogging.logger {}
 
 @RestController
 @RequestMapping("/api/payload")
-class PayloadController {
+class PayloadController(private val payloadService: PayloadService) {
     @PostMapping
     fun decodeUplinkPayload(@RequestBody payloadRequest: PayloadUplinkRequest) {
         logger.info { "New uplink payload to decode $payloadRequest" }
+        payloadService.decodeUplinkPayload(payloadRequest)
     }
 }
