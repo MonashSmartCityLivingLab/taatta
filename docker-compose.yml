@@ -49,23 +49,23 @@ services:
 #      - ./configuration/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml:/etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
 #    depends_on:
 #      - mosquitto
-#  postgresql:
-#    image: postgres:9.6-alpine
-#    environment:
-#      - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
-#      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-#      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-#      - CHIRPSTACK_POSTGRES_PASSWORD=${CHIRPSTACK_POSTGRES_PASSWORD}
-#    volumes:
-#      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
-#      - postgresqldata:/var/lib/postgresql/data
-#    ports:
-#      - 5432:5432
-#    healthcheck:
-#      test: ["CMD-SHELL", "pg_isready -U postgres"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 5
+  postgresql:
+    image: postgres:9.6-alpine
+    environment:
+      - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+      - CHIRPSTACK_POSTGRES_PASSWORD=${CHIRPSTACK_POSTGRES_PASSWORD}
+    volumes:
+      - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
+      - postgresqldata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 #  redis:
 #    image: redis:5-alpine
 #    volumes:

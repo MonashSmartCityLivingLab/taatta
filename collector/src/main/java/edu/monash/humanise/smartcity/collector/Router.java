@@ -29,25 +29,23 @@ public class Router {
         String payload = message.getPayload().toString();
         String topic = message.getHeaders().get("mqtt_receivedTopic", String.class);
         assert topic != null;
-        log.info("The topic received from broker: {}", topic);
-        log.info("The message received from broker: {}", payload);
+        log.info("New message. Topic: {}, payload: {}", topic, payload);
 
         if (topic.startsWith("athom-smart-plug")) {
             // Topic structure: <hostname>/sensors/<sensor_name>/state
             String[] topicComponents = topic.split("/");
             try {
-                System.out.println(payload);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("deviceName", topicComponents[0]);
                 jsonObject.put("data", payload);
                 jsonObject.put("sensor", topicComponents[2]);
 
-
                 RestTemplate restTemplate = new RestTemplate();
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 HttpEntity<?> request = new HttpEntity<>(jsonObject.toString(), headers);
-                restTemplate.postForEntity("http://localhost:4050/api/payload", request, String.class);
+                ResponseEntity<?> response = restTemplate.postForEntity("http://localhost:4050/api/payload", request, String.class);
+                log.info("Response from {} is : {}", topicComponents[0], response);
             } catch (JSONException e) {
                 log.error("Cannot create JSON object for smart plug", e);
                 throw new RuntimeException(e);
