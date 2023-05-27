@@ -1,0 +1,24 @@
+server:
+  port: 4050
+
+spring:
+  application:
+    name: athom-smart-plug
+  datasource:
+    username: ${TAATTA_POSTGRES_USER}
+    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:${TAATTA_POSTGRES_PORT}/athom_smart_plug
+    password: ${TAATTA_POSTGRES_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+        jdbc:
+          time_zone: 'UTC'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'false'
+  zipkin:
+    base-url: http://localhost:9411/
+logging:
+  config: classpath:logback-prod.xml

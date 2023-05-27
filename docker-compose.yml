@@ -3,7 +3,7 @@ services:
     build:
       context: .
       target: collector
-    command: java -jar /usr/local/taatta/collector.jar
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/collector.jar
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
       - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
