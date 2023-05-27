@@ -5,13 +5,9 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 import javax.persistence.*
 
-const val SEQUENCE_NAME = "athom_smart_plug_id_sequence"
-
 @MappedSuperclass
 open class Payload(
         @Id
-        @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME)
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = SEQUENCE_NAME)
         val id: Long = 0,
         val deviceName: String,
         val data: String
