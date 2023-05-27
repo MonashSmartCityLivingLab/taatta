@@ -8,6 +8,22 @@ services:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
     depends_on:
       - mosquitto
+    restart: unless-stopped
+  athom-smart-plug:
+    build:
+      context: .
+      target: athom-smart-plug
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-smart-plug.jar
+    ports:
+      - 4050:4050
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: unless-stopped
 #  rhf1s001:
 #    build:
 #      context: .
@@ -66,6 +82,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 #  redis:
 #    image: redis:5-alpine
 #    volumes:

@@ -14,6 +14,10 @@ FROM base AS collector
 COPY --from=builder /taatta/collector/target/collector-$VERSION.jar collector.jar
 RUN ln -sf /dev/stderr /var/log/smart-city/collector.log
 
+FROM base AS athom-smart-plug
+COPY --from=builder /taatta/athom-smart-plug/target/athom-smart-plug-$VERSION.jar athom-smart-plug.jar
+RUN ln -sf /dev/stderr /var/log/smart-city/athom-smart-plug.log
+
 #FROM base AS df702
 #COPY --from=builder /taatta/df702/target/df702-$VERSION.jar df702.jar
 #RUN ln -sf /dev/stderr /var/log/smart-city/df702.log
