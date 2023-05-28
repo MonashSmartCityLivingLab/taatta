@@ -1,10 +1,10 @@
-FROM maven:3-eclipse-temurin-17-alpine AS builder
+FROM maven:3-eclipse-temurin-17 AS builder
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /taatta
 COPY . .
 RUN mvn -e package spring-boot:repackage
 
-FROM eclipse-temurin:17-alpine AS base
+FROM eclipse-temurin:17 AS base
 ENV TAATTA_DOCKER=1
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /usr/local/taatta
