@@ -1,80 +1,63 @@
-package edu.monash.humanise.smartcity.collector;
+package edu.monash.humanise.smartcity.collector
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.WebApplicationType;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.core.MessageProducer;
-import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
-import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessagingException;
+import io.github.oshai.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.WebApplicationType
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.integration.annotation.ServiceActivator
+import org.springframework.integration.channel.DirectChannel
+import org.springframework.integration.core.MessageProducer
+import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter
+import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter
+import org.springframework.messaging.MessageChannel
+import org.springframework.messaging.MessageHandler
 
-@Slf4j
+private val logger = KotlinLogging.logger {}
+
 @SpringBootApplication
-public class CollectorApplication {
-    @Value("${smart.city.broker.url}")
-    private String brokerUrl;
-    @Value("${spring.application.name}")
-    private String appName;
+open class CollectorApplication {
+    @Value("\${smart.city.broker.url}")
+    private val brokerUrl: String? = null
 
-    public static void main(String[] args) {
-        new SpringApplicationBuilder(CollectorApplication.class)
-                .web(WebApplicationType.NONE)
-                .run(args);
-    }
-
-//    @Bean
-//    public IntegrationFlow mqttInbound() {
-//        return IntegrationFlows.from(
-//                new MqttPahoMessageDrivenChannelAdapter("tcp://10.130.1.239:1883",
-//                        "SmartCityCollector", "application/+/device/+/event/+", "application/+/device/+/command/+"))
-//                .handle(m -> {
-//                String msg = m.getPayload().toString();
-//                Router router = new Router(msg);
-//                router.route();
-//                })
-//                .get();
-//    }
+    @Value("\${spring.application.name}")
+    private val appName: String? = null
 
     @Bean
-    public MessageChannel mqttInputChannel() {
-        return new DirectChannel();
+    open fun mqttInputChannel(): MessageChannel {
+        return DirectChannel()
     }
 
     @Bean
-    public MessageProducer inbound() {
-        log.info("Connecting MQTT broker url: {}", brokerUrl);
-        MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                        appName,
-                        "application/+/device/+/event/+",
-                        "application/+/device/+/command/+",
-                        "+/sensor/+/state" // for smart plug
-                );
-        adapter.setCompletionTimeout(5000);
-        adapter.setConverter(new DefaultPahoMessageConverter());
-        adapter.setQos(1);
-        adapter.setOutputChannel(mqttInputChannel());
-        return adapter;
+    open fun inbound(): MessageProducer {
+        logger.info { "Connecting to MQTT broker at $brokerUrl" }
+        val adapter = MqttPahoMessageDrivenChannelAdapter(brokerUrl,
+                appName,
+                "application/+/device/+/event/+",
+                "application/+/device/+/command/+",
+                "+/sensor/+/state" // for smart plug
+        )
+        adapter.setCompletionTimeout(5000)
+        adapter.setConverter(DefaultPahoMessageConverter())
+        adapter.setQos(1)
+        adapter.outputChannel = mqttInputChannel()
+        return adapter
     }
 
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
-    public MessageHandler handler() {
-        return new MessageHandler() {
-            @Override
-            public void handleMessage(Message<?> message) throws MessagingException {
-                Router router = new Router(message);
-                router.route();
-            }
-        };
+    open fun handler(): MessageHandler {
+        return MessageHandler { message ->
+            val router = Router(message)
+            router.route()
+        }
     }
+}
 
+
+fun main(args: Array<String>) {
+    SpringApplicationBuilder(CollectorApplication::class.java)
+            .web(WebApplicationType.NONE)
+            .run(*args)
 }

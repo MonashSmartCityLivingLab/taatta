@@ -9,15 +9,15 @@ import org.springframework.web.client.RestTemplate
 
 open class SensorModule(
         val sensorName: String,
-        val port: Int,
-        val hostname: String
+        private val port: Int,
+        private val hostname: String
 ) {
-    fun sendData(body: JSONObject, isDocker: Boolean): ResponseEntity<String> {
+    open fun sendData(body: JSONObject): ResponseEntity<String> {
         val restTemplate = RestTemplate()
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
         val url = "http://$hostname:$port/api/payload"
-        val request = HttpEntity(body, headers)
+        val request = HttpEntity(body.toString(), headers)
         return restTemplate.postForEntity(url, request, String::class.java)
     }
 }

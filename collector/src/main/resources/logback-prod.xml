@@ -1,5 +1,5 @@
 <configuration>
-    <variable name="LOG_DIR" value="/var/log/smart-city" />
+    <variable name="LOG_DIR" value="/var/log/smart-city"/>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>${LOG_DIR}/collector.log</file>
         <encoder>
@@ -8,6 +8,6 @@
     </appender>
 
     <root level="info">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="FILE"/>
     </root>
 </configuration>
