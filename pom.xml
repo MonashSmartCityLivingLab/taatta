@@ -77,6 +77,11 @@
             <artifactId>kotlin-reflect</artifactId>
             <version>1.8.20-RC</version>
         </dependency>
+        <dependency>
+            <groupId>io.github.oshai</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+            <version>4.0.0-beta-20</version>
+        </dependency>
     </dependencies>
 
     <build>
