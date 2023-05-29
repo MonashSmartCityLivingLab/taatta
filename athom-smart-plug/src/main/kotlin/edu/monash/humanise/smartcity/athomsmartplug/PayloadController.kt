@@ -8,9 +8,17 @@ import org.springframework.web.bind.annotation.RestController
 
 private val logger = KotlinLogging.logger {}
 
+
+/**
+ * Spring controller for payload POST endpoint to receive data from the collector.
+ */
 @RestController
 @RequestMapping("/api/payload")
 class PayloadController(private val payloadService: PayloadService) {
+
+    /**
+     * POST endpoint to receive data from the collector.
+     */
     @PostMapping
     fun decodeUplinkPayload(@RequestBody payloadRequest: PayloadUplinkRequest) {
         logger.info { "New uplink payload to decode $payloadRequest" }
