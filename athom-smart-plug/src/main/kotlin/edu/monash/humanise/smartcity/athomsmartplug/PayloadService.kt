@@ -5,9 +5,15 @@ import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Service for storing smart plug sensor data.
+ */
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
 
+    /**
+     * Decode the payload and save it as an appropriate entity in [Payload].
+     */
     fun decodeUplinkPayload(payloadRequest: PayloadUplinkRequest) {
         when (payloadRequest.sensor) {
             "athom_smart_plug_v2_voltage" -> {

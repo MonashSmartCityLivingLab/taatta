@@ -179,14 +179,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <documentedVisibilities>
-                        <visibility>PUBLIC</visibility>
-                        <visibility>PROTECTED</visibility>
-                        <visibility>INTERNAL</visibility>
-                        <visibility>PRIVATE</visibility>
-                    </documentedVisibilities>
-                </configuration>
             </plugin>
         </plugins>
     </build>
