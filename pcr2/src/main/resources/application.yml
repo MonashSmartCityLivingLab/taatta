@@ -6,7 +6,7 @@ spring:
     name: pcr2
   datasource:
     username: ${TAATTA_POSTGRES_USER}
-    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:5432/pcr2
+    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:${TAATTA_POSTGRES_PORT}/pcr2
     password: ${TAATTA_POSTGRES_PASSWORD}
   jpa:
     properties:

@@ -13,5 +13,5 @@ logging:
 smart:
   city:
     broker:
-      url: tcp://${TAATTA_MOSQUITTO_HOST}:1883
+      url: tcp://${TAATTA_MOSQUITTO_HOST}:${TAATTA_MOSQUITTO_PORT}
 

@@ -1,0 +1,15 @@
+[Unit]
+Description=Athom Smart Plug Data Collector
+Documentation=https://github.com/MonashSmartCityLivingLab/taatta
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=taatta
+Group=taatta
+ExecStart=java -jar /usr/local/taatta/athom-smart-plug.jar
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=athom-smart-plug.service

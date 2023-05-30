@@ -53,7 +53,11 @@ public class CollectorApplication {
         log.info("Connecting MQTT broker url: {}", brokerUrl);
         MqttPahoMessageDrivenChannelAdapter adapter =
                 new MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                        appName, "application/+/device/+/event/+", "application/+/device/+/command/+");
+                        appName,
+                        "application/+/device/+/event/+",
+                        "application/+/device/+/command/+",
+                        "+/sensor/+/state" // for smart plug
+                );
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
@@ -67,8 +71,7 @@ public class CollectorApplication {
         return new MessageHandler() {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                String msg = message.getPayload().toString();
-                Router router = new Router(msg);
+                Router router = new Router(message);
                 router.route();
             }
         };
