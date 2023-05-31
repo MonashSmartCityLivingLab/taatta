@@ -7,19 +7,22 @@ A data logger for IoT devices and smart sensors that publish their data using MQ
 
 ## Architecture
 
-The system adopts a microservices architecture, consisting of a collector module and a writer module for each sensor type. This enables you to run multiple instances of the modules as well as easily add and expand the modules. Each module is a Spring Boot application, written in Java or Kotlin. A collector module subscribes MQTT topics from the broker and then sends it to the sensor module which then writes it to the database (currently PostgreSQL).
+The system adopts a microservices architecture, consisting of a collector module and a writer module for each sensor
+type. This enables you to run multiple instances of the modules as well as easily add and expand the modules. Each
+module is a Spring Boot application, written in Java or Kotlin. A collector module subscribes MQTT topics from the
+broker and then sends it to the sensor module which then writes it to the database (currently PostgreSQL).
 
 ![Taatta architecture](docs/images/architecture.png)
 
 ## Supported sensors
 
 - LoRaWAN sensors (via [ChirpStack](https://chirpstack.io/))
-  - [PCR2](pcr2/README.md) people counter
-  - [TBS220](tbs220/README.md) parking sensor
-  - [DF702](df702/README.md) bin sensor
-  - [RHF1S001](rhf1s001/README.md) temperature and humidity sensor
+    - [PCR2](pcr2/README.md) people counter
+    - [TBS220](tbs220/README.md) parking sensor
+    - [DF702](df702/README.md) bin sensor
+    - [RHF1S001](rhf1s001/README.md) temperature and humidity sensor
 - ESPHome-based appliances
-  - [Athom Smart Plug V2](athom-smart-plug/README.md)
+    - [Athom Smart Plug V2](athom-smart-plug/README.md)
 
 ## Development
 
@@ -42,24 +45,30 @@ The output .jar files are located in `<module_name>/target/<module_name>-<versio
 
 This is the easiest way to deploy Taatta as it also deploys and sets up PostgreSQL, Mosquitto and ChirpStack for you.
 
-You will need to have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed.
+You will need to have [Docker](https://docs.docker.com/get-docker/)
+and [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
 1. Copy the environment variable file `.env.examle` to `.env`
 2. review the `.env` file values
-   - The hostnames and port numbers are already set up, but you should change the Postgres password, especially for production instances
+    - The hostnames and port numbers are already set up, but you should change the Postgres password, especially for
+      production instances
 3. Review the Mosquitto and ChirpStack configuration at `configuration` directory
-   - For example, you might want to add authentication to restrict who can publish or subscribe to your broker, or change the LoRa frequency for ChirpStack
+    - For example, you might want to add authentication to restrict who can publish or subscribe to your broker, or
+      change the LoRa frequency for ChirpStack
 4. Deploy the containers:
+
 ```shell
 docker compose up -d
 ```
 
 To run specific containers:
+
 ```shell
 docker compose up -d <containers>
 ```
 
-For example, if you only need to log Athom smart plug data: `docker compose up -d mosquitto postgresql collector athom-smart-plug`
+For example, if you only need to log Athom smart plug
+data: `docker compose up -d mosquitto postgresql collector athom-smart-plug`
 
 See the `docker-compose.yml` file for the full list of containers.
 
@@ -68,21 +77,25 @@ See the `docker-compose.yml` file for the full list of containers.
 Note: this method assumes you already have Mosquitto, PostgreSQL and all other services installed and configured
 
 1. Create `taatta` user and group:
+
 ```shell
 sudo groupadd taatta
 sudo useradd --system -s /usr/bin/nologin -G taatta taatta
 ```
 
 2. Create a new folder for module executable and change the owner of folder
+
 ```shell
 sudo mkdir -p /usr/local/taatta
 sudo chown -R taatta:taatta /usr/local/taatta
 ```
 
-3. Copy all jar files to `/usr/local/taatta`, stripping version number from its filename (e.g. `collector-1.1-SNAPSHOT.jar` becomes `collector.jar`)
+3. Copy all jar files to `/usr/local/taatta`, stripping version number from its filename (
+   e.g. `collector-1.1-SNAPSHOT.jar` becomes `collector.jar`)
 4. Copy systemd service files to `/etc/systemd/system`
 5. Copy the environment variables from `.env.example` to `/etc/taatta.env`
 6. Adjust `/etc/taatta.env` as follows (change the passwords!)
+
 ```shell
 ADMIN_POSTGRES_PASSWORD=changeme
 
@@ -99,21 +112,25 @@ CHIRPSTACK_POSTGRES_PASSWORD=changeme
 ```
 
 7. Enable and run the services
+
 ```shell
 sudo systemctl enable --now <service_name>.service
 ```
 
 To check service status:
+
 ```shell
 systemctl status <service_name>.service
 ```
 
 To temporarily stop service:
+
 ```shell
 sudo systemctl stop <service_name>.service
 ```
 
 To permanently stop service:
+
 ```shell
 sudo systemctl disable --now <service_name>.service
 ```
