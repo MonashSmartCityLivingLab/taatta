@@ -1,5 +1,8 @@
 # Taatta
 
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/MonashSmartCityLivingLab/taatta/ci.yml?style=flat-square)](https://github.com/MonashSmartCityLivingLab/taatta/actions/workflows/ci.yml)
+[![GitHub](https://img.shields.io/github/license/MonashSmartCityLivingLab/taatta?style=flat-square)](LICENSE)
+
 A data logger for IoT devices and smart sensors that publish their data using MQTT.
 
 ## Architecture
