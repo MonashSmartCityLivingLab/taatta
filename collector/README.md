@@ -1,3 +1,4 @@
 # Collector
-LoraWAN sensor data routing component.
+
+MQTT sensor data routing service.
 

@@ -114,3 +114,7 @@ To permanently stop service:
 ```shell
 sudo systemctl disable --now <service_name>.service
 ```
+
+## Acknowledgements
+
+Special thanks to [Mahabub Alam](https://github.com/whilemind) who initially developed this application.
