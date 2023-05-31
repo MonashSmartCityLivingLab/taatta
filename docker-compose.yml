@@ -10,6 +10,38 @@ services:
     depends_on:
       - mosquitto
     restart: unless-stopped
+  rhs1s001:
+    build:
+      context: .
+      target: rhs1s001
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhs1s001.jar
+    ports:
+      - 4040:4040
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: unless-stopped
+  pcr2:
+    build:
+      context: .
+      target: pcr2
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/pcr2.jar
+    ports:
+      - 4048:4048
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: unless-stopped
   athom-smart-plug:
     build:
       context: .
@@ -26,19 +58,6 @@ services:
       postgresql:
         condition: service_healthy
     restart: unless-stopped
-#  rhf1s001:
-#    build:
-#      context: .
-#      target: rhf1s001
-#    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
-#    environment:
-#      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
-#      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-#      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-#    depends_on:
-#      postgresql:
-#        condition: service_healthy
-#
 #  # Chirpstack containers
 #  # Based on the official template docker-compose.yml at
 #  # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
