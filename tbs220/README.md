@@ -1,8 +1,5 @@
 # TBS220
-Parking sensor data 
 
+Parking sensor data
 
-## Compile to create jar file.
-```shell
-mvn -e clean package spring-boot:repackage
-```storage service.
+Product page: <https://www.thethingsnetwork.org/marketplace/product/tbs-220>

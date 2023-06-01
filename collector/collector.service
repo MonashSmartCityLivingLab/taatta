@@ -1,5 +1,5 @@
 [Unit]
-Description=Collector Data collector
+Description=Taatta Data Collector
 Documentation=https://github.com/MonashSmartCityLivingLab/taatta
 Wants=network-online.target
 After=network-online.target
@@ -9,6 +9,7 @@ User=taatta
 Group=taatta
 ExecStart=java -jar -Dspring.profiles.active=prod /usr/local/taatta/collector.jar
 Restart=on-failure
+EnvironmentFile=/etc/taatta.env
 
 [Install]
 WantedBy=multi-user.target
