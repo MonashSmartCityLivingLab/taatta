@@ -87,7 +87,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             }
 
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
-            "athom_smart_plug_v2_ip_address", "athom_smart_plug_v2_mac_address", "athom_smart_plug_v2_connected_ssid" -> {}
+            "ip_address", "mac_address", "connected_ssid" -> {}
 
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
