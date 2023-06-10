@@ -4,6 +4,7 @@ import io.github.oshai.KotlinLogging
 import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.messaging.Message
+import org.springframework.web.client.RestClientException
 
 
 private val logger = KotlinLogging.logger {}
@@ -57,10 +58,12 @@ class Router(private val message: Message<*>) {
                     jsonObject.put("data", payload)
                     jsonObject.put("sensor", topicComponents[2])
                     val response = athomModule.sendData(jsonObject)
-                    logger.info { "Response from ${topicComponents[0]} is: $response" }
+                    logger.info { "Response from athom-smart-plug is: $response" }
+                } catch (e: RestClientException) {
+                    logger.error(e) { "Cannot send data to athom-smart-plug module"}
                 } catch (e: JSONException) {
                     logger.error(e) { "Cannot create JSON object for smart plug" }
-                    throw java.lang.RuntimeException(e)
+                    throw RuntimeException(e)
                 }
             }
 
@@ -74,6 +77,8 @@ class Router(private val message: Message<*>) {
                         try {
                             val response = sensors[0].sendData(jsonObject)
                             logger.info { "Response from $deviceProfile is: $response" }
+                        } catch (e: RestClientException) {
+                            logger.error(e) { "Cannot send data to $deviceProfile module"}
                         } catch (_: IndexOutOfBoundsException) {
                             logger.error { "This device type $deviceProfile not implemented yet." }
                         }
