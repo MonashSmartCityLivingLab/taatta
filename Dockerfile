@@ -34,18 +34,18 @@ RUN ln -sf /dev/stdout /var/log/smart-city/athom-smart-plug.log
 #FROM base AS notification
 #COPY --from=builder /taatta/notification/target/notification-$VERSION.jar notification.jar
 #RUN ln -sf /dev/stdout /var/log/smart-city/notification.log
+
+FROM base AS pcr2
+COPY --from=builder /taatta/pcr2/target/pcr2-$VERSION.jar pcr2.jar
+RUN ln -sf /dev/stdout /var/log/smart-city/pcr2.log
+
+#FROM base AS rhf1s001
+#COPY --from=builder /taatta/rhf1s001/target/rhf1s001-$VERSION.jar rhf1s001.jar
+#RUN ln -sf /dev/stdout /var/log/smart-city/rhf1s001.log
 #
-#FROM base AS pcr2
-#COPY --from=builder /taatta/pcr2/target/pcr2-$VERSION.jar pcr2.jar
-#RUN ln -sf /dev/stdout /var/log/smart-city/pcr2.log
-
-FROM base AS rhf1s001
-COPY --from=builder /taatta/rhf1s001/target/rhf1s001-$VERSION.jar rhf1s001.jar
-RUN ln -sf /dev/stdout /var/log/smart-city/rhf1s001.log
-
-FROM base AS tbs220
-COPY --from=builder /taatta/tbs220/target/tbs220-$VERSION.jar tbs220.jar
-RUN ln -sf /dev/stdout /var/log/smart-city/tbs220.log
+#FROM base AS tbs220
+#COPY --from=builder /taatta/tbs220/target/tbs220-$VERSION.jar tbs220.jar
+#RUN ln -sf /dev/stdout /var/log/smart-city/tbs220.log
 
 #FROM base AS wqm101
 #COPY --from=builder /taatta/wqm101/target/wqm101-$VERSION.jar wqm101.jar

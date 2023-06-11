@@ -23,7 +23,7 @@ More information can be found in the [ESPHome documentation](https://esphome.io/
 
 - `<plug_name>/status`: Status message published when the plugs go online or offline
 - `<plug_name>/debug`: Log messages similar to the one seen on the plug's web UI
-- `<plug_name>/sensor/<sensor_name>/status`: Values from a sensor. Known sensor names are
+- `<plug_name>/sensor/<sensor_name>/state`: Values from a sensor. Known sensor names are
     - `athom_smart_plug_v2_voltage`
     - `athom_smart_plug_v2_current`
     - `athom_smart_plug_v2_power`
@@ -31,6 +31,6 @@ More information can be found in the [ESPHome documentation](https://esphome.io/
     - `athom_smart_plug_v2_total_energy`
     - `athom_smart_plug_v2_total_daily_energy`
     - `athom_smart_plug_v2_uptime_sensor`
-    - `athom_smart_plug_v2_ip_address`
-    - `athom_smart_plug_v2_mac_address`
-    - `athom_smart_plug_v2_connected_ssid`
+    - `ip_address`
+    - `mac_address`
+    - `connected_ssid`
