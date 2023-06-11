@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
 @Serializable
-open class SensorModule(
+open class SensorRouter(
         val name: String,
         private val hostnames: Array<String>
 ) {

@@ -11,7 +11,7 @@ services:
       - mosquitto
     restart: unless-stopped
     volumes:
-      - ./configuration/collector/sensorModules.json:/taatta/collector/sensorModules.json:ro
+      - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
   rhs1s001:
     build:
       context: .

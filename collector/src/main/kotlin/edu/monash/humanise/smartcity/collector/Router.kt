@@ -12,17 +12,16 @@ private val logger = KotlinLogging.logger {}
 
 class Router {
     companion object {
-        private val sensorModuleConfig: SensorModuleConfig
+        private val sensorRoutersConfig: SensorRoutersConfig
 
         init {
-            val configFile = System.getenv("TAATTA_SENSOR_MODULES") ?: "sensorModules.json"
+            val configFile = System.getenv("TAATTA_SENSOR_MODULES") ?: "sensorRouters.json"
             try {
                 logger.info { "Reading sensor module config from $configFile" }
                 val configJson = File(configFile).readText()
-                sensorModuleConfig = Json.decodeFromString(configJson)
-
-                logger.info { "Loaded ESPHome sensors: ${sensorModuleConfig.espHomeModules.map{ s -> s.name}}" }
-                logger.info { "Loaded LoRa sensors: ${sensorModuleConfig.loraModules.map{ s -> s.name}}"}
+                sensorRoutersConfig = Json.decodeFromString(configJson)
+                logger.info { "Loaded ESPHome sensors: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
+                logger.info { "Loaded LoRa sensors: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
             } catch (e: Exception) {
                 logger.error(e) { "Cannot open module config at $configFile" }
                 throw RuntimeException(e)
@@ -39,7 +38,7 @@ class Router {
                 val topicComponents = topic.split("/")
                 val deviceName = topicComponents[0]
                 // try matching esphome sensors
-                val matchingEspHomeSensor = sensorModuleConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
+                val matchingEspHomeSensor = sensorRoutersConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
                 if (matchingEspHomeSensor != null) {
                     try {
                         val jsonObject = JSONObject()
@@ -69,7 +68,7 @@ class Router {
                     val jsonObject = JSONObject(payload)
                     if (jsonObject.has("data")) {
                         val deviceProfile = jsonObject.getString("deviceProfileName")
-                        val sensor = sensorModuleConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
+                        val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
                         if (sensor != null) {
                             val results = sensor.sendData(jsonObject)
                             results.forEach { result ->
