@@ -10,6 +10,8 @@ services:
     depends_on:
       - mosquitto
     restart: unless-stopped
+    volumes:
+      - ./configuration/collector/sensorModules.json:/taatta/collector/sensorModules.json:ro
   rhs1s001:
     build:
       context: .
@@ -21,7 +23,6 @@ services:
       - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
       - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
     depends_on:
       postgresql:
         condition: service_healthy

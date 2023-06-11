@@ -86,6 +86,13 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 payloadRepository.save(payload)
             }
 
+            "status" -> {
+                when (payloadRequest.data) {
+                    "online" -> logger.info { "${payloadRequest.deviceName} is online"}
+                    "offline" -> logger.info { "${payloadRequest.deviceName} is offline"}
+                }
+            }
+
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
             "ip_address", "mac_address", "connected_ssid" -> {}
 

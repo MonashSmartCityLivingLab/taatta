@@ -17,8 +17,12 @@ class Router {
         init {
             val configFile = System.getenv("TAATTA_SENSOR_MODULES") ?: "sensorModules.json"
             try {
+                logger.info { "Reading sensor module config from $configFile" }
                 val configJson = File(configFile).readText()
                 sensorModuleConfig = Json.decodeFromString(configJson)
+
+                logger.info { "Loaded ESPHome sensors: ${sensorModuleConfig.espHomeModules.map{ s -> s.name}}" }
+                logger.info { "Loaded LoRa sensors: ${sensorModuleConfig.loraModules.map{ s -> s.name}}"}
             } catch (e: Exception) {
                 logger.error(e) { "Cannot open module config at $configFile" }
                 throw RuntimeException(e)
