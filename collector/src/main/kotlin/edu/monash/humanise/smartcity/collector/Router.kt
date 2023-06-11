@@ -60,7 +60,7 @@ class Router(private val message: Message<*>) {
                     val response = athomModule.sendData(jsonObject)
                     logger.info { "Response from athom-smart-plug is: $response" }
                 } catch (e: RestClientException) {
-                    logger.error(e) { "Cannot send data to athom-smart-plug module"}
+                    logger.error(e) { "Cannot send data to athom-smart-plug module" }
                 } catch (e: JSONException) {
                     logger.error(e) { "Cannot create JSON object for smart plug" }
                     throw RuntimeException(e)
@@ -78,7 +78,7 @@ class Router(private val message: Message<*>) {
                             val response = sensors[0].sendData(jsonObject)
                             logger.info { "Response from $deviceProfile is: $response" }
                         } catch (e: RestClientException) {
-                            logger.error(e) { "Cannot send data to $deviceProfile module"}
+                            logger.error(e) { "Cannot send data to $deviceProfile module" }
                         } catch (_: IndexOutOfBoundsException) {
                             logger.error { "This device type $deviceProfile not implemented yet." }
                         }

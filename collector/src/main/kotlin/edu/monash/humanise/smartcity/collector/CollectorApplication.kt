@@ -17,7 +17,7 @@ import org.springframework.messaging.MessageHandler
 private val logger = KotlinLogging.logger {}
 
 @SpringBootApplication
-open class CollectorApplication {
+class CollectorApplication {
     @Value("\${smart.city.broker.url}")
     private val brokerUrl: String? = null
 
@@ -25,12 +25,12 @@ open class CollectorApplication {
     private val appName: String? = null
 
     @Bean
-    open fun mqttInputChannel(): MessageChannel {
+    fun mqttInputChannel(): MessageChannel {
         return DirectChannel()
     }
 
     @Bean
-    open fun inbound(): MessageProducer {
+    fun inbound(): MessageProducer {
         logger.info { "Connecting to MQTT broker at $brokerUrl" }
         val adapter = MqttPahoMessageDrivenChannelAdapter(brokerUrl,
                 appName,
@@ -47,7 +47,7 @@ open class CollectorApplication {
 
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
-    open fun handler(): MessageHandler {
+    fun handler(): MessageHandler {
         return MessageHandler { message ->
             val router = Router(message)
             router.route()
