@@ -86,6 +86,9 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 payloadRepository.save(payload)
             }
 
+            // Suppress the logs for known sensor values but ones that we aren't recording at the moment
+            "ip_address", "mac_address", "connected_ssid" -> {}
+
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
             }
