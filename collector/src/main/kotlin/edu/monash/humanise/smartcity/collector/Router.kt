@@ -1,92 +1,85 @@
 package edu.monash.humanise.smartcity.collector
 
 import io.github.oshai.KotlinLogging
+import kotlinx.serialization.json.Json
 import org.json.JSONException
 import org.json.JSONObject
 import org.springframework.messaging.Message
-import org.springframework.web.client.RestClientException
-
+import java.io.File
+import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
 
-class Router(private val message: Message<*>) {
-    private val isDocker = System.getenv("TAATTA_DOCKER") == "1"
-    private val loraModules = arrayOf(
-            SensorModule("rhf1s001", 4040, if (isDocker) {
-                "rhf1s001"
-            } else {
-                "localhost"
-            }),
-            SensorModule("wqm101", 4042, if (isDocker) {
-                "wqm101"
-            } else {
-                "localhost"
-            }),
-            SensorModule("df702", 4044, if (isDocker) {
-                "df702"
-            } else {
-                "localhost"
-            }),
-            SensorModule("tbs220", 4046, if (isDocker) {
-                "tbs220"
-            } else {
-                "localhost"
-            }),
-            SensorModule("pcr2", 4048, if (isDocker) {
-                "pcr2"
-            } else {
-                "localhost"
-            }),
-    )
-    private val athomModule = SensorModule("athom-smart-plug", 4050, if (isDocker) {
-        "athom-smart-plug"
-    } else {
-        "localhost"
-    })
+class Router {
+    companion object {
+        private val sensorModuleConfig: SensorModuleConfig
 
-    fun route() {
-        val payload = message.headers.toString()
-        val topic: String = message.headers["mqtt_receivedTopic"] as String
-        logger.debug { "New message. Topic: $topic, payload: $payload" }
-
-        when {
-            topic.startsWith("athom-smart-plug") -> {
-                val topicComponents = topic.split("/")
-                try {
-                    val jsonObject = JSONObject()
-                    jsonObject.put("deviceName", topicComponents[0])
-                    jsonObject.put("data", payload)
-                    jsonObject.put("sensor", topicComponents[2])
-                    val response = athomModule.sendData(jsonObject)
-                    logger.debug { "Response from athom-smart-plug is: $response" }
-                } catch (e: RestClientException) {
-                    logger.error(e) { "Cannot send data to athom-smart-plug module" }
-                } catch (e: JSONException) {
-                    logger.error(e) { "Cannot create JSON object for smart plug" }
-                    throw RuntimeException(e)
-                }
+        init {
+            val configFile = System.getenv("TAATTA_SENSOR_MODULES") ?: "sensorModules.json"
+            try {
+                val configJson = File(configFile).readText()
+                sensorModuleConfig = Json.decodeFromString(configJson)
+            } catch (e: Exception) {
+                logger.error(e) { "Cannot open module config at $configFile" }
+                throw RuntimeException(e)
+                exitProcess(1)
             }
+        }
 
-            // for chirpstack
-            else -> {
+        fun route(message: Message<*>) {
+            val payload = message.payload.toString()
+            val topic: String = message.headers["mqtt_receivedTopic"] as String
+            logger.debug { "New message. Topic: $topic, payload: $payload" }
+
+            if (!topic.startsWith("application")) {
+                val topicComponents = topic.split("/")
+                val deviceName = topicComponents[0]
+                // try matching esphome sensors
+                val matchingEspHomeSensor = sensorModuleConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
+                if (matchingEspHomeSensor != null) {
+                    try {
+                        val jsonObject = JSONObject()
+                        val payloadSensor = when (topicComponents[1]) {
+                            "status" -> "status"
+                            else -> topicComponents[2]
+                        }
+                        jsonObject.put("deviceName", deviceName)
+                        jsonObject.put("data", payload)
+                        jsonObject.put("sensor", payloadSensor)
+                        val results = matchingEspHomeSensor.sendData(jsonObject)
+                        results.forEach { result ->
+                            result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
+                            result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${matchingEspHomeSensor.name}" } }
+                        }
+                    } catch (e: JSONException) {
+                        logger.error(e) { "Cannot parse JSON for topic $topic" }
+                        throw RuntimeException(e)
+                    }
+                } else {
+                    logger.warn { "This device type $deviceName not implemented yet, skipping." }
+                }
+
+            } else {
+                // handle lora sensors
                 try {
                     val jsonObject = JSONObject(payload)
                     if (jsonObject.has("data")) {
                         val deviceProfile = jsonObject.getString("deviceProfileName")
-                        val sensors = loraModules.filter { sensorModule -> deviceProfile.endsWith(sensorModule.sensorName) }
-                        try {
-                            val response = sensors[0].sendData(jsonObject)
-                            logger.debug { "Response from $deviceProfile is: $response" }
-                        } catch (e: RestClientException) {
-                            logger.error(e) { "Cannot send data to $deviceProfile module" }
-                        } catch (_: IndexOutOfBoundsException) {
-                            logger.error { "This device type $deviceProfile not implemented yet." }
+                        val sensor = sensorModuleConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
+                        if (sensor != null) {
+                            val results = sensor.sendData(jsonObject)
+                            results.forEach { result ->
+                                result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
+                                result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${sensor.name}" } }
+                            }
+                        } else {
+                            logger.warn { "This device type $deviceProfile not implemented yet, skipping." }
                         }
                     } else {
                         logger.warn { "No data field found. Skipping" }
                     }
                 } catch (e: JSONException) {
-                    logger.error(e) { "Cannot parse JSON" }
+                    logger.error(e) { "Cannot parse JSON for topic $topic" }
                     throw RuntimeException(e)
                 }
             }

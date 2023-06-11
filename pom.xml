@@ -33,6 +33,7 @@
         <org.projectlombok.version>1.18.26</org.projectlombok.version>
         <spring.cloud.zipkin.version>3.1.4</spring.cloud.zipkin.version>
         <kotlin.version>1.8.20</kotlin.version>
+        <serialization.version>1.5.1</serialization.version>
     </properties>
 
     <dependencyManagement>
@@ -81,6 +82,11 @@
             <groupId>io.github.oshai</groupId>
             <artifactId>kotlin-logging-jvm</artifactId>
             <version>4.0.0-beta-20</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <version>${serialization.version}</version>
         </dependency>
     </dependencies>
 
@@ -146,12 +152,18 @@
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
+                        <plugin>kotlinx-serialization</plugin>
                     </compilerPlugins>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-serialization</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>

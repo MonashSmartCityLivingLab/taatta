@@ -50,8 +50,7 @@ class CollectorApplication {
     @ServiceActivator(inputChannel = "mqttInputChannel")
     fun handler(): MessageHandler {
         return MessageHandler { message ->
-            val router = Router(message)
-            router.route()
+            Router.route(message)
         }
     }
 }

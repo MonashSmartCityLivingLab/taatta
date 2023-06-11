@@ -1,23 +1,33 @@
 package edu.monash.humanise.smartcity.collector
 
+import kotlinx.serialization.Serializable
 import org.json.JSONObject
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
+@Serializable
 open class SensorModule(
-        val sensorName: String,
-        private val port: Int,
-        private val hostname: String
+        val name: String,
+        private val hostnames: Array<String>
 ) {
-    open fun sendData(body: JSONObject): ResponseEntity<String> {
+    open fun sendData(body: JSONObject): List<Result<ResponseEntity<String>>> {
         val restTemplate = RestTemplate()
         val headers = HttpHeaders()
         headers.contentType = MediaType.APPLICATION_JSON
-        val url = "http://$hostname:$port/api/payload"
-        val request = HttpEntity(body.toString(), headers)
-        return restTemplate.postForEntity(url, request, String::class.java)
+
+        // Send data to each host
+        return hostnames.map { hostname ->
+            val url = "$hostname/api/payload"
+            val request = HttpEntity(body.toString(), headers)
+            try {
+                Result.success(restTemplate.postForEntity(url, request, String::class.java))
+            } catch (e: RestClientException) {
+                Result.failure(e)
+            }
+        }
     }
 }
