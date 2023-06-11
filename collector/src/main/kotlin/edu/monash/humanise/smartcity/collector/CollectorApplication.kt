@@ -36,7 +36,8 @@ class CollectorApplication {
                 appName,
                 "application/+/device/+/event/+",
                 "application/+/device/+/command/+",
-                "+/sensor/+/state" // for smart plug
+                "+/sensor/+/state", // for smart plug
+                "+/status" // sensor status
         )
         adapter.setCompletionTimeout(5000)
         adapter.setConverter(DefaultPahoMessageConverter())

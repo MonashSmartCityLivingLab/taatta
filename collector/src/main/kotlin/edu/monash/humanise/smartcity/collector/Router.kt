@@ -47,7 +47,7 @@ class Router(private val message: Message<*>) {
     fun route() {
         val payload = message.headers.toString()
         val topic: String = message.headers["mqtt_receivedTopic"] as String
-        logger.info { "New message. Topic: $topic, payload: $payload" }
+        logger.debug { "New message. Topic: $topic, payload: $payload" }
 
         when {
             topic.startsWith("athom-smart-plug") -> {
@@ -58,7 +58,7 @@ class Router(private val message: Message<*>) {
                     jsonObject.put("data", payload)
                     jsonObject.put("sensor", topicComponents[2])
                     val response = athomModule.sendData(jsonObject)
-                    logger.info { "Response from athom-smart-plug is: $response" }
+                    logger.debug { "Response from athom-smart-plug is: $response" }
                 } catch (e: RestClientException) {
                     logger.error(e) { "Cannot send data to athom-smart-plug module" }
                 } catch (e: JSONException) {
@@ -76,7 +76,7 @@ class Router(private val message: Message<*>) {
                         val sensors = loraModules.filter { sensorModule -> deviceProfile.endsWith(sensorModule.sensorName) }
                         try {
                             val response = sensors[0].sendData(jsonObject)
-                            logger.info { "Response from $deviceProfile is: $response" }
+                            logger.debug { "Response from $deviceProfile is: $response" }
                         } catch (e: RestClientException) {
                             logger.error(e) { "Cannot send data to $deviceProfile module" }
                         } catch (_: IndexOutOfBoundsException) {
