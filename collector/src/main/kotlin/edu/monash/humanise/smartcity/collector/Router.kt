@@ -1,9 +1,11 @@
 package edu.monash.humanise.smartcity.collector
 
+import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
+import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
 import io.github.oshai.KotlinLogging
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.json.JSONException
-import org.json.JSONObject
 import org.springframework.messaging.Message
 import java.io.File
 import kotlin.system.exitProcess
@@ -41,22 +43,19 @@ class Router {
                 val matchingEspHomeSensor = sensorRoutersConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
                 if (matchingEspHomeSensor != null) {
                     try {
-                        val jsonObject = JSONObject()
+
                         val payloadSensor = when (topicComponents[1]) {
                             "status" -> "status"
                             else -> topicComponents[2]
                         }
-                        jsonObject.put("deviceName", deviceName)
-                        jsonObject.put("data", payload)
-                        jsonObject.put("sensor", payloadSensor)
-                        val results = matchingEspHomeSensor.sendData(jsonObject)
+                        val jsonObject = EspHomePayload(deviceName, payloadSensor, payload)
+                        val results = matchingEspHomeSensor.sendData(Json.encodeToString(jsonObject))
                         results.forEach { result ->
                             result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
                             result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${matchingEspHomeSensor.name}" } }
                         }
-                    } catch (e: JSONException) {
+                    } catch (e: SerializationException) {
                         logger.error(e) { "Cannot parse JSON for topic $topic" }
-                        throw RuntimeException(e)
                     }
                 } else {
                     logger.warn { "This device type $deviceName not implemented yet, skipping." }
@@ -65,12 +64,12 @@ class Router {
             } else {
                 // handle lora sensors
                 try {
-                    val jsonObject = JSONObject(payload)
-                    if (jsonObject.has("data")) {
-                        val deviceProfile = jsonObject.getString("deviceProfileName")
+                    val jsonObject: LoRaPayload = Json.decodeFromString(payload)
+                    if (jsonObject.data != null) {
+                        val deviceProfile = jsonObject.deviceProfileName
                         val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
                         if (sensor != null) {
-                            val results = sensor.sendData(jsonObject)
+                            val results = sensor.sendData(Json.encodeToString(jsonObject))
                             results.forEach { result ->
                                 result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
                                 result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${sensor.name}" } }
@@ -79,11 +78,10 @@ class Router {
                             logger.warn { "This device type $deviceProfile not implemented yet, skipping." }
                         }
                     } else {
-                        logger.warn { "No data field found. Skipping" }
+                        logger.warn { "Data field not found or null, skipping" }
                     }
-                } catch (e: JSONException) {
+                } catch (e: SerializationException) {
                     logger.error(e) { "Cannot parse JSON for topic $topic" }
-                    throw RuntimeException(e)
                 }
             }
         }

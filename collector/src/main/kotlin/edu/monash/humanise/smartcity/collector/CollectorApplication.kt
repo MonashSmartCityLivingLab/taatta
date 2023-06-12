@@ -13,6 +13,7 @@ import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannel
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter
 import org.springframework.messaging.MessageChannel
 import org.springframework.messaging.MessageHandler
+import kotlin.random.Random
 
 private val logger = KotlinLogging.logger {}
 
@@ -31,9 +32,15 @@ class CollectorApplication {
 
     @Bean
     fun inbound(): MessageProducer {
-        logger.info { "Connecting to MQTT broker at $brokerUrl" }
+        // clientId must be unique across the broker. otherwise, we'll get broken pipes, EOFException and other weird behaviours.
+        // this can happen if there are 2 collector instances running at the same time (e.g. a prod instance and dev instance)
+        // source: https://stackoverflow.com/a/61161172
+        val randNum = Random.Default.nextInt()
+        val clientId = "$appName-${"%08x".format(randNum)}"
+
+        logger.info { "Connecting to MQTT broker at $brokerUrl with client ID $clientId" }
         val adapter = MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                appName,
+                clientId,
                 "application/+/device/+/event/+",
                 "application/+/device/+/command/+",
                 "+/sensor/+/state", // for smart plug
