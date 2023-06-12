@@ -1,5 +1,5 @@
 [Unit]
-Description=Taatta Athom Smart Plug Data Collector
+Description=Taatta Athom Smart Plug Data Logger
 Documentation=https://github.com/MonashSmartCityLivingLab/taatta
 Wants=network-online.target
 After=network-online.target

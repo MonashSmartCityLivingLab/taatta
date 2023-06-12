@@ -9,7 +9,7 @@
     </parent>
     <artifactId>athom-smart-plug</artifactId>
     <name>athom-smart-plug</name>
-    <description>athom-smart-plug</description>
+    <description>Taatta Athom Smart Plug Data Logger</description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
