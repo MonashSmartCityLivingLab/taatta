@@ -15,7 +15,7 @@ class Router {
         private val sensorRoutersConfig: SensorRoutersConfig
 
         init {
-            val configFile = System.getenv("TAATTA_SENSOR_MODULES") ?: "sensorRouters.json"
+            val configFile = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
             try {
                 logger.info { "Reading sensor module config from $configFile" }
                 val configJson = File(configFile).readText()

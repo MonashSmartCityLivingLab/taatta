@@ -7,11 +7,28 @@ services:
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
       - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
+      - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
       - mosquitto
     restart: unless-stopped
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
+  athom-smart-plug:
+    build:
+      context: .
+      target: athom-smart-plug
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-smart-plug.jar
+    ports:
+      - 4050:4050
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: unless-stopped
   rhs1s001:
     build:
       context: .
@@ -34,22 +51,6 @@ services:
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/pcr2.jar
     ports:
       - 4048:4048
-    environment:
-      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
-      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
-      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-    depends_on:
-      postgresql:
-        condition: service_healthy
-    restart: unless-stopped
-  athom-smart-plug:
-    build:
-      context: .
-      target: athom-smart-plug
-    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-smart-plug.jar
-    ports:
-      - 4050:4050
     environment:
       - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
       - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}

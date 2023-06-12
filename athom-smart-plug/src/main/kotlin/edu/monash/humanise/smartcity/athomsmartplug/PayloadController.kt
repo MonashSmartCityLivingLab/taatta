@@ -1,6 +1,7 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
 import io.github.oshai.KotlinLogging
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,7 +15,10 @@ private val logger = KotlinLogging.logger {}
  */
 @RestController
 @RequestMapping("/api/payload")
-class PayloadController(private val payloadService: PayloadService) {
+class PayloadController(
+        private val payloadService: PayloadService,
+        private val stats: Stats
+) {
 
     /**
      * POST endpoint to receive data from the collector.
@@ -22,6 +26,7 @@ class PayloadController(private val payloadService: PayloadService) {
     @PostMapping
     fun decodeUplinkPayload(@RequestBody payloadRequest: PayloadUplinkRequest) {
         logger.debug { "New uplink payload to decode $payloadRequest" }
+        stats.incrementCounter(payloadRequest.deviceName)
         payloadService.decodeUplinkPayload(payloadRequest)
     }
 }
