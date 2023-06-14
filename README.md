@@ -91,7 +91,7 @@ sudo chown -R taatta:taatta /usr/local/taatta
 ```
 
 3. Copy all jar files to `/usr/local/taatta`, stripping version number from its filename (
-   e.g. `collector-1.2-SNAPSHOT.jar` becomes `collector.jar`)
+   e.g. `collector-1.1-SNAPSHOT.jar` becomes `collector.jar`)
 4. Copy systemd service files to `/usr/local/lib/systemd/system`
 5. Copy the environment variables from `.env.example` to `/etc/taatta.env`
 6. Adjust `/etc/taatta.env` as follows (change the passwords!)
