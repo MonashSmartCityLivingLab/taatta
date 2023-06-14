@@ -9,7 +9,7 @@
     <name>smart-city</name>
     <url>https://www.monash.edu</url>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <modules>
         <module>collector</module>
         <module>eureka-server</module>
