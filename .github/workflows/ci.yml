@@ -10,23 +10,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Chekout repository
-      uses: actions/checkout@v3
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: "17"
-        distribution: temurin
-        cache: maven
-    - name: Build
-      run: mvn -e clean package spring-boot:repackage
-    - name: Build documentation
-      run: mvn -e dokka:dokka dokka:javadoc
-    - name: Save files
-      uses: actions/upload-artifact@v3
-      with:
-        name: taatta
-        path: |
-          **/target/*.jar
-          **/target/dokka
-          **/target/dokkaJavadoc
+      - name: Chekout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: "17"
+          distribution: temurin
+          cache: maven
+      - name: Build
+        run: mvn -e clean package spring-boot:repackage
+      - name: Build documentation
+        run: mvn -e dokka:dokka dokka:javadoc
+      - name: Save files
+        uses: actions/upload-artifact@v3
+        with:
+          name: taatta
+          path: |
+            **/target/*.jar
+            **/target/dokka
+            **/target/dokkaJavadoc
+            **/README.md
+            configuration
+            Dockerfile
+            docker-compose.yml
+            .dockerignore
+            .env.example
+            **/*.service
