@@ -12,8 +12,12 @@ import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Routes the message to the appropriate logger modules.
+ */
 class Router {
     companion object {
+        /** Sensor config */
         private val sensorRoutersConfig: SensorRoutersConfig
 
         init {
