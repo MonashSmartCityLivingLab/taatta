@@ -20,12 +20,15 @@ class Router {
         /** Sensor config */
         private val sensorRoutersConfig: SensorRoutersConfig
 
+        // only decode what's needed and ignore any unknown keys
+        private val jsonCoder = Json { ignoreUnknownKeys = true }
+
         init {
             val configFile = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
             try {
                 logger.info { "Reading sensor module config from $configFile" }
                 val configJson = File(configFile).readText()
-                sensorRoutersConfig = Json.decodeFromString(configJson)
+                sensorRoutersConfig = jsonCoder.decodeFromString(configJson)
                 logger.info { "Loaded ESPHome sensors: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
                 logger.info { "Loaded LoRa sensors: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
             } catch (e: Exception) {
@@ -53,7 +56,7 @@ class Router {
                             else -> topicComponents[2]
                         }
                         val jsonObject = EspHomePayload(deviceName, payloadSensor, payload)
-                        val results = matchingEspHomeSensor.sendData(Json.encodeToString(jsonObject))
+                        val results = matchingEspHomeSensor.sendData(jsonCoder.encodeToString(jsonObject))
                         results.forEach { result ->
                             result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
                             result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${matchingEspHomeSensor.name}" } }
@@ -68,12 +71,12 @@ class Router {
             } else {
                 // handle lora sensors
                 try {
-                    val jsonObject: LoRaPayload = Json.decodeFromString(payload)
+                    val jsonObject: LoRaPayload = jsonCoder.decodeFromString(payload)
                     if (jsonObject.data != null) {
                         val deviceProfile = jsonObject.deviceProfileName
                         val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
                         if (sensor != null) {
-                            val results = sensor.sendData(Json.encodeToString(jsonObject))
+                            val results = sensor.sendData(jsonCoder.encodeToString(jsonObject))
                             results.forEach { result ->
                                 result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
                                 result.onFailure { error -> logger.error(error) { "Cannot send data for sensor ${sensor.name}" } }

@@ -37,3 +37,4 @@ jobs:
             .dockerignore
             .env.example
             **/*.service
+
