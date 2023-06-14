@@ -2,7 +2,7 @@
     <variable name="LOG_DIR" value="/var/log/smart-city"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date %level [%file:%line] %msg%n</pattern>
+            <pattern>%date{ISO8601,UTC} %level [%thread] %logger [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
     <root level="info">
