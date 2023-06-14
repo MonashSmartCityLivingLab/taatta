@@ -20,6 +20,9 @@ class Router {
         /** Sensor config */
         private val sensorRoutersConfig: SensorRoutersConfig
 
+        /**
+         * JSON encoder/decoder for router.
+         */
         // only decode what's needed and ignore any unknown keys
         private val jsonCoder = Json { ignoreUnknownKeys = true }
 
@@ -38,6 +41,11 @@ class Router {
             }
         }
 
+        /**
+         * Routes a message to the appropriate logger modules.
+         *
+         * @param message An [Message] instance containing MQTT message
+         */
         fun route(message: Message<*>) {
             val payload = message.payload.toString()
             val topic: String = message.headers["mqtt_receivedTopic"] as String
