@@ -37,51 +37,31 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             }
 
             "athom_smart_plug_v2_power" -> {
-                val power = try {
-                    payloadRequest.data.toDouble()
-                } catch (e: NumberFormatException) {
-                    null
-                }
+                val power = payloadRequest.data.toDoubleOrNull()
                 val payload = PowerPayload(payloadRequest.deviceName, payloadRequest.data, power)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_energy" -> {
-                val energy = try {
-                    payloadRequest.data.toDouble()
-                } catch (e: NumberFormatException) {
-                    null
-                }
+                val energy = payloadRequest.data.toDoubleOrNull()
                 val payload = EnergyConsumptionPayload(payloadRequest.deviceName, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_total_energy" -> {
-                val energy = try {
-                    payloadRequest.data.toDouble()
-                } catch (e: NumberFormatException) {
-                    null
-                }
+                val energy = payloadRequest.data.toDoubleOrNull()
                 val payload = TotalEnergyConsumptionPayload(payloadRequest.deviceName, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_total_daily_energy" -> {
-                val energy = try {
-                    payloadRequest.data.toDouble()
-                } catch (e: NumberFormatException) {
-                    null
-                }
+                val energy = payloadRequest.data.toDoubleOrNull()
                 val payload = DailyEnergyConsumptionPayload(payloadRequest.deviceName, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_uptime_sensor" -> {
-                val uptime = try {
-                    payloadRequest.data.toLong()
-                } catch (e: NumberFormatException) {
-                    null
-                }
+                val uptime = payloadRequest.data.toLongOrNull()
                 val payload = UptimePayload(payloadRequest.deviceName, payloadRequest.data, uptime)
                 payloadRepository.save(payload)
             }
