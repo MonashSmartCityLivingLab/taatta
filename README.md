@@ -50,11 +50,10 @@ and [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
 1. Copy the environment variable file `.env.examle` to `.env`
 2. review the `.env` file values
-    - The hostnames and port numbers are already set up, but you should change the Postgres password, especially for
-      production instances
+    - The hostnames and port numbers are already set up, but you should change the Postgres and Mosquitto passwords,
+      especially for production instances
 3. Review the Mosquitto and ChirpStack configuration at `configuration` directory
-    - For example, you might want to add authentication to restrict who can publish or subscribe to your broker, or
-      change the LoRa frequency for ChirpStack
+    - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections
 4. Deploy the containers:
 
 ```shell
@@ -100,6 +99,8 @@ sudo chown -R taatta:taatta /usr/local/taatta
 # mosquitto
 TAATTA_MOSQUITTO_HOST=localhost
 TAATTA_MOSQUITTO_PORT=1883
+# You may remove these if you don't want authenticated MQTT connections
+# In that case, don't forget to set `allow_anonymous` to true and remove `password_file` in mosquitto.conf
 TAATTA_MOSQUITTO_USER=taatta
 TAATTA_MOSQUITTO_PASSWORD=changeme
 
@@ -113,7 +114,7 @@ TAATTA_SENSOR_ROUTER=/usr/local/taatta/sensorRouters.json
 ```
 
 7. Modify the hostnames on [`configuration/collector/sensorRouters.json`](configuration/collector/sensorRouters.json)
-so the urls are `https://localhost:<port_number>`, so that the collector sends the data to the correct URL
+   so the urls are `https://localhost:<port_number>`, so that the collector sends the data to the correct URL
 8. Copy `configuration/collector/sensorRouters.json` to `/usr/local/taatta`
 
 9. Enable and run the services
