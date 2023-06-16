@@ -114,7 +114,6 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-#    image: eclipse-mosquitto:2
     build:
       context: .
       target: mosquitto
