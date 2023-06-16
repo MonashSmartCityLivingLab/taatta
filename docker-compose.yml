@@ -7,9 +7,12 @@ services:
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
       - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
+      - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
       - mosquitto
     restart: unless-stopped
+    volumes:
+      - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
   rhs1s001:
     build:
       context: .
@@ -21,7 +24,6 @@ services:
       - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
       - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
     depends_on:
       postgresql:
         condition: service_healthy
@@ -97,8 +99,8 @@ services:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     # Uncomment to expose ports
-#    ports:
-#      - 5432:5432
+    ports:
+      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s

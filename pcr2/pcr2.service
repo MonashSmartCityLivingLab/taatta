@@ -1,5 +1,5 @@
 [Unit]
-Description=Taatta PCR2 Data Collector
+Description=Taatta PCR2 Data Logger
 Documentation=https://github.com/MonashSmartCityLivingLab/taatta
 Wants=network-online.target
 After=network-online.target

@@ -3,7 +3,7 @@ package edu.monash.humanise.smartcity.athomsmartplug
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
-import javax.persistence.*
+import jakarta.persistence.*
 
 /**
  * Name for the global ID sequence.

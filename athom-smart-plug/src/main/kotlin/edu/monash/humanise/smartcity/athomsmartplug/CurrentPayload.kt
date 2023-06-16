@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
-import javax.persistence.Entity
+import jakarta.persistence.Entity
 
 /**
  * Sensor datapoint entity for current readings.

@@ -92,7 +92,7 @@ sudo chown -R taatta:taatta /usr/local/taatta
 
 3. Copy all jar files to `/usr/local/taatta`, stripping version number from its filename (
    e.g. `collector-1.1-SNAPSHOT.jar` becomes `collector.jar`)
-4. Copy systemd service files to `/etc/systemd/system`
+4. Copy systemd service files to `/usr/local/lib/systemd/system`
 5. Copy the environment variables from `.env.example` to `/etc/taatta.env`
 6. Adjust `/etc/taatta.env` as follows (change the passwords!)
 
@@ -106,12 +106,17 @@ TAATTA_MOSQUITTO_PORT=1883
 TAATTA_POSTGRES_PORT=5432
 TAATTA_POSTGRES_USER=taatta
 TAATTA_POSTGRES_PASSWORD=changeme
+TAATTA_SENSOR_ROUTER=/usr/local/taatta/sensorRouters.json
 
 # chirpstack postgres credentials
 CHIRPSTACK_POSTGRES_PASSWORD=changeme
 ```
 
-7. Enable and run the services
+7. Modify the hostnames on [`configuration/collector/sensorRouters.json`](configuration/collector/sensorRouters.json)
+so the urls are `https://localhost:<port_number>`, so that the collector sends the data to the correct URL
+8. Copy `configuration/collector/sensorRouters.json` to `/usr/local/taatta`
+
+9. Enable and run the services
 
 ```shell
 sudo systemctl enable --now <service_name>.service

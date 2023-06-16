@@ -1,0 +1,43 @@
+{
+  "loraModules": [
+    {
+      "name": "rhf1s001",
+      "hostnames": [
+        "http://rhf1s001:4040"
+      ]
+    },
+    {
+      "name": "wqm101",
+      "hostnames": [
+        "http://wqm101:4042"
+      ]
+    },
+    {
+      "name": "df702",
+      "hostnames": [
+        "http://df702:4044"
+      ]
+    },
+    {
+      "name": "tbs220",
+      "hostnames": [
+        "http://tbs220:4046"
+      ]
+    },
+    {
+      "name": "pcr2",
+      "hostnames": [
+        "http://pcr2:4048"
+      ]
+    }
+  ],
+
+  "espHomeModules": [
+    {
+      "name": "athom-smart-plug",
+      "hostnames": [
+        "http://athom-smart-plug:4050"
+      ]
+    }
+  ]
+}

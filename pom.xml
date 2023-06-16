@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.monash.humanise.smartcity</groupId>
     <artifactId>smart-city</artifactId>
+    <name>smart-city</name>
+    <url>https://www.monash.edu</url>
     <packaging>pom</packaging>
     <version>1.1-SNAPSHOT</version>
     <modules>
@@ -21,18 +23,15 @@
         <module>athom-smart-plug</module>
     </modules>
 
-    <name>smart-city</name>
-    <url>https://www.monash.edu</url>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring.boot.maven.plugin.version>2.7.5</spring.boot.maven.plugin.version>
-        <spring.boot.dependecies.version>2.7.5</spring.boot.dependecies.version>
+        <spring.boot.maven.plugin.version>3.1.0</spring.boot.maven.plugin.version>
+        <spring.boot.dependecies.version>3.1.0</spring.boot.dependecies.version>
         <org.projectlombok.version>1.18.26</org.projectlombok.version>
-        <spring.cloud.zipkin.version>3.1.4</spring.cloud.zipkin.version>
         <kotlin.version>1.8.20</kotlin.version>
+        <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
     </properties>
 
     <dependencyManagement>
@@ -57,15 +56,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>3.1.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-            <version>3.1.4</version>
+            <version>3.1.7</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -76,6 +78,16 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>1.8.20-RC</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.oshai</groupId>
+            <artifactId>kotlin-logging-jvm</artifactId>
+            <version>4.0.0-beta-20</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 
@@ -141,12 +153,18 @@
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
+                        <plugin>kotlinx-serialization</plugin>
                     </compilerPlugins>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-serialization</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
@@ -185,7 +203,7 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
-                <version>1.8.10</version>
+                <version>1.8.20</version>
                 <executions>
                     <execution>
                         <phase>pre-site</phase>
@@ -194,6 +212,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <jdkVersion>${maven.compiler.target}</jdkVersion>
+                    <sourceDirectories>
+                        <dir>${project.basedir}/src</dir>
+                    </sourceDirectories>
+                </configuration>
+
             </plugin>
         </plugins>
     </build>
