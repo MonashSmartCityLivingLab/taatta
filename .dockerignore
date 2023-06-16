@@ -1,5 +1,4 @@
-**/target
-out/out/
+out/
 
 HELP.md
 target/
