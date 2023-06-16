@@ -1,6 +1,21 @@
 FROM maven:3-eclipse-temurin-17 AS builder
-ARG VERSION="1.1-SNAPSHOT"
-WORKDIR /taatta
+ENV HOME=/taatta
+WORKDIR $HOME
+
+# cache dependencies
+ADD pom.xml $HOME
+ADD collector/pom.xml $HOME/collector/pom.xml
+ADD eureka-server/pom.xml $HOME/eureka-server/pom.xml
+ADD rhf1s001/pom.xml $HOME/rhf1s001/pom.xml
+ADD wqm101/pom.xml $HOME/wqm101/pom.xml
+ADD df702/pom.xml $HOME/df702/pom.xml
+ADD notification/pom.xml $HOME/notification/pom.xml
+ADD tbs220/pom.xml $HOME/tbs220/pom.xml
+ADD pcr2/pom.xml $HOME/pcr2/pom.xml
+ADD ems701/pom.xml $HOME/ems701/pom.xml
+ADD athom-smart-plug/pom.xml $HOME/athom-smart-plug/pom.xml
+RUN mvn dependency:resolve
+
 COPY . .
 RUN mvn -e package spring-boot:repackage
 
