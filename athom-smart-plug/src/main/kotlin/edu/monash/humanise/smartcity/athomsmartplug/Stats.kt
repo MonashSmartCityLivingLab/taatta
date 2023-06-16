@@ -21,7 +21,7 @@ class Stats {
         for ((sensor, count) in payloadCount.toSortedMap()) {
             stringBuilder.append("$sensor: $count\n")
         }
-        stringBuilder.append("Total: ${payloadCount.values.sum()}")
+        stringBuilder.append("Total: ${payloadCount.values.sum()} from ${payloadCount.count()} sensors")
 
         logger.info { stringBuilder.toString() }
 
