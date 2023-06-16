@@ -97,19 +97,19 @@ sudo chown -R taatta:taatta /usr/local/taatta
 6. Adjust `/etc/taatta.env` as follows (change the passwords!)
 
 ```shell
-ADMIN_POSTGRES_PASSWORD=changeme
-
-# taatta credentials and hostnames
+# mosquitto
 TAATTA_MOSQUITTO_HOST=localhost
-TAATTA_POSTGRES_HOST=localhost
 TAATTA_MOSQUITTO_PORT=1883
+TAATTA_MOSQUITTO_USER=taatta
+TAATTA_MOSQUITTO_PASSWORD=changeme
+
+# postgresql
+TAATTA_POSTGRES_HOST=localhost
 TAATTA_POSTGRES_PORT=5432
 TAATTA_POSTGRES_USER=taatta
 TAATTA_POSTGRES_PASSWORD=changeme
-TAATTA_SENSOR_ROUTER=/usr/local/taatta/sensorRouters.json
 
-# chirpstack postgres credentials
-CHIRPSTACK_POSTGRES_PASSWORD=changeme
+TAATTA_SENSOR_ROUTER=/usr/local/taatta/sensorRouters.json
 ```
 
 7. Modify the hostnames on [`configuration/collector/sensorRouters.json`](configuration/collector/sensorRouters.json)

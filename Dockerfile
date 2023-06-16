@@ -50,3 +50,8 @@ RUN ln -sf /dev/stdout /var/log/smart-city/pcr2.log
 #FROM base AS wqm101
 #COPY --from=builder /taatta/wqm101/target/wqm101-$VERSION.jar wqm101.jar
 #RUN ln -sf /dev/stdout /var/log/smart-city/wqm101.log
+
+FROM eclipse-mosquitto:2 AS mosquitto
+COPY configuration/eclipse-mosquitto/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["sh", "/entrypoint.sh"]
+CMD ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
