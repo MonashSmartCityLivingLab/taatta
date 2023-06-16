@@ -29,8 +29,8 @@ broker and then sends it to the sensor module which then writes it to the databa
 ### Dependencies
 
 - [JDK 17](https://adoptium.net/temurin/releases/)
-- [Maven](https://maven.apache.org/download.cgi)
 - [Kotlin](https://kotlinlang.org/docs/getting-started.html)
+- [Maven](https://maven.apache.org/download.cgi) (optional -- wrapper included)
 
 ### Building
 
