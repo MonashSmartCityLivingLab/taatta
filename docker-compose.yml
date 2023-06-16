@@ -7,6 +7,8 @@ services:
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
       - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
+      - TAATTA_MOSQUITTO_USER=${TAATTA_MOSQUITTO_USER}
+      - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
       - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
       - mosquitto
@@ -121,10 +123,11 @@ services:
     volumes:
       - ./configuration/eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
     environment:
-      - TAATTA_MOSQUITTO_USERNAME=${TAATTA_MOSQUITTO_USERNAME}
+      - TAATTA_MOSQUITTO_USER=${TAATTA_MOSQUITTO_USER}
       - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
     restart: unless-stopped
     entrypoint: sh ./entrypoint.sh
+    command: ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
 
 volumes:
   postgresqldata:
