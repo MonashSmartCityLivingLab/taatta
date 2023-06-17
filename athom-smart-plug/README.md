@@ -10,7 +10,9 @@ the plug's yml file:
 
 ```yaml
 mqtt:
-  broker: broker_address
+  broker: 192.168.1.10
+  username: !secret mqtt_username
+  password: !secret mqtt_password
 ```
 
 Where `broker_address` is the IP address of your MQTT broker.
@@ -18,6 +20,14 @@ Where `broker_address` is the IP address of your MQTT broker.
 You can edit the yml file if you add the plug to Home Assistant.
 
 More information can be found in the [ESPHome documentation](https://esphome.io/components/mqtt.html)
+
+### Trips and tricks
+
+If you get 'not enough space' error when updating the yml file, comment out the MQTT part, install the config, uncomment
+them back, and then install again.
+
+To save the trouble of debugging and resetting the device, always validate your updated configuration before installing
+them.
 
 ## MQTT topics
 

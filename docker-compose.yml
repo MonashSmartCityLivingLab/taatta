@@ -7,6 +7,8 @@ services:
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
       - TAATTA_MOSQUITTO_PORT=${TAATTA_MOSQUITTO_PORT}
+      - TAATTA_MOSQUITTO_USER=${TAATTA_MOSQUITTO_USER}
+      - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
       - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
       - mosquitto
@@ -91,10 +93,10 @@ services:
   postgresql:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_PASSWORD=${ADMIN_POSTGRES_PASSWORD}
+      - POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
       - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
       - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-      - CHIRPSTACK_POSTGRES_PASSWORD=${CHIRPSTACK_POSTGRES_PASSWORD}
+      - CHIRPSTACK_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
     volumes:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
@@ -112,12 +114,19 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-    image: eclipse-mosquitto:2
+    build:
+      context: .
+      target: mosquitto
     ports:
       - 1883:1883
     volumes:
       - ./configuration/eclipse-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    environment:
+      - TAATTA_MOSQUITTO_USER=${TAATTA_MOSQUITTO_USER}
+      - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
     restart: unless-stopped
+    entrypoint: sh ./entrypoint.sh
+    command: ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
 
 volumes:
   postgresqldata:

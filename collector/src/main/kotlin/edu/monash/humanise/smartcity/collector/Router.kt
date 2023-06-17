@@ -27,15 +27,16 @@ class Router {
         private val jsonCoder = Json { ignoreUnknownKeys = true }
 
         init {
-            val configFile = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
+            val configPath = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
             try {
-                logger.info { "Reading sensor module config from $configFile" }
-                val configJson = File(configFile).readText()
+                val configFile = File(configPath)
+                logger.info { "Reading sensor router config from ${configFile.absolutePath}" }
+                val configJson = configFile.readText()
                 sensorRoutersConfig = jsonCoder.decodeFromString(configJson)
-                logger.info { "Loaded ESPHome sensors: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
-                logger.info { "Loaded LoRa sensors: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
+                logger.info { "Loaded ESPHome routers: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
+                logger.info { "Loaded LoRa routers: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
             } catch (e: Exception) {
-                logger.error(e) { "Cannot open module config at $configFile" }
+                logger.error(e) { "Cannot open module config at $configPath" }
                 throw RuntimeException(e)
                 exitProcess(1)
             }
@@ -44,7 +45,7 @@ class Router {
         /**
          * Routes a message to the appropriate logger modules.
          *
-         * @param message An [Message] instance containing MQTT message
+         * @param message A [Message] instance containing MQTT message
          */
         fun route(message: Message<*>) {
             val payload = message.payload.toString()
@@ -58,7 +59,6 @@ class Router {
                 val matchingEspHomeSensor = sensorRoutersConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
                 if (matchingEspHomeSensor != null) {
                     try {
-
                         val payloadSensor = when (topicComponents[1]) {
                             "status" -> "status"
                             else -> topicComponents[2]

@@ -18,10 +18,10 @@ class Stats {
         val now = OffsetDateTime.now(ZoneOffset.UTC)
         val stringBuilder = StringBuilder("Number of payload requests for athom-smart-plug by device from $previousTime to $now:\n")
 
-        for ((sensor, count) in payloadCount) {
+        for ((sensor, count) in payloadCount.toSortedMap()) {
             stringBuilder.append("$sensor: $count\n")
         }
-        stringBuilder.append("Total: ${payloadCount.values.sum()}")
+        stringBuilder.append("Total: ${payloadCount.values.sum()} from ${payloadCount.count()} sensors")
 
         logger.info { stringBuilder.toString() }
 
