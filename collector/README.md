@@ -4,7 +4,7 @@ MQTT sensor data routing service.
 
 ## Routers
 
-The collectors has a configurable list of routers which will send messages to the appropriate logger module.
+The collectors have a configurable list of routers which will send messages to the appropriate logger module.
 By default, the collector will read `sensorRouters.json` in the current working directory to load the routers, but this
 can be overridden with the `TAATTA_SENSOR_ROUTERS` environment variable.
 

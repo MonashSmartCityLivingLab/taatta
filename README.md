@@ -35,7 +35,8 @@ broker and then sends it to the sensor module which then writes it to the databa
 ### Building
 
 1. Clone the repository
-2. Run `mvn -e package spring-boot:repackage` to build
+2. Run `./mvnw -e package spring-boot:repackage` (macOS/Linux) or `.\mvnw.cmd -e package spring-boot:repackage` 
+   (Windows) to build
 
 The output .jar files are located in `<module_name>/target/<module_name>-<version>.jar`.
 

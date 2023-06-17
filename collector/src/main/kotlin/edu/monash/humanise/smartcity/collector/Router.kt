@@ -27,16 +27,16 @@ class Router {
         private val jsonCoder = Json { ignoreUnknownKeys = true }
 
         init {
-            val configpath = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
+            val configPath = System.getenv("TAATTA_SENSOR_ROUTERS") ?: "sensorRouters.json"
             try {
-                val configFile = File(configpath)
+                val configFile = File(configPath)
                 logger.info { "Reading sensor router config from ${configFile.absolutePath}" }
                 val configJson = configFile.readText()
                 sensorRoutersConfig = jsonCoder.decodeFromString(configJson)
                 logger.info { "Loaded ESPHome routers: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
                 logger.info { "Loaded LoRa routers: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
             } catch (e: Exception) {
-                logger.error(e) { "Cannot open module config at $configpath" }
+                logger.error(e) { "Cannot open module config at $configPath" }
                 throw RuntimeException(e)
                 exitProcess(1)
             }
