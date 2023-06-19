@@ -19,7 +19,7 @@ class Payload(
     val devEUI: String,
     val ltr: Int,
     val rtl: Int,
-    val cpuTemp: Int
+    val cpuTemp: Double
 ) {
     @Id
     @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME)

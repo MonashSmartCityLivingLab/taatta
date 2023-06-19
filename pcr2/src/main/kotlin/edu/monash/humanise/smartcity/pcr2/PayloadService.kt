@@ -9,15 +9,14 @@ private val logger = KotlinLogging.logger {}
 class PayloadService(private val payloadRepository: PayloadRepository) {
     fun decodeUplinkPayload(payloadRequest: PayloadUplinkRequest) {
         try {
-            val decoderOld = DecoderOld(payloadRequest.data)
-            decoderOld.decode()
+            val decoded = Decoder.decode(payloadRequest.data)
             val payload = Payload(
                 payloadRequest.deviceName,
                 payloadRequest.data,
                 payloadRequest.devEUI,
-                decoderOld.ltr,
-                decoderOld.rtl,
-                decoderOld.cpuTemp
+                decoded.ltr,
+                decoded.rtl,
+                decoded.cpuTemp
             )
             payloadRepository.save(payload)
         } catch (e: Exception) {
