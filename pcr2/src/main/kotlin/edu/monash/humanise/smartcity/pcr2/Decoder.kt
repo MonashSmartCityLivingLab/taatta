@@ -6,19 +6,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 private val logger = KotlinLogging.logger {}
 
-class Decoder {
-    val encoded: String
-    val ltr: Int
-    val rtl: Int
-    val cpuTemp: Double
-
-    private constructor(encoded: String, ltr: Int, rtl: Int, cpuTemp: Double) {
-        this.encoded = encoded
-        this.ltr = ltr
-        this.rtl = rtl
-        this.cpuTemp = cpuTemp
-    }
-
+class Decoder private constructor(val encoded: String, val ltr: Int, val rtl: Int, val cpuTemp: Double) {
     companion object {
         @OptIn(ExperimentalEncodingApi::class, ExperimentalUnsignedTypes::class)
         fun decode(encoded: String): Decoder {
@@ -31,7 +19,7 @@ class Decoder {
                 val ltr = (byteArray[1].toInt() shl 8) or (byteArray[2].toInt())
                 val rtl = (byteArray[4].toInt() shl 8) or (byteArray[5].toInt())
                 val cpuTempInt = (byteArray[7].toInt() shl 8) or (byteArray[8].toInt())
-                val cpuTemp = (cpuTempInt / 10).toDouble()
+                val cpuTemp = cpuTempInt.toDouble() / 10
                 logger.info { "LTR: $ltr, RTL: $rtl, CPU temp: $cpuTemp" }
                 return Decoder(encoded, ltr, rtl, cpuTemp)
             } else if (type == 0.toUByte() && byteArray[1] == 0x66.toUByte()) {
@@ -43,7 +31,7 @@ class Decoder {
                 val ltr = (byteArray[3].toInt() shl 8) or (byteArray[4].toInt())
                 val rtl = (byteArray[5].toInt() shl 8) or (byteArray[6].toInt())
                 val cpuTempInt = (byteArray[14].toInt() shl 8) or (byteArray[15].toInt())
-                val cpuTemp = (cpuTempInt / 10).toDouble()
+                val cpuTemp = cpuTempInt.toDouble() / 10
                 logger.info { "LTR: $ltr, RTL: $rtl, CPU temp: $cpuTemp" }
                 return Decoder(encoded, ltr, rtl, cpuTemp)
             } else {
