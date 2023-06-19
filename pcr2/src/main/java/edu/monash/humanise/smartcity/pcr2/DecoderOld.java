@@ -9,13 +9,13 @@ import java.util.Base64;
 
 @Slf4j
 @Getter
-public class Decoder {
+public class DecoderOld {
     private final String encoded;
-    private int ltr;
-    private int rtl;
-    private int cpuTemp;
+    int ltr;
+    int rtl;
+    int cpuTemp;
 
-    public Decoder(String encoded) {
+    public DecoderOld(String encoded) {
         this.encoded = encoded;
     }
 

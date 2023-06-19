@@ -1,45 +1,34 @@
-package edu.monash.humanise.smartcity.pcr2;
+package edu.monash.humanise.smartcity.pcr2
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.*
+import lombok.AllArgsConstructor
+import lombok.Builder
+import lombok.Data
+import lombok.NoArgsConstructor
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+const val SEQUENCE_NAME = "pcr2_id_sequence"
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
-public class Payload {
-
+class Payload(
+    val deviceName: String,
+    val data: String,
+    val devEUI: String,
+    val ltr: Int,
+    val rtl: Int,
+    val cpuTemp: Int
+) {
     @Id
-    @SequenceGenerator(
-            name = "pcr2_id_sequence",
-            sequenceName = "pcr2_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "pcr2_id_sequence"
-    )
-    private Integer id;
-    private String deviceName;
-    private String data;
-    private String devEUI;
-    private int ltr;
-    private int rtl;
-    private int cpuTemp;
-
-
+    @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
+    var id: Long = 0
     @Column(updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    lateinit var createdAt: OffsetDateTime
 
     @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
+    lateinit var updatedAt: OffsetDateTime
 }

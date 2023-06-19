@@ -1,11 +1,13 @@
-package edu.monash.humanise.smartcity.pcr2;
+package edu.monash.humanise.smartcity.pcr2
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
 
 @SpringBootApplication
-public class PCR2Application {
-    public static void main(String[] argv) {
-        SpringApplication.run(PCR2Application.class, argv);
-    }
+class PCR2Application
+
+fun main(args: Array<String>) {
+    runApplication<PCR2Application>(*args)
 }
+
