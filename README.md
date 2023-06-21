@@ -1,27 +1,27 @@
 # Taatta
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/MonashSmartCityLivingLab/taatta/ci.yml?style=flat-square)](https://github.com/MonashSmartCityLivingLab/taatta/actions/workflows/ci.yml)
-[![GitHub](https://img.shields.io/github/license/MonashSmartCityLivingLab/taatta?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/MonashSmartCityLivingLab/taatta?style=flat-square)](LICENSE)
 
 A data logger for IoT devices and smart sensors that publish their data using MQTT.
 
 ## Architecture
 
-The system adopts a microservices architecture, consisting of a collector module and a writer module for each sensor
+The system adopts a microservices architecture, consisting of a collector module and a logger module for each sensor
 type. This enables you to run multiple instances of the modules as well as easily add and expand the modules. Each
 module is a Spring Boot application, written in Java or Kotlin. A collector module subscribes MQTT topics from the
-broker and then sends it to the sensor module which then writes it to the database (currently PostgreSQL).
+broker and then sends it to the logger module which then writes it to the database (currently PostgreSQL).
 
 ![Taatta architecture](docs/images/architecture.png)
 
-## Supported sensors
+## Supported sensors and devices
 
 - LoRaWAN sensors (via [ChirpStack](https://chirpstack.io/))
     - [PCR2](pcr2/README.md) people counter
     - [TBS220](tbs220/README.md) parking sensor
     - [DF702](df702/README.md) bin sensor
     - [RHF1S001](rhf1s001/README.md) temperature and humidity sensor
-- ESPHome-based appliances
+- ESPHome-based devices
     - [Athom Smart Plug V2](athom-smart-plug/README.md)
 
 ## Development
@@ -35,7 +35,7 @@ broker and then sends it to the sensor module which then writes it to the databa
 ### Building
 
 1. Clone the repository
-2. Run `./mvnw -e package spring-boot:repackage` (macOS/Linux) or `.\mvnw.cmd -e package spring-boot:repackage` 
+2. Run `./mvnw -e package spring-boot:repackage` (macOS/Linux) or `.\mvnw.cmd -e package spring-boot:repackage`
    (Windows) to build
 
 The output .jar files are located in `<module_name>/target/<module_name>-<version>.jar`.
@@ -44,17 +44,19 @@ The output .jar files are located in `<module_name>/target/<module_name>-<versio
 
 ### Docker
 
-This is the easiest way to deploy Taatta as it also deploys and sets up PostgreSQL, Mosquitto and ChirpStack for you.
+This is the fastest and easiest way to deploy Taatta as it also deploys and sets up PostgreSQL, Mosquitto and ChirpStack
+for you.
 
 You will need to have [Docker](https://docs.docker.com/get-docker/)
 and [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
-1. Copy the environment variable file `.env.examle` to `.env`
+1. Copy the environment variable file `.env.example` to `.env`
 2. review the `.env` file values
     - The hostnames and port numbers are already set up, but you should change the Postgres and Mosquitto passwords,
       especially for production instances
 3. Review the Mosquitto and ChirpStack configuration at `configuration` directory
-    - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections
+    - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections 
+      for Mosquitto 
 4. Deploy the containers:
 
 ```shell
@@ -141,6 +143,23 @@ To permanently stop service:
 ```shell
 sudo systemctl disable --now <service_name>.service
 ```
+
+## Logging across devices
+
+It is possible to log the data to multiple databases across different devices. You can do this by adding URLs to the
+`hostnames` field for each sensor in `sensorRouters.json`. We recommend running only one collector which subscribes to
+MQTT broker on the local side, and then run each sensor's logger module on each device. Here's an example setup for a
+logger on local network and on a cloud server:
+
+![Example logging to a cloud server](docs/images/local-remote.png)
+
+If you run the logger over the internet (e.g. in the cloud), we also recommend using a reverse proxy to minimise the
+number of open ports, and to allow easy HTTPS setup. A basic Nginx reverse proxy configuration is available
+in [`taatta.nginx`](taatta.nginx).
+
+One weakness to this approach is that the databases aren't synchronised, so the databases will slowly diverge from each
+other when the data can't be sent to the remote logger. You might want to use some sort of DB replication setup instead,
+but that's beyond the scope of this project.
 
 ## Acknowledgements
 
