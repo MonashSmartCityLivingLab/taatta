@@ -32,9 +32,8 @@ jobs:
             **/target/dokkaJavadoc
             **/README.md
             configuration
-            Dockerfile
-            docker-compose.yml
-            .dockerignore
+            LICENSE
             .env.example
             **/*.service
+            taatta.nginx
 
