@@ -46,7 +46,7 @@ open class Payload(
     lateinit var createdAt: OffsetDateTime
 
     /**
-     * Last modified date date for datapoint.
+     * Last modified date for datapoint.
      */
     @UpdateTimestamp
     @Column(nullable = false)
