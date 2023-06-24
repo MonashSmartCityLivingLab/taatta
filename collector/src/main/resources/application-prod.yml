@@ -1,19 +1,13 @@
 spring:
   application:
     name: collector
-  zipkin:
-    base-url: http://localhost:9411/
-
 server:
   port: 3030
-
 logging:
   config: classpath:logback-prod.xml
-
 smart-city:
   broker-url: tcp://${TAATTA_MOSQUITTO_HOST}:${TAATTA_MOSQUITTO_PORT}
   # authentication is optional -- default to null if not present
   # https://stackoverflow.com/questions/23348061/how-to-define-value-as-optional
   broker-username: ${TAATTA_MOSQUITTO_USER:#{null}}
   broker-password: ${TAATTA_MOSQUITTO_PASSWORD:#{null}}
-
