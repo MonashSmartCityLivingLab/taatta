@@ -19,8 +19,10 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 decoded.cpuTemp
             )
             payloadRepository.save(payload)
-        } catch (e: Exception) {
-            logger.error(e) { "Got exception in service." }
+        } catch (e: DecoderException) {
+            logger.error(e) { "Cannot decode payload $payloadRequest" }
+        } catch (e: NotImplementedError) {
+            logger.error(e) { "Payload type LPP not supported yet. Encoded data: ${payloadRequest.data}" }
         }
     }
 }
