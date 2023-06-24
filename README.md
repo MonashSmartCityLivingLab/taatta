@@ -57,7 +57,8 @@ and [Docker Compose](https://docs.docker.com/compose/install/) installed.
 3. Review the Mosquitto and ChirpStack configuration at `configuration` directory
     - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections 
       for Mosquitto 
-4. Deploy the containers:
+4. Review `docker-compose.yml` and make any changes required for your setup
+5. Deploy the containers:
 
 ```shell
 docker compose up -d

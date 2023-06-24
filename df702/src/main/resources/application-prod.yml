@@ -24,3 +24,9 @@ spring:
 
 logging:
   config: classpath:logback-prod.xml
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
