@@ -11,7 +11,10 @@ services:
       - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
       - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
-      - mosquitto
+      mosquitto:
+        condition: service_started
+      athom-smart-plug:
+        condition: service_healthy
     restart: unless-stopped
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
@@ -62,6 +65,11 @@ services:
       postgresql:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 5
   # Chirpstack containers
   # Based on the official template docker-compose.yml at
   # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
