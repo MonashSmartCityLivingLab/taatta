@@ -71,7 +71,6 @@ class CollectorApplication {
                     *topics
             )
         }
-//        adapter.setCompletionTimeout(5000)
         adapter.setConverter(DefaultPahoMessageConverter())
         adapter.setQos(1)
         adapter.outputChannel = mqttInputChannel()
