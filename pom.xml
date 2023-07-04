@@ -6,8 +6,9 @@
 
     <groupId>edu.monash.humanise.smartcity</groupId>
     <artifactId>smart-city</artifactId>
-    <name>smart-city</name>
-    <url>https://www.monash.edu</url>
+    <name>Taatta</name>
+    <description>A data logger for IoT devices and smart sensors that publish their data using MQTT.</description>
+    <url>https://github.com/MonashSmartCityLivingLab/taatta</url>
     <packaging>pom</packaging>
     <version>1.1-SNAPSHOT</version>
     <modules>
