@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
-            <version>1.8.20-RC</version>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.oshai</groupId>
