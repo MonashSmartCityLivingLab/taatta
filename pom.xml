@@ -27,8 +27,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <spring.boot.maven.plugin.version>3.1.0</spring.boot.maven.plugin.version>
-        <spring.boot.dependecies.version>3.1.1</spring.boot.dependecies.version>
+        <springBoot.dependencies.version>3.1.1</springBoot.dependencies.version>
         <org.projectlombok.version>1.18.26</org.projectlombok.version>
         <kotlin.version>1.8.20</kotlin.version>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
@@ -39,7 +38,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.dependecies.version}</version>
+                <version>${springBoot.dependencies.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -56,12 +55,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.1.0</version>
+            <version>${springBoot.dependencies.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.0</version>
+            <version>${springBoot.dependencies.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -92,7 +91,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.maven.plugin.version}</version>
+                    <version>${springBoot.dependencies.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.projectlombok</groupId>
