@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.collector
 
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.WebApplicationType
