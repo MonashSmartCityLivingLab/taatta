@@ -22,6 +22,7 @@
         <module>pcr2</module>
         <module>ems701</module>
         <module>athom-smart-plug</module>
+        <module>athom-presence-sensor</module>
     </modules>
 
     <properties>
