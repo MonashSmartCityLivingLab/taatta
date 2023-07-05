@@ -7,10 +7,10 @@ import jakarta.persistence.Entity
  */
 @Entity
 class VoltagePayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Voltage, in volts.
-         */
-        val voltage: Double?
+    deviceName: String,
+    data: String,
+    /**
+     * Voltage, in volts.
+     */
+    val voltage: Double?
 ) : Payload(0, deviceName, data)

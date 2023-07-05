@@ -15,10 +15,10 @@ import org.springframework.web.client.RestTemplate
  */
 @Serializable
 open class SensorRouter(
-        /** Sensor name. */
-        val name: String,
-        /** A list of logger module hostnames. */
-        private val hostnames: Array<String>
+    /** Sensor name. */
+    val name: String,
+    /** A list of logger module hostnames. */
+    private val hostnames: Array<String>
 ) {
     /**
      * Sends received data to all logger modules.

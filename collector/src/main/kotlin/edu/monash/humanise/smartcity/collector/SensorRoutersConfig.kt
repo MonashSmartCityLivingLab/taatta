@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SensorRoutersConfig(
-        val loraModules: List<SensorRouter>,
-        val espHomeModules: List<SensorRouter>
+    val loraModules: List<SensorRouter>,
+    val espHomeModules: List<SensorRouter>
 )

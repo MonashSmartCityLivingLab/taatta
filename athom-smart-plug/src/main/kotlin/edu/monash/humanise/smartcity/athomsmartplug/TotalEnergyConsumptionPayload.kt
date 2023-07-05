@@ -7,10 +7,10 @@ import jakarta.persistence.Entity
  */
 @Entity
 class TotalEnergyConsumptionPayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Total energy consumption, in kWh.
-         */
-        val totalEnergyConsumption: Double?
+    deviceName: String,
+    data: String,
+    /**
+     * Total energy consumption, in kWh.
+     */
+    val totalEnergyConsumption: Double?
 ) : Payload(0, deviceName, data)

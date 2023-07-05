@@ -56,7 +56,8 @@ class Router {
                 val topicComponents = topic.split("/")
                 val deviceName = topicComponents[0]
                 // try matching esphome sensors
-                val matchingEspHomeSensor = sensorRoutersConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
+                val matchingEspHomeSensor =
+                    sensorRoutersConfig.espHomeModules.firstOrNull { sensor -> topic.startsWith(sensor.name) }
                 if (matchingEspHomeSensor != null) {
                     try {
                         val payloadSensor = when (topicComponents[1]) {
@@ -82,7 +83,9 @@ class Router {
                     val jsonObject: LoRaPayload = jsonCoder.decodeFromString(payload)
                     if (jsonObject.data != null) {
                         val deviceProfile = jsonObject.deviceProfileName
-                        val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule -> deviceProfile.endsWith(sensorModule.name) }
+                        val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule ->
+                            deviceProfile.endsWith(sensorModule.name)
+                        }
                         if (sensor != null) {
                             val results = sensor.sendData(jsonCoder.encodeToString(jsonObject))
                             results.forEach { result ->

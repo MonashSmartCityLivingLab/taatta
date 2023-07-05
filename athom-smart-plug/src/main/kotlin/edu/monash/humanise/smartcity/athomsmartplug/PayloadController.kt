@@ -15,8 +15,8 @@ private val logger = KotlinLogging.logger {}
 @RestController
 @RequestMapping("/api/payload")
 class PayloadController(
-        private val payloadService: PayloadService,
-        private val stats: Stats
+    private val payloadService: PayloadService,
+    private val stats: Stats
 ) {
 
     /**
