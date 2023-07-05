@@ -1,3 +1,7 @@
+POST http://localhost:4042/api/payload
+Content-Type: application/json
+
+
 {
   "applicationID": "2",
   "applicationName": "Water-Quality-Monitoring",

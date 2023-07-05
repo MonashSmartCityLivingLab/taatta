@@ -1,3 +1,6 @@
+POST http://localhost:4048/api/payload
+Content-Type: application/json
+
 {
   "applicationID": "2",
   "applicationName": "People-Count",
@@ -28,9 +31,12 @@
   "fCnt": 1,
   "fPort": 14,
   "data": "CgAAFgAAAQE9"
-},
+}
 
+###
 
+POST http://localhost:4048/api/payload
+Content-Type: application/json
 
 {
   "applicationID": "2",
