@@ -5,6 +5,7 @@ WORKDIR $HOME
 # cache dependencies
 ADD pom.xml $HOME
 
+ADD athom-presence-sensor/pom.xml $HOME/athom-presence-sensor/pom.xml
 ADD athom-smart-plug/pom.xml $HOME/athom-smart-plug/pom.xml
 ADD collector/pom.xml $HOME/collector/pom.xml
 ADD df702/pom.xml $HOME/df702/pom.xml
@@ -26,6 +27,10 @@ ENV TAATTA_DOCKER=1
 ARG VERSION="1.1-SNAPSHOT"
 WORKDIR /usr/local/taatta
 RUN mkdir -p /var/log/smart-city/
+
+FROM base AS athom-presence-sensor
+RUN ln -sf /dev/stdout /var/log/smart-city/athom-presence-sensor.log
+COPY --from=builder /taatta/athom-presence-sensor/target/athom-presence-sensor-$VERSION.jar athom-presence-sensor.jar
 
 FROM base AS athom-smart-plug
 RUN ln -sf /dev/stdout /var/log/smart-city/athom-smart-plug.log
