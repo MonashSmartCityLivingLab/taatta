@@ -1,6 +1,7 @@
 package edu.monash.humanise.smartcity.pcr2
 
 import io.github.oshai.KotlinLogging
+import java.lang.IndexOutOfBoundsException
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -38,8 +39,15 @@ class Decoder private constructor(val encoded: String, val ltr: Int, val rtl: In
                 } else {
                     throw DecoderException("Unknown payload type: $type")
                 }
-            } catch (e: IllegalArgumentException) {
-                throw DecoderException("Cannot decode payload with data $encoded", e)
+            } catch (e: Exception) {
+                when (e) {
+                    is IllegalArgumentException, is IndexOutOfBoundsException -> {
+                        throw DecoderException("Cannot decode payload with data $encoded", e)
+                    }
+                    else -> {
+                        throw e
+                    }
+                }
             }
         }
     }
