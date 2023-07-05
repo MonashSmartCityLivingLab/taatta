@@ -2,7 +2,7 @@ package edu.monash.humanise.smartcity.collector
 
 import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
 import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
