@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 
 private val logger = KotlinLogging.logger {}
