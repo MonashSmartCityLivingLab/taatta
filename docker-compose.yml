@@ -11,15 +11,25 @@ services:
       - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
       - TAATTA_SENSOR_ROUTERS=/taatta/collector/sensorRouters.json
     depends_on:
-      - mosquitto
+      mosquitto:
+        condition: service_started
+    # Uncomment the dependencies below depending on the services you're running, but don't uncomment those you don't use
+    # since docker will automatically run those services.
+    # This prevents flooding the collector logs with 'connection refused' errors while the logger module isn't ready yet.
+#      rhf1s001:
+#        condition: service_healthy
+#      pcr2:
+#        condition: service_healthy
+#      athom-smart-plug:
+#        condition: service_healthy
     restart: unless-stopped
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
-  rhs1s001:
+  rhf1s001:
     build:
       context: .
-      target: rhs1s001
-    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhs1s001.jar
+      target: rhf1s001
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
     ports:
       - 4040:4040
     environment:
@@ -30,6 +40,11 @@ services:
       postgresql:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 5
   pcr2:
     build:
       context: .
@@ -46,6 +61,11 @@ services:
       postgresql:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 5
   athom-smart-plug:
     build:
       context: .
@@ -62,6 +82,11 @@ services:
       postgresql:
         condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 5
   # Chirpstack containers
   # Based on the official template docker-compose.yml at
   # https://github.com/chirpstack/chirpstack-docker/blob/v3/docker-compose.yml
@@ -101,8 +126,8 @@ services:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     # Uncomment to expose ports
-    ports:
-      - 5432:5432
+#    ports:
+#      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -127,7 +152,6 @@ services:
     restart: unless-stopped
     entrypoint: sh ./entrypoint.sh
     command: ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
-
 volumes:
   postgresqldata:
   redisdata:
