@@ -7,10 +7,10 @@ import jakarta.persistence.Entity
  */
 @Entity
 class PowerPayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Power, in watts.
-         */
-        val power: Double?
+    deviceName: String,
+    data: String,
+    /**
+     * Power, in watts.
+     */
+    val power: Double?
 ) : Payload(0, deviceName, data)

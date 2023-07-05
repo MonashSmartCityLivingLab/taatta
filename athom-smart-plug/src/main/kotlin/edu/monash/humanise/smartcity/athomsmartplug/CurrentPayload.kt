@@ -7,10 +7,10 @@ import jakarta.persistence.Entity
  */
 @Entity
 class CurrentPayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Current, in amps.
-         */
-        val current: Double?
+    deviceName: String,
+    data: String,
+    /**
+     * Current, in amps.
+     */
+    val current: Double?
 ) : Payload(0, deviceName, data)

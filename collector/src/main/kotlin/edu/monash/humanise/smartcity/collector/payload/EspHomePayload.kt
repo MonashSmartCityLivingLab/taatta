@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class EspHomePayload(
-        val deviceName: String,
-        val sensor: String,
-        val data: String
+    val deviceName: String,
+    val sensor: String,
+    val data: String
 )

@@ -47,10 +47,10 @@ class CollectorApplication {
         val clientId = "$appName-$randId"
 
         val topics = arrayOf(
-                "application/+/device/+/event/+",
-                "application/+/device/+/command/+",
-                "+/sensor/+/state", // for smart plug
-                "+/status" // sensor status
+            "application/+/device/+/event/+",
+            "application/+/device/+/command/+",
+            "+/sensor/+/state", // for smart plug
+            "+/status" // sensor status
         )
 
         logger.info { "Connecting to MQTT broker at $brokerUrl with client ID $clientId" }
@@ -60,15 +60,17 @@ class CollectorApplication {
             connectOptions.password = brokerPassword.toCharArray()
             val clientFactory = DefaultMqttPahoClientFactory()
             clientFactory.connectionOptions = connectOptions
-            MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                    clientId,
-                    clientFactory,
-                    *topics
+            MqttPahoMessageDrivenChannelAdapter(
+                brokerUrl,
+                clientId,
+                clientFactory,
+                *topics
             )
         } else {
-            MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                    clientId,
-                    *topics
+            MqttPahoMessageDrivenChannelAdapter(
+                brokerUrl,
+                clientId,
+                *topics
             )
         }
         adapter.setConverter(DefaultPahoMessageConverter())
@@ -89,6 +91,6 @@ class CollectorApplication {
 
 fun main(args: Array<String>) {
     SpringApplicationBuilder(CollectorApplication::class.java)
-            .web(WebApplicationType.NONE)
-            .run(*args)
+        .web(WebApplicationType.NONE)
+        .run(*args)
 }

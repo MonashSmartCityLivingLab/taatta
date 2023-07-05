@@ -7,10 +7,10 @@ import jakarta.persistence.Entity
  */
 @Entity
 class UptimePayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Uptime, in seconds.
-         */
-        val uptime: Long?
+    deviceName: String,
+    data: String,
+    /**
+     * Uptime, in seconds.
+     */
+    val uptime: Long?
 ) : Payload(0, deviceName, data)

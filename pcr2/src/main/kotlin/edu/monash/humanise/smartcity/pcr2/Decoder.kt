@@ -1,14 +1,28 @@
 package edu.monash.humanise.smartcity.pcr2
 
 import io.github.oshai.KotlinLogging
-import java.lang.IndexOutOfBoundsException
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Decoder for PCR2 payload.
+ */
 class Decoder private constructor(val encoded: String, val ltr: Int, val rtl: Int, val cpuTemp: Double) {
     companion object {
+        /**
+         * Decode PCR2 payload.
+         *
+         * Currently, only V3 payload of types ELSYS and extended payload are supported. See
+         * [the payload description](https://docs.parametric-analytics.com/pcr2/manuals/lora_payload_v3/) to learn more.
+         *
+         * @param encoded payload data encoded in base64
+         * @return an instance of [Decoder] containing decoded values
+         * @throws DecoderException if the data cannot be decoded
+         * @throws NotImplementedError if the data is of type LPP. The decoder for the payload type is yet to be
+         * implemented.
+         */
         @OptIn(ExperimentalEncodingApi::class, ExperimentalUnsignedTypes::class)
         fun decode(encoded: String): Decoder {
             try {
@@ -33,7 +47,7 @@ class Decoder private constructor(val encoded: String, val ltr: Int, val rtl: In
                     val ltr = (byteArray[3].toInt() shl 8) or (byteArray[4].toInt())
                     val rtl = (byteArray[5].toInt() shl 8) or (byteArray[6].toInt())
                     val cpuTempInt = (byteArray[14].toInt() shl 8) or (byteArray[15].toInt())
-                    val cpuTemp = cpuTempInt.toDouble() / 10
+                    val cpuTemp = cpuTempInt.toDouble() / 10.0
                     logger.info { "LTR: $ltr, RTL: $rtl, CPU temp: $cpuTemp" }
                     return Decoder(encoded, ltr, rtl, cpuTemp)
                 } else {
@@ -44,6 +58,7 @@ class Decoder private constructor(val encoded: String, val ltr: Int, val rtl: In
                     is IllegalArgumentException, is IndexOutOfBoundsException -> {
                         throw DecoderException("Cannot decode payload with data $encoded", e)
                     }
+
                     else -> {
                         throw e
                     }
