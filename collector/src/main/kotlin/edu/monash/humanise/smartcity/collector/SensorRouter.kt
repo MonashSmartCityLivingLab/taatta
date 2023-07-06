@@ -57,14 +57,14 @@ open class SensorRouter(
         val results: MutableList<ResponseResult> = mutableListOf()
         while (!requestQueue.isEmpty()) {
             val (url, request) = requestQueue.removeFirst()
-            results.addAll(hostnames.map { hostname ->
+            results.add(
                 try {
                     Result.success(restTemplate.postForEntity(url, request, String::class.java))
                 } catch (e: RestClientException) {
                     failedAgainList.add(url to request)
                     Result.failure(e)
                 }
-            })
+            )
         }
         requestQueue.addAll(failedAgainList)
         return results
