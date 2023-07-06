@@ -1,14 +1,12 @@
 package edu.monash.humanise.smartcity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -16,7 +14,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 public class Payload {
-
     @Id
     @SequenceGenerator(
             name = "df702_id_sequence",
@@ -27,20 +24,24 @@ public class Payload {
             generator = "df702_id_sequence"
     )
     private Integer id;
+    @Column(nullable = false)
     private String deviceName;
+    @Column(nullable = false)
     private String data;
+    @Column(nullable = false)
     private String devEUI;
+    @Column(nullable = false)
     private boolean battery;
+    @Column(nullable = false)
     private boolean isFull;
+    @Column(nullable = false)
     private boolean fire;
+    @Column(nullable = false)
     private int level;
+    @Column(nullable = false)
     private int temperature;
 
-    @Column(updatable = false)
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private OffsetDateTime timestamp;
 
 }
