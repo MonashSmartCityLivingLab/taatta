@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -38,7 +39,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
     }
 
     fun route(message: Message<*>) {
-        val timestamp = message.headers.timestamp ?: OffsetDateTime.now(ZoneOffset.UTC).toInstant().toEpochMilli()
+        val timestamp = message.headers.timestamp ?: Instant.now().toEpochMilli()
         val payload = message.payload.toString()
         val topic: String = message.headers["mqtt_receivedTopic"] as String
         logger.debug { "New message. Topic: $topic, payload: $payload" }
