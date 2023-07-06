@@ -56,7 +56,11 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                         else -> topicComponents[2]
                     }
                     val jsonObject = EspHomePayload(timestamp, deviceName, payloadSensor, payload)
-                    matchingEspHomeSensor.addToQueue(jsonCoder.encodeToString(jsonObject))
+                    val results = matchingEspHomeSensor.sendData(jsonCoder.encodeToString(jsonObject))
+                    results.forEach { result ->
+                        result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
+                        result.onFailure { error -> logger.debug { "Cannot send data for sensor ${matchingEspHomeSensor.name}: $error" } }
+                    }
                 } catch (e: SerializationException) {
                     logger.error(e) { "Cannot parse JSON for topic $topic" }
                 }
@@ -75,7 +79,11 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                     }
                     if (sensor != null) {
                         val jsonObject = LoRaPayload(timestamp, event.deviceName, event.devEUI, event.data)
-                        sensor.addToQueue(jsonCoder.encodeToString(jsonObject))
+                        val results = sensor.sendData(jsonCoder.encodeToString(jsonObject))
+                        results.forEach { result ->
+                            result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
+                            result.onFailure { error -> logger.debug { "Cannot send data for sensor ${sensor.name}: $error" } }
+                        }
                     } else {
                         logger.warn { "This device type $deviceProfile not implemented yet, skipping." }
                     }
@@ -88,40 +96,40 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
         }
     }
 
-//    @Scheduled(cron = "0 * * * * *")
-    @Scheduled(fixedDelay = 1000)
-    fun sendData() {
+    @Scheduled(cron = "0 * * * * *")
+    fun retrySendingData() {
         val now = OffsetDateTime.now(ZoneOffset.UTC)
+        logger.info { "Retrying any failed requests from $previousTime to $now" }
         var successCount = 0
         var failCount = 0
         sensorRoutersConfig.espHomeModules.forEach { router ->
-            val results = router.sendData()
+            val results = router.retryFailedRequests()
             results.forEach { result ->
                 result.onSuccess { response ->
                     logger.debug { "Response from ${router.name} is: $response" }
                     successCount += 1
                 }
                 result.onFailure { error ->
-                    logger.error(error) { "Cannot send data for sensor ${router.name}" }
+                    logger.error(error) { "Cannot send data for sensor ${router.name} after a retry" }
                     failCount += 1
                 }
             }
         }
         sensorRoutersConfig.loraModules.forEach { router ->
-            val results = router.sendData()
+            val results = router.retryFailedRequests()
             results.forEach { result ->
                 result.onSuccess { response ->
                     logger.debug { "Response from ${router.name} is: $response" }
                     successCount += 1
                 }
                 result.onFailure { error ->
-                    logger.error(error) { "Cannot send data for sensor ${router.name}" }
+                    logger.error(error) { "Cannot send data for sensor ${router.name} after a retry" }
                     failCount += 1
                 }
             }
         }
 
-        logger.info { "Number or requests from $previousTime to $now: $successCount succeeded, $failCount failed"}
+        logger.info { "Number of retried requests: $successCount succeeded, $failCount failed"}
         previousTime = now
     }
 }

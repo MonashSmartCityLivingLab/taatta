@@ -27,40 +27,54 @@ open class SensorRouter(
     @Transient
     private val restTemplate = RestTemplate()
     @Transient
-    private val headers = HttpHeaders()
+    private val headers = initHttpHeaders()
     @Transient
     private val requestQueue = ArrayDeque<RequestPair>()
-
-    open fun addToQueue(body: String) {
-        headers.contentType = MediaType.APPLICATION_JSON
-        hostnames.forEach { hostname ->
-            val url = "$hostname/api/payload"
-            val request = HttpEntity(body, headers)
-            requestQueue.add(url to request)
-        }
-    }
 
     /**
      * Sends received data to all logger modules.
      *
+     * @param body payload body as a string
      * @return a list [Result] instance for each logger module, with [ResponseEntity] as success value and
      * [RestClientException] as failure value
      */
-    open fun sendData(): List<ResponseResult> {
-        val results: MutableList<ResponseResult> = mutableListOf()
-        val failedRequests = ArrayDeque<RequestPair>()
-        while (!requestQueue.isEmpty()) {
-            val (url, request) = requestQueue.removeFirst()
-            val result: ResponseResult = try {
+    open fun sendData(body: String): List<ResponseResult> {
+        // Send data to each host
+        return hostnames.map { hostname ->
+            val url = "$hostname/api/payload"
+            val request = HttpEntity(body, headers)
+            try {
                 Result.success(restTemplate.postForEntity(url, request, String::class.java))
             } catch (e: RestClientException) {
-                // if there's failure, re-add request to queue
-                failedRequests.add(url to request)
+                requestQueue.add(url to request)
                 Result.failure(e)
             }
-            results.add(result)
         }
-        requestQueue.addAll(failedRequests)
+    }
+
+    open fun retryFailedRequests(): List<ResponseResult>  {
+        val failedAgainList: MutableList<RequestPair> = mutableListOf()
+        val results: MutableList<ResponseResult> = mutableListOf()
+        while (!requestQueue.isEmpty()) {
+            val (url, request) = requestQueue.removeFirst()
+            results.addAll(hostnames.map { hostname ->
+                try {
+                    Result.success(restTemplate.postForEntity(url, request, String::class.java))
+                } catch (e: RestClientException) {
+                    failedAgainList.add(url to request)
+                    Result.failure(e)
+                }
+            })
+        }
+        requestQueue.addAll(failedAgainList)
         return results
+    }
+
+    companion object {
+        private fun initHttpHeaders(): HttpHeaders {
+            val httpHeaders = HttpHeaders()
+            httpHeaders.contentType = MediaType.APPLICATION_JSON
+            return httpHeaders
+        }
     }
 }
