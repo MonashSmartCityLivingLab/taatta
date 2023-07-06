@@ -14,6 +14,7 @@ public class Decoder {
 
     private double temperature;
     private double tds;
+
     public Decoder(String encoded) {
         this.encoded = encoded;
     }
@@ -27,9 +28,9 @@ public class Decoder {
         log.info("In the decoder class with encoded value {}", this.encoded);
         log.info("decoded value {}", decoded);
         // Channel 1 is for temperature sensor.
-        if((decoded[0] & 0xFF) == 0x1) {
+        if ((decoded[0] & 0xFF) == 0x1) {
             // temperature code is 0x67 provided by Cayenne LPP (Low Power Payload)
-            if((decoded[1] & 0xFF) == 0x67) {
+            if ((decoded[1] & 0xFF) == 0x67) {
                 tmp = decoded[3] & 0xFF;
                 tmp = (tmp << 8);
                 tmp = tmp | (decoded[2] & 0xFF);
@@ -46,9 +47,9 @@ public class Decoder {
         }
 
         // Channel 2 is for temperature sensor.
-        if((decoded[4] & 0xFF) == 0x2) {
+        if ((decoded[4] & 0xFF) == 0x2) {
             // temperature code is 0x67 provided by Cayenne LPP (Low Power Payload)
-            if((decoded[5] & 0xFF) == 0x68) {
+            if ((decoded[5] & 0xFF) == 0x68) {
                 // using two's compliment than divided by 16
                 tmp = (decoded[6] & 0xFF);
                 tmp = (tmp << 8);

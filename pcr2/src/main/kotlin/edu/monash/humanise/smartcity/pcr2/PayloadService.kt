@@ -8,7 +8,8 @@ import java.time.ZoneOffset
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
     fun decodeUplinkPayload(payloadRequest: PayloadUplinkRequest) {
-        val timestamp = OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds), ZoneOffset.UTC)
+        val timestamp =
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds), ZoneOffset.UTC)
         val decoded = Decoder.decode(payloadRequest.data)
         val payload = Payload(
             payloadRequest.deviceName,

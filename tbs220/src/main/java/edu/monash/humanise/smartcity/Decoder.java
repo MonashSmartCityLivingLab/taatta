@@ -1,7 +1,6 @@
 package edu.monash.humanise.smartcity;
 
 
-import java.text.DecimalFormat;
 import java.util.Base64;
 
 public class Decoder {
@@ -22,7 +21,7 @@ public class Decoder {
         decoded = Base64.getDecoder().decode(this.encoded);
 
         int type = (decoded[0] & 0xFF);
-        if(type != 0xab) {
+        if (type != 0xab) {
             throw new Exception("Frame type " + type + " not required to save yet.");
         }
 

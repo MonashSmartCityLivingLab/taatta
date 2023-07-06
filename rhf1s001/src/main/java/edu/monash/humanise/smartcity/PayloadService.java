@@ -11,6 +11,7 @@ import java.time.ZoneOffset;
 @AllArgsConstructor
 public class PayloadService {
     private final PayloadRepository payloadRepository;
+
     public void decodeUplinkPayload(PayloadUplinkRequest payloadRequest) {
         var timestamp = OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds()), ZoneOffset.UTC);
         Decoder decoder = new Decoder(payloadRequest.data());

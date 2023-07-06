@@ -18,7 +18,8 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
      * Decode the payload and save it as an appropriate entity in [Payload].
      */
     fun decodeUplinkPayload(payloadRequest: PayloadUplinkRequest) {
-        val timestamp = OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds), ZoneOffset.UTC)
+        val timestamp =
+            OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds), ZoneOffset.UTC)
         when (payloadRequest.sensor) {
             "athom_smart_plug_v2_voltage" -> {
                 val voltage = try {
@@ -48,19 +49,22 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
 
             "athom_smart_plug_v2_energy" -> {
                 val energy = payloadRequest.data.toDoubleOrNull()
-                val payload = EnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
+                val payload =
+                    EnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_total_energy" -> {
                 val energy = payloadRequest.data.toDoubleOrNull()
-                val payload = TotalEnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
+                val payload =
+                    TotalEnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 
             "athom_smart_plug_v2_total_daily_energy" -> {
                 val energy = payloadRequest.data.toDoubleOrNull()
-                val payload = DailyEnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
+                val payload =
+                    DailyEnergyConsumptionPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, energy)
                 payloadRepository.save(payload)
             }
 

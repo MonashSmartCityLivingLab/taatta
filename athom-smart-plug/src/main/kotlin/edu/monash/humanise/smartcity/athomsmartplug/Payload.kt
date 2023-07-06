@@ -1,8 +1,6 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
 import jakarta.persistence.*
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 
 /**
@@ -31,8 +29,7 @@ open class Payload(
      */
     @Column(nullable = false)
     val data: String
-)
-{
+) {
     /**
      * A unique number of each sensor datapoint, shared across all sensor entities. This is just a sequence that
      * counts up and does not have any other semantic meaning.

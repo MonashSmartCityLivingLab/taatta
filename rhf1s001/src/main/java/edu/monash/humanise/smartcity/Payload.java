@@ -1,14 +1,11 @@
 package edu.monash.humanise.smartcity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
