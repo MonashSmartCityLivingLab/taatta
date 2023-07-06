@@ -20,7 +20,7 @@ import java.util.*
 private val logger = KotlinLogging.logger {}
 
 @SpringBootApplication
-class CollectorApplication {
+class CollectorApplication(private val router: Router) {
     @Value("\${smart-city.broker-url}")
     private val brokerUrl: String? = null
 
@@ -83,7 +83,7 @@ class CollectorApplication {
     @ServiceActivator(inputChannel = "mqttInputChannel")
     fun handler(): MessageHandler {
         return MessageHandler { message ->
-            Router.route(message)
+            router.route(message)
         }
     }
 }
