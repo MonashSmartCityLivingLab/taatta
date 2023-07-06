@@ -2,33 +2,8 @@ POST http://localhost:4044/api/payload
 Content-Type: application/json
 
 {
-  "applicationID":"4",
-  "applicationName":"Smart-City",
   "deviceName":"Recycle-Bin-DF702",
-  "deviceProfileName":"DeviceOTTA-Class-A",
-  "deviceProfileID":"62df5b94-eeb7-461a-8bec-5187db583533",
   "devEUI":"8cf957200001f1e2",
-  "rxInfo":[
-    {
-      "gatewayID":"dca632fffe36aa28",
-      "uplinkID":"a9d5f883-6432-4266-8a93-4fe69270d5c6",
-      "name":"RAK-AA29",
-      "time":"2022-10-05T02:17:48.749362Z",
-      "rssi":-43,
-      "loRaSNR":10.2,
-      "location":{
-        "latitude":-38.31097,
-        "longitude":146.42853,
-        "altitude":115
-      }
-    }
-  ],
-  "txInfo":{
-    "frequency":923400000,
-    "dr":2
-  },
-  "adr":true,
-  "fCnt":0,
-  "fPort":3,
+  "timestampMilliseconds": 1664936268749,
   "data":"gAABAREAWAAWAAAQAAAAAIE="
 }
