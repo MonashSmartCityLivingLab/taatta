@@ -24,6 +24,7 @@ open class Payload(
      */
     @Column(nullable = false)
     val deviceName: String,
+    @Column(nullable = false)
     val timestamp: OffsetDateTime,
     /**
      * Raw data of the MQTT payload, stored as a string.
