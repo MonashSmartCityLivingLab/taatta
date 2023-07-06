@@ -1,0 +1,27 @@
+server:
+  port: 4052
+spring:
+  application:
+    name: athom-presence-sensor
+  datasource:
+    username: ${TAATTA_POSTGRES_USER}
+    url: jdbc:postgresql://${TAATTA_POSTGRES_HOST}:${TAATTA_POSTGRES_PORT}/athom_presence_sensor
+    password: ${TAATTA_POSTGRES_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: 'true'
+        jdbc:
+          time_zone: 'UTC'
+    hibernate:
+      ddl-auto: update
+    show-sql: 'false'
+logging:
+  config: classpath:logback-prod.xml
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
