@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class PayloadUplinkRequest(
+    val timestampMilliseconds: Long,
     /**
      * Device name. This corresponds to the `esphome.name` attribute in the plug's yml file.
      */

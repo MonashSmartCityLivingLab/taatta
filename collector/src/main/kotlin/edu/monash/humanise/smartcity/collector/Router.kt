@@ -1,5 +1,6 @@
 package edu.monash.humanise.smartcity.collector
 
+import edu.monash.humanise.smartcity.collector.payload.ChirpStackEvent
 import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
 import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -8,6 +9,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.springframework.messaging.Message
 import java.io.File
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
@@ -48,6 +51,7 @@ class Router {
          * @param message A [Message] instance containing MQTT message
          */
         fun route(message: Message<*>) {
+            val timestamp = message.headers.timestamp ?: OffsetDateTime.now(ZoneOffset.UTC).toInstant().toEpochMilli()
             val payload = message.payload.toString()
             val topic: String = message.headers["mqtt_receivedTopic"] as String
             logger.debug { "New message. Topic: $topic, payload: $payload" }
@@ -64,7 +68,7 @@ class Router {
                             "status" -> "status"
                             else -> topicComponents[2]
                         }
-                        val jsonObject = EspHomePayload(deviceName, payloadSensor, payload)
+                        val jsonObject = EspHomePayload(timestamp, deviceName, payloadSensor, payload)
                         val results = matchingEspHomeSensor.sendData(jsonCoder.encodeToString(jsonObject))
                         results.forEach { result ->
                             result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
@@ -80,13 +84,14 @@ class Router {
             } else {
                 // handle lora sensors
                 try {
-                    val jsonObject: LoRaPayload = jsonCoder.decodeFromString(payload)
-                    if (jsonObject.data != null) {
-                        val deviceProfile = jsonObject.deviceProfileName
+                    val event: ChirpStackEvent = jsonCoder.decodeFromString(payload)
+                    if (event.data != null) {
+                        val deviceProfile = event.deviceProfileName
                         val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule ->
                             deviceProfile.endsWith(sensorModule.name)
                         }
                         if (sensor != null) {
+                            val jsonObject = LoRaPayload(timestamp, event.deviceName, event.devEUI, event.data)
                             val results = sensor.sendData(jsonCoder.encodeToString(jsonObject))
                             results.forEach { result ->
                                 result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
