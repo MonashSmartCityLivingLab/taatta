@@ -3,33 +3,8 @@ Content-Type: application/json
 
 
 {
-  "applicationID": "2",
-  "applicationName": "Water-Quality-Monitoring",
   "deviceName": "MKR-WAN-1310",
-  "deviceProfileName": "wqm101",
-  "deviceProfileID": "bd4d76e2-214c-4451-95ce-e3baf45f57c6",
   "devEUI": "a8610a35303f620a",
-  "rxInfo": [
-    {
-      "gatewayID": "dca632fffe36aa28",
-      "uplinkID": "b4792946-7956-4a2e-a767-a307a9ceaa8d",
-      "name": "RAK-AA29",
-      "time": "2022-10-18T08:03:53.746135Z",
-      "rssi": -77,
-      "loRaSNR": 10,
-      "location": {
-        "latitude": -38.31086,
-        "longitude": 146.4281,
-        "altitude": 172
-      }
-    }
-  ],
-  "txInfo": {
-    "frequency": 923200000,
-    "dr": 2
-  },
-  "adr": false,
-  "fCnt": 47,
-  "fPort": 2,
+  "timestampMilliseconds": 1666080233746,
   "data": "VGVtcDoyNS44MSw="
 }
