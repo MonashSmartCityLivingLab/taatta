@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 
 typealias ResponseResult = Result<ResponseEntity<String>>
+private typealias RequestPair = Pair<String, HttpEntity<String>>
 
 /**
  * Class containing information about a sensor router and method for sending data to logger modules.
@@ -28,7 +29,7 @@ open class SensorRouter(
     @Transient
     private val headers = HttpHeaders()
     @Transient
-    private val requestQueue = ArrayDeque<Pair<String, HttpEntity<String>>>()
+    private val requestQueue = ArrayDeque<RequestPair>()
 
     open fun addToQueue(body: String) {
         headers.contentType = MediaType.APPLICATION_JSON
@@ -47,17 +48,19 @@ open class SensorRouter(
      */
     open fun sendData(): List<ResponseResult> {
         val results: MutableList<ResponseResult> = mutableListOf()
+        val failedRequests = ArrayDeque<RequestPair>()
         while (!requestQueue.isEmpty()) {
             val (url, request) = requestQueue.removeFirst()
             val result: ResponseResult = try {
                 Result.success(restTemplate.postForEntity(url, request, String::class.java))
             } catch (e: RestClientException) {
                 // if there's failure, re-add request to queue
-                requestQueue.add(url to request)
+                failedRequests.add(url to request)
                 Result.failure(e)
             }
             results.add(result)
         }
+        requestQueue.addAll(failedRequests)
         return results
     }
 }
