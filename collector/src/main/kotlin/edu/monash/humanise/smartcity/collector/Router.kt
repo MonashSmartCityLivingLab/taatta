@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.collector
 
-import edu.monash.humanise.smartcity.collector.payload.ChirpStackEvent
+import edu.monash.humanise.smartcity.collector.payload.ChirpStackUplinkEvent
 import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
 import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -18,7 +18,7 @@ import java.time.ZoneOffset
 private val logger = KotlinLogging.logger {}
 
 /**
- * Routes the message to the appropriate logger modules.
+ * Component which routes the message to the appropriate logger modules.
  */
 @Component
 class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
@@ -38,6 +38,11 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
         this.sensorRoutersConfig = configLoader.loadConfig()
     }
 
+    /**
+     * Routes a message to the appropriate logger modules.
+     *
+     * @param message A [Message] instance containing MQTT message
+     */
     fun route(message: Message<*>) {
         val timestamp = message.headers.timestamp ?: Instant.now().toEpochMilli()
         val payload = message.payload.toString()
@@ -72,7 +77,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
         } else {
             // handle lora sensors
             try {
-                val event: ChirpStackEvent = jsonCoder.decodeFromString(payload)
+                val event: ChirpStackUplinkEvent = jsonCoder.decodeFromString(payload)
                 if (event.data != null) {
                     val deviceProfile = event.deviceProfileName
                     val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule ->
@@ -97,6 +102,9 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
         }
     }
 
+    /**
+     * Retry any failed requests every minute.
+     */
     @Scheduled(cron = "0 * * * * *")
     fun retrySendingData() {
         val now = OffsetDateTime.now(ZoneOffset.UTC)

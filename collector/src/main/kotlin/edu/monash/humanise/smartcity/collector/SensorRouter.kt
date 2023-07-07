@@ -24,15 +24,29 @@ open class SensorRouter(
     /** A list of logger module hostnames. */
     private val hostnames: Array<String>
 ) {
+    /**
+     * HTTP client for this router.
+     */
     @Transient
     private val restTemplate = RestTemplate()
+
+    /**
+     * HTTP headers for all requests.
+     */
     @Transient
     private val headers = initHttpHeaders()
+
+    /**
+     * A queue of all requests to be sent later.
+     */
     @Transient
     private val requestQueue = ArrayDeque<RequestPair>()
 
     /**
      * Sends received data to all logger modules.
+     *
+     * If any of the requests failed, it will be put to a queue. You can retry sending the failed requests by calling
+     * [retryFailedRequests].
      *
      * @param body payload body as a string
      * @return a list [Result] instance for each logger module, with [ResponseEntity] as success value and
@@ -52,6 +66,12 @@ open class SensorRouter(
         }
     }
 
+    /**
+     * Try to re-send any failed requests.
+     *
+     * If any requests still failed after calling this method, it will pushed back to a queue, so it can be sent at a
+     * later time.
+     */
     open fun retryFailedRequests(): List<ResponseResult>  {
         val failedAgainList: MutableList<RequestPair> = mutableListOf()
         val results: MutableList<ResponseResult> = mutableListOf()
@@ -71,6 +91,11 @@ open class SensorRouter(
     }
 
     companion object {
+        /**
+         * Initializer for the HTTP header.
+         *
+         * @return an instance of [HttpHeaders] with `contentType` set to `application/json`
+         */
         private fun initHttpHeaders(): HttpHeaders {
             val httpHeaders = HttpHeaders()
             httpHeaders.contentType = MediaType.APPLICATION_JSON
