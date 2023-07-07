@@ -76,8 +76,8 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
 
             "status" -> {
                 when (payloadRequest.data) {
-                    "online" -> logger.info { "${payloadRequest.deviceName} is online" }
-                    "offline" -> logger.info { "${payloadRequest.deviceName} is offline" }
+                    "online" -> logger.info { "${payloadRequest.deviceName} is online at $timestamp" }
+                    "offline" -> logger.info { "${payloadRequest.deviceName} is offline at $timestamp" }
                 }
             }
 
