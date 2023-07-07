@@ -14,8 +14,6 @@ private typealias RequestPair = Pair<String, HttpEntity<String>>
 
 /**
  * Class containing information about a sensor router and method for sending data to logger modules.
- *
- * This class is automatically instantiated as [Router] reads `sensorRouters.json` configuration file.
  */
 @Serializable
 open class SensorRouter(
