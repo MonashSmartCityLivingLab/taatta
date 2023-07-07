@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.collector.payload
+package edu.monash.humanise.smartcity.collector.chirpstack.events
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

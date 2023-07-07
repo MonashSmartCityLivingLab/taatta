@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.collector
 
-import edu.monash.humanise.smartcity.collector.payload.ChirpStackUplinkEvent
+import edu.monash.humanise.smartcity.collector.chirpstack.events.ChirpStackUplinkEvent
 import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
 import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -73,7 +73,6 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
             } else {
                 logger.warn { "This device type $deviceName not implemented yet, skipping." }
             }
-
         } else {
             // handle lora sensors
             try {
