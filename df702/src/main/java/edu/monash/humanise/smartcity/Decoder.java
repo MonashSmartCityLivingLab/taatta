@@ -10,9 +10,9 @@ public class Decoder {
     private int level;
     private boolean full;
     private boolean fire;
-//    private boolean tilt;
+    //    private boolean tilt;
     private boolean battery;
-//    private double angle;
+    //    private double angle;
     private int temperature;
 
     public Decoder(String encoded) {
@@ -31,20 +31,20 @@ public class Decoder {
         this.level = (fstData << 8) | sndData;
 
         fstData = (decoded[11] & 0xff);
-        if((fstData >> 4) > 0) {
+        if ((fstData >> 4) > 0) {
             this.full = true;
         } else {
             this.full = false;
         }
 
-        if((fstData & 0x0f) > 0) {
+        if ((fstData & 0x0f) > 0) {
             this.fire = true;
         } else {
             this.fire = false;
         }
 
         fstData = (decoded[12] & 0xff);
-        if((fstData & 0x0f) > 0) {
+        if ((fstData & 0x0f) > 0) {
             this.battery = true;
         } else {
             this.battery = false;

@@ -1,6 +1,7 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
 import jakarta.persistence.Entity
+import java.time.OffsetDateTime
 
 /**
  * Sensor datapoint entity for uptime readings.
@@ -8,9 +9,10 @@ import jakarta.persistence.Entity
 @Entity
 class UptimePayload(
     deviceName: String,
+    timestamp: OffsetDateTime,
     data: String,
     /**
      * Uptime, in seconds.
      */
     val uptime: Long?
-) : Payload(0, deviceName, data)
+) : Payload(deviceName, timestamp, data)

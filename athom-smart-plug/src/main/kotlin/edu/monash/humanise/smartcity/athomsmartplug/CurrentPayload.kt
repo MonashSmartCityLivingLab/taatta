@@ -1,6 +1,7 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
 import jakarta.persistence.Entity
+import java.time.OffsetDateTime
 
 /**
  * Sensor datapoint entity for current readings.
@@ -8,9 +9,10 @@ import jakarta.persistence.Entity
 @Entity
 class CurrentPayload(
     deviceName: String,
+    timestamp: OffsetDateTime,
     data: String,
     /**
      * Current, in amps.
      */
     val current: Double?
-) : Payload(0, deviceName, data)
+) : Payload(deviceName, timestamp, data)

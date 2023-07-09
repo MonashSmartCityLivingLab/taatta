@@ -2,33 +2,8 @@ POST http://localhost:4040/api/payload
 Content-Type: application/json
 
 {
-  "applicationID":"4",
-  "applicationName":"Smart-City",
-  "deviceName":"RHF1S001-Temperature-Humidity",
-  "deviceProfileName":"DeviceABP-ClassA",
-  "deviceProfileID":"312e93c0-fb66-423e-99d5-de2407097762",
-  "devEUI":"8cf9574000001263",
-  "rxInfo":[
-    {
-      "gatewayID":"dca632fffe36aa28",
-      "uplinkID":"43087033-ece3-44b5-8496-5efcba0be7b5",
-      "name":"RAK-AA29",
-      "time":"2022-10-05T02:18:08.369998Z",
-      "rssi":-18,
-      "loRaSNR":14,
-      "location":{
-        "latitude":-38.31093,
-        "longitude":146.42858,
-        "altitude":116
-      }
-    }
-  ],
-  "txInfo":{
-    "frequency":923200000,
-    "dr":2
-  },
-  "adr":false,
-  "fCnt":2798,
-  "fPort":8,
-  "data":"yY7m2pBeH4U3"
+  "deviceName": "RHF1S001-Temperature-Humidity",
+  "devEUI": "8cf9574000001263",
+  "timestampMilliseconds": 1664936288369,
+  "data": "yY7m2pBeH4U3"
 }

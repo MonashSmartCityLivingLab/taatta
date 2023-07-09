@@ -1,8 +1,6 @@
 package edu.monash.humanise.smartcity.pcr2
 
 import jakarta.persistence.*
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 
 const val SEQUENCE_NAME = "pcr2_id_sequence"
@@ -23,6 +21,8 @@ class Payload(
     val data: String,
     @Column(nullable = false)
     val devEUI: String,
+    @Column(nullable = false)
+    val timestamp: OffsetDateTime,
     /**
      * Left-to-right counter. Allowed values: 0 to 65535
      */
@@ -47,18 +47,4 @@ class Payload(
     @SequenceGenerator(name = SEQUENCE_NAME, sequenceName = SEQUENCE_NAME)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
     var id: Long = 0
-
-    /**
-     * Creation date for datapoint.
-     */
-    @Column(nullable = false, updatable = false)
-    @CreationTimestamp
-    lateinit var createdAt: OffsetDateTime
-
-    /**
-     * Last modified date for datapoint.
-     */
-    @UpdateTimestamp
-    @Column(nullable = false)
-    lateinit var updatedAt: OffsetDateTime
 }

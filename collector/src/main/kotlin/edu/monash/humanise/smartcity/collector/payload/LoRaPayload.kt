@@ -4,9 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoRaPayload(
+    val timestampMilliseconds: Long,
     val deviceName: String,
-    val deviceProfileName: String,
-    val deviceProfileID: String,
     val devEUI: String,
-    val data: String? = null
+    val data: String
 )

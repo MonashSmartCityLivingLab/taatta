@@ -1,4 +1,4 @@
 package edu.monash.humanise.smartcity;
 
-public record PayloadUplinkRequest(String deviceName, String devEUI, String data) {
+public record PayloadUplinkRequest(long timestampMilliseconds, String deviceName, String devEUI, String data) {
 }
