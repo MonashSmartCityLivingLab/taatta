@@ -22,6 +22,9 @@ open class Payload(
      */
     @Column(nullable = false)
     val deviceName: String,
+    /**
+     * Timestamp of datapoint, measured by MQTT payload or then it arrived at the collector.
+     */
     @Column(nullable = false)
     val timestamp: OffsetDateTime,
     /**
