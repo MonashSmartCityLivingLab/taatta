@@ -55,8 +55,8 @@ and [Docker Compose](https://docs.docker.com/compose/install/) installed.
     - The hostnames and port numbers are already set up, but you should change the Postgres and Mosquitto passwords,
       especially for production instances
 3. Review the Mosquitto and ChirpStack configuration at `configuration` directory
-    - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections 
-      for Mosquitto 
+    - For example, you might want change the LoRa frequency for ChirpStack, or allow unauthenticated MQTT connections
+      for Mosquitto
 4. Review `docker-compose.yml` and make any changes required for your setup
 5. Deploy the containers:
 

@@ -15,7 +15,7 @@ mqtt:
   password: !secret mqtt_password
 ```
 
-Where `broker_address` is the IP address of your MQTT broker. You'll need to add `mqtt_username` and `mqtt_password` in 
+Where `broker_address` is the IP address of your MQTT broker. You'll need to add `mqtt_username` and `mqtt_password` in
 the ESPHome secrets configuration.
 
 You can edit the yml file if you add the plug to Home Assistant.

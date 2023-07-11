@@ -1,3 +1,8 @@
+# TODO: idk what this lgt92 thing is. it appears there hasn't been any logger writter for it, hence the port 80 is a
+# placeholder
+POST http://localhost:80/api/payload
+Content-Type: application/json
+
 {
   "applicationID": "1",
   "applicationName": "Location-Monitoring",

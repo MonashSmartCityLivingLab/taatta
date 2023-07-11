@@ -1,0 +1,9 @@
+POST http://localhost:4044/api/payload
+Content-Type: application/json
+
+{
+  "deviceName": "Recycle-Bin-DF702",
+  "devEUI": "8cf957200001f1e2",
+  "timestampMilliseconds": 1664936268749,
+  "data": "gAABAREAWAAWAAAQAAAAAIE="
+}

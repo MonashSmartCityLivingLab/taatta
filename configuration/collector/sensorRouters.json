@@ -31,7 +31,6 @@
       ]
     }
   ],
-
   "espHomeModules": [
     {
       "name": "athom-smart-plug",

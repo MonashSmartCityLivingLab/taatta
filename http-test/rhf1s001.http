@@ -1,0 +1,9 @@
+POST http://localhost:4040/api/payload
+Content-Type: application/json
+
+{
+  "deviceName": "RHF1S001-Temperature-Humidity",
+  "devEUI": "8cf9574000001263",
+  "timestampMilliseconds": 1664936288369,
+  "data": "yY7m2pBeH4U3"
+}

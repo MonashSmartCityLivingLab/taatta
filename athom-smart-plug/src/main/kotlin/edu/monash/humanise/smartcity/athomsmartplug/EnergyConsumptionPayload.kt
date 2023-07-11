@@ -1,16 +1,18 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
 import jakarta.persistence.Entity
+import java.time.OffsetDateTime
 
 /**
  * Sensor datapoint entity for energy consumption readings.
  */
 @Entity
 class EnergyConsumptionPayload(
-        deviceName: String,
-        data: String,
-        /**
-         * Energy consumption, in kWh.
-         */
-        val energyConsumption: Double?
-) : Payload(0, deviceName, data)
+    deviceName: String,
+    timestamp: OffsetDateTime,
+    data: String,
+    /**
+     * Energy consumption, in kWh.
+     */
+    val energyConsumption: Double?
+) : Payload(deviceName, timestamp, data)

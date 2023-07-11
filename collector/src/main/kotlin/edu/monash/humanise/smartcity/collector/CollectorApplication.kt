@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.collector
 
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.WebApplicationType
@@ -20,7 +20,7 @@ import java.util.*
 private val logger = KotlinLogging.logger {}
 
 @SpringBootApplication
-class CollectorApplication {
+class CollectorApplication(private val router: Router) {
     @Value("\${smart-city.broker-url}")
     private val brokerUrl: String? = null
 
@@ -47,10 +47,10 @@ class CollectorApplication {
         val clientId = "$appName-$randId"
 
         val topics = arrayOf(
-                "application/+/device/+/event/+",
-                "application/+/device/+/command/+",
-                "+/sensor/+/state", // for smart plug
-                "+/status" // sensor status
+            "application/+/device/+/event/+",
+            "application/+/device/+/command/+",
+            "+/sensor/+/state", // for smart plug
+            "+/status" // sensor status
         )
 
         logger.info { "Connecting to MQTT broker at $brokerUrl with client ID $clientId" }
@@ -60,15 +60,17 @@ class CollectorApplication {
             connectOptions.password = brokerPassword.toCharArray()
             val clientFactory = DefaultMqttPahoClientFactory()
             clientFactory.connectionOptions = connectOptions
-            MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                    clientId,
-                    clientFactory,
-                    *topics
+            MqttPahoMessageDrivenChannelAdapter(
+                brokerUrl,
+                clientId,
+                clientFactory,
+                *topics
             )
         } else {
-            MqttPahoMessageDrivenChannelAdapter(brokerUrl,
-                    clientId,
-                    *topics
+            MqttPahoMessageDrivenChannelAdapter(
+                brokerUrl,
+                clientId,
+                *topics
             )
         }
         adapter.setConverter(DefaultPahoMessageConverter())
@@ -81,7 +83,7 @@ class CollectorApplication {
     @ServiceActivator(inputChannel = "mqttInputChannel")
     fun handler(): MessageHandler {
         return MessageHandler { message ->
-            Router.route(message)
+            router.route(message)
         }
     }
 }
@@ -89,6 +91,6 @@ class CollectorApplication {
 
 fun main(args: Array<String>) {
     SpringApplicationBuilder(CollectorApplication::class.java)
-            .web(WebApplicationType.NONE)
-            .run(*args)
+        .web(WebApplicationType.NONE)
+        .run(*args)
 }

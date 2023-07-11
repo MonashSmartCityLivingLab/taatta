@@ -1,0 +1,10 @@
+POST http://localhost:4042/api/payload
+Content-Type: application/json
+
+
+{
+  "deviceName": "MKR-WAN-1310",
+  "devEUI": "a8610a35303f620a",
+  "timestampMilliseconds": 1666080233746,
+  "data": "VGVtcDoyNS44MSw="
+}

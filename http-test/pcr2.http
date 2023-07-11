@@ -1,0 +1,21 @@
+POST http://localhost:4048/api/payload
+Content-Type: application/json
+
+{
+  "deviceName": "PCR2-People-Count",
+  "devEUI": "3531313958379112",
+  "timestampMilliseconds": 1666692674240,
+  "data": "CgAAFgAAAQE9"
+}
+
+###
+
+POST http://localhost:4048/api/payload
+Content-Type: application/json
+
+{
+  "deviceName": "PCR2-People-Count",
+  "devEUI": "3531313958379112",
+  "timestampMilliseconds": 1666691774459,
+  "data": "AAMBAAAAAQACAAUAADI="
+}
