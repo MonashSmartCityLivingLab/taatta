@@ -20,7 +20,7 @@ data class PayloadUplinkRequest(
      */
     val sensor: String,
     /**
-     * Payload data.
+     * Payload data as string.
      */
     val data: String
 )

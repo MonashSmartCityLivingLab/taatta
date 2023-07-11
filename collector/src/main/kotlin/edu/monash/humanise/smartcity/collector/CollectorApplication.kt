@@ -21,23 +21,44 @@ private val logger = KotlinLogging.logger {}
 
 @SpringBootApplication
 class CollectorApplication(private val router: Router) {
+    /**
+     * Broker URL and port, specified using `TAATTA_MOSQUITTO_HOST` and `TAATTA_MOSQUITTO_PORT` environment variables
+     * respectively.
+     */
     @Value("\${smart-city.broker-url}")
     private val brokerUrl: String? = null
 
+    /**
+     * MQTT broker username, specified using `TAATTA_MOSQUITTO_USER` environment variable. Defaults to `null` if the
+     * environment variable is not present.
+     */
     @Value("\${smart-city.broker-username}")
     private val brokerUsername: String? = null
 
+    /**
+     * MQTT broker password, specified using `TAATTA_MOSQUITTO_USER` environment variable. Defaults to `null` if the
+     * environment variable is not present.
+     */
     @Value("\${smart-city.broker-password}")
     private val brokerPassword: String? = null
 
+    /**
+     * Application name. Always set to `collector` and is never `null` after initialisation.
+     */
     @Value("\${spring.application.name}")
     private val appName: String? = null
 
+    /**
+     * Sets MQTT message channel.
+     */
     @Bean
     fun mqttInputChannel(): MessageChannel {
         return DirectChannel()
     }
 
+    /**
+     * Initialise MQTT adapter.
+     */
     @Bean
     fun inbound(): MessageProducer {
         // clientId must be unique across the broker. otherwise, we'll get broken pipes, EOFException and other weird behaviours.
@@ -79,6 +100,9 @@ class CollectorApplication(private val router: Router) {
         return adapter
     }
 
+    /**
+     * Handles incoming message.
+     */
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     fun handler(): MessageHandler {

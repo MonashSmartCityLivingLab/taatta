@@ -1,4 +1,4 @@
-# TBS220
+# Module tbs220
 
 Parking sensor data
 

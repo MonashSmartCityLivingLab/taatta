@@ -1,4 +1,4 @@
-# athom-smart-plug
+# Module athom-smart-plug
 
 This is a logging module for the [Athom Smart Plug V2](https://www.athom.tech/blank-1/esphome-au-plug),
 using [ESPHome MQTT client API](https://esphome.io/components/mqtt.html).

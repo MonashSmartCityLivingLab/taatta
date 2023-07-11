@@ -1,4 +1,4 @@
-# PCR2
+# Module pcr2
 
 People counting data storage service.
 
