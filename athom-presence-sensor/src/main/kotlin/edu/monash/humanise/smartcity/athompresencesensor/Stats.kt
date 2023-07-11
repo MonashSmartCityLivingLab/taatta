@@ -1,6 +1,6 @@
 package edu.monash.humanise.smartcity.athompresencesensor
 
-import io.github.oshai.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
