@@ -68,9 +68,12 @@ class CollectorApplication(private val router: Router) {
         val clientId = "$appName-$randId"
 
         val topics = arrayOf(
+            // for lorawan
             "application/+/device/+/event/+",
             "application/+/device/+/command/+",
-            "+/sensor/+/state", // for smart plug
+            // for esphome
+            "+/sensor/+/state",
+            "+/binary_sensor/+/state",
             "+/status" // sensor status
         )
 

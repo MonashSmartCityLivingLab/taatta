@@ -1,5 +1,6 @@
-package edu.monash.humanise.smartcity.athompresencesensor
+package edu.monash.humanise.smartcity.athompresencesensor.payload
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
@@ -14,5 +15,6 @@ class LightSensorPayload(
     /**
      * Uptime, in seconds.
      */
-    val luminance: Double?
+    @Column(nullable = false)
+    val luminance: Double
 ) : Payload(deviceName, timestamp, data)

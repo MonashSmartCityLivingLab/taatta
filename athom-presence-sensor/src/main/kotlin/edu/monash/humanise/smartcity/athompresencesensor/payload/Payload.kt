@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.athompresencesensor
+package edu.monash.humanise.smartcity.athompresencesensor.payload
 
 import jakarta.persistence.*
 import java.time.OffsetDateTime

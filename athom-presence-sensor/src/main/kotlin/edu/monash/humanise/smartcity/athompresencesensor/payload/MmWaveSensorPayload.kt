@@ -1,12 +1,12 @@
-package edu.monash.humanise.smartcity.athompresencesensor
+package edu.monash.humanise.smartcity.athompresencesensor.payload
 
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 @Entity
-class PirSensorPayload(
+class MmWaveSensorPayload(
     deviceName: String,
     timestamp: OffsetDateTime,
     data: String,
-    motionDetected: Boolean?
+    motionDetected: Boolean,
 ): Payload(deviceName, timestamp, data)

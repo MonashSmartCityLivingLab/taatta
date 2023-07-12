@@ -1,12 +1,12 @@
-package edu.monash.humanise.smartcity.athompresencesensor
+package edu.monash.humanise.smartcity.athompresencesensor.payload
 
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 @Entity
-class OccupancyPayload(
+class PirSensorPayload(
     deviceName: String,
     timestamp: OffsetDateTime,
     data: String,
-    occupied: Boolean?
+    occupancy: Boolean
 ): Payload(deviceName, timestamp, data)
