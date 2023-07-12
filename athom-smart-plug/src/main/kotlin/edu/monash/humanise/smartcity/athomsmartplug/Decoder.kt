@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.athompresencesensor
+package edu.monash.humanise.smartcity.athomsmartplug
 
 /**
  * Decoder for ESPHome data.
