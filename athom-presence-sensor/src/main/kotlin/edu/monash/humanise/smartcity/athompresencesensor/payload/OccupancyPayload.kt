@@ -1,5 +1,6 @@
 package edu.monash.humanise.smartcity.athompresencesensor.payload
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
@@ -8,5 +9,6 @@ class OccupancyPayload(
     deviceName: String,
     timestamp: OffsetDateTime,
     data: String,
-    occupied: Boolean
+    @Column(nullable = false)
+    val occupied: Boolean
 ): Payload(deviceName, timestamp, data)

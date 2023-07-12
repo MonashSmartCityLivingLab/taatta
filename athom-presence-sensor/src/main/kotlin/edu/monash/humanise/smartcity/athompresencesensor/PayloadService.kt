@@ -19,12 +19,12 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             "pir_sensor" -> {
                 val value = Decoder.decodeBinarySensorState(data)
                 val payload = PirSensorPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, value)
-                payloadRepository.save(payload)
+//                payloadRepository.save(payload)
             }
 
             "mmwave_sensor" -> {
                 val value = Decoder.decodeBinarySensorState(data)
-                val payload = MmWaveSensorPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, value)
+                val payload = MmwaveSensorPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, value)
                 payloadRepository.save(payload)
             }
 

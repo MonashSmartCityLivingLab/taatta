@@ -1,12 +1,14 @@
 package edu.monash.humanise.smartcity.athompresencesensor.payload
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 @Entity
-class MmWaveSensorPayload(
+class MmwaveSensorPayload(
     deviceName: String,
     timestamp: OffsetDateTime,
     data: String,
-    motionDetected: Boolean,
+    @Column(nullable = false)
+    val occupied: Boolean,
 ): Payload(deviceName, timestamp, data)
