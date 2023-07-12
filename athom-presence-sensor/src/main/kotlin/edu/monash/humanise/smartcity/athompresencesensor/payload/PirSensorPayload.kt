@@ -5,7 +5,10 @@ import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 /**
- * Sensor datapoint entity for mmWave sensor readings.
+ * Sensor datapoint entity for PIR sensor readings.
+ *
+ * @see OccupancyPayload
+ * @see MmwaveSensorPayload
  */
 @Entity
 class PirSensorPayload(

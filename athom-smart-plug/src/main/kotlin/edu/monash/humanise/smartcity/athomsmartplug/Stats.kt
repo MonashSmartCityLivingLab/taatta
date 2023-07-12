@@ -8,11 +8,17 @@ import java.time.ZoneOffset
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Component which keeps track of number of requests, and logs them periodically.
+ */
 @Component
 class Stats {
-    private val payloadCount: MutableMap<String, Int> = LinkedHashMap()
+    private val payloadCount: MutableMap<String, Int> = mutableMapOf()
     private var previousTime = OffsetDateTime.now(ZoneOffset.UTC)
 
+    /**
+     * Write statistics periodically to log.
+     */
     @Scheduled(cron = "0 * * * * *") // print log every minute
     fun printStats() {
         val now = OffsetDateTime.now(ZoneOffset.UTC)
@@ -22,7 +28,7 @@ class Stats {
         for ((sensor, count) in payloadCount.toSortedMap()) {
             stringBuilder.append("$sensor: $count\n")
         }
-        stringBuilder.append("Total: ${payloadCount.values.sum()} from ${payloadCount.count()} sensors")
+        stringBuilder.append("Total: ${payloadCount.values.sum()} from ${payloadCount.count()} devices")
 
         logger.info { stringBuilder.toString() }
 

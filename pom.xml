@@ -221,6 +221,7 @@
                         <dir>${project.basedir}/src</dir>
                     </sourceDirectories>
                     <includes>
+                        <include>athom-presence-sensor/README.md</include>
                         <include>athom-smart-plug/README.md</include>
                         <include>collector/README.md</include>
                         <include>df702/README.md</include>

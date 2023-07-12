@@ -12,7 +12,7 @@ class Decoder {
         fun decodeIntegerSensorState(data: String): Int = try {
             data.toInt()
         } catch (e: NumberFormatException) {
-            throw DecoderException("Invalid integer value: $data")
+            throw DecoderException("Invalid integer value: $data", e)
         }
 
         /**
@@ -22,7 +22,7 @@ class Decoder {
         fun decodeFloatSensorState(data: String): Double = try {
             data.toDouble()
         } catch (e: NumberFormatException) {
-            throw DecoderException("Invalid float value: $data")
+            throw DecoderException("Invalid float value: $data", e)
         }
 
         /**
@@ -44,7 +44,7 @@ class Decoder {
         fun decodeLongSensorState(data: String): Long = try {
             data.toLong()
         } catch (e: NumberFormatException) {
-            throw DecoderException("Invalid long value: $data")
+            throw DecoderException("Invalid long value: $data", e)
         }
     }
 }

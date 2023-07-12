@@ -30,10 +30,10 @@ jobs:
             **/target/*.jar
             **/target/dokka
             **/target/dokkaJavadoc
-            **/README.md
-            configuration
-            LICENSE
             .env.example
             **/*.service
             taatta.nginx
+            LICENSE
+            **/README.md
+            docs
 

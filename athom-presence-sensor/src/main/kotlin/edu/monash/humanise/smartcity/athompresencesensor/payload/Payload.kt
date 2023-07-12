@@ -8,10 +8,16 @@ import java.time.OffsetDateTime
  */
 const val SEQUENCE_NAME = "athom_presence_sensor_id_sequence"
 
+/**
+ * Presence sensor data entity.
+ *
+ * Each sensor type has its own entity classes, such as [OccupancyPayload] for occupancy data.
+ * This class is the superclass of all sensor data classes, and does not actually exist in the database.
+ */
 @MappedSuperclass
 open class Payload(
     /**
-     * Device name of where this datapoint is from. his corresponds to the `esphome.name` attribute in the plug's
+     * Device name of where this datapoint is from. This corresponds to the `esphome.name` attribute in the device's
      * yml file.
      */
     @Column(nullable = false)
