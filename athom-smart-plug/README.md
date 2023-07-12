@@ -7,9 +7,9 @@ See [ESPHome documentation](../docs/esphome.md) for more details on how to set u
 
 ## MQTT topics
 
-- `<plug_name>/status`: Status message published when the plugs go online or offline
-- `<plug_name>/debug`: Log messages similar to the one seen on the plug's web UI
-- `<plug_name>/sensor/<sensor_name>/state`: Values from a sensor. Known sensor names are
+- `<device_name>/status`: Status message published when the plugs go online or offline
+- `<device_name>/debug`: Log messages similar to the one seen on the plug's web UI
+- `<device_name>/sensor/<sensor_name>/state`: Values from a sensor. Known sensor names are
     - `athom_smart_plug_v2_voltage`
     - `athom_smart_plug_v2_current`
     - `athom_smart_plug_v2_power`
@@ -20,5 +20,5 @@ See [ESPHome documentation](../docs/esphome.md) for more details on how to set u
     - `ip_address`
     - `mac_address`
     - `connected_ssid`
-- `<plug_name>/binary_sensor/<sensor_name>/state`: Values from a binary sensor (i.e. only has ON or OFF value). Known sensor names are
+- `<device_name>/binary_sensor/<sensor_name>/state`: Values from a binary sensor (i.e. only has ON or OFF value). Known sensor names are
     - `athom_smart_plug_v2_power_button`
