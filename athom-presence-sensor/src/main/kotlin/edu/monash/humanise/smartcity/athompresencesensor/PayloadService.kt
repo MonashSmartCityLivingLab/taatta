@@ -9,8 +9,14 @@ import java.time.ZoneOffset
 
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Service for storing presence sensor data.
+ */
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
+    /**
+     * Decode the payload and save it as an appropriate entity in [Payload].
+     */
     fun decodeUplinkPayload(payloadRequest: PayloadUplinkRequest) {
         val timestamp =
             OffsetDateTime.ofInstant(Instant.ofEpochMilli(payloadRequest.timestampMilliseconds), ZoneOffset.UTC)
@@ -19,7 +25,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             "pir_sensor" -> {
                 val value = Decoder.decodeBinarySensorState(data)
                 val payload = PirSensorPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, value)
-//                payloadRepository.save(payload)
+                payloadRepository.save(payload)
             }
 
             "mmwave_sensor" -> {

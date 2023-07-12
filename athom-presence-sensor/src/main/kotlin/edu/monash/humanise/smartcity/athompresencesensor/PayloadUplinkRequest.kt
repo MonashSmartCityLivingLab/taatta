@@ -3,7 +3,7 @@ package edu.monash.humanise.smartcity.athompresencesensor
 import kotlinx.serialization.Serializable
 
 /**
- * Payload data send from the collector.
+ * Payload data sent from the collector.
  */
 @Serializable
 data class PayloadUplinkRequest(

@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 /**
- * Sensor datapoint entity for uptime readings.
+ * Sensor datapoint entity for light sensor readings.
  */
 @Entity
 class LightSensorPayload(
@@ -13,7 +13,7 @@ class LightSensorPayload(
     timestamp: OffsetDateTime,
     data: String,
     /**
-     * Uptime, in seconds.
+     * Luminance, in lux.
      */
     @Column(nullable = false)
     val luminance: Double

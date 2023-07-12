@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
 /**
- * Sensor datapoint entity for uptime readings.
+ * Sensor datapoint entity for Wi-Fi signal readings.
  */
 @Entity
 class WifiSignalPayload(
@@ -13,7 +13,7 @@ class WifiSignalPayload(
     timestamp: OffsetDateTime,
     data: String,
     /**
-     * Uptime, in seconds.
+     * Wi-Fi signal strength, in dBm.
      */
     @Column(nullable = false)
     val signalStrength: Int
