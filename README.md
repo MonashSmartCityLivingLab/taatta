@@ -23,6 +23,7 @@ broker and then sends it to the logger module which then writes it to the databa
     - [RHF1S001](rhf1s001/README.md) temperature and humidity sensor
 - ESPHome-based devices
     - [Athom Smart Plug V2](athom-smart-plug/README.md)
+    - [Athom Human Presence Sensor](athom-presence-sensor/README.md)
 
 ## Development
 

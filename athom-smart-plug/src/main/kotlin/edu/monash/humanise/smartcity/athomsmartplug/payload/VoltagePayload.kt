@@ -1,5 +1,6 @@
-package edu.monash.humanise.smartcity.athomsmartplug
+package edu.monash.humanise.smartcity.athomsmartplug.payload
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
@@ -14,5 +15,6 @@ class VoltagePayload(
     /**
      * Voltage, in volts.
      */
-    val voltage: Double?
+    @Column(nullable = false)
+    val voltage: Double
 ) : Payload(deviceName, timestamp, data)

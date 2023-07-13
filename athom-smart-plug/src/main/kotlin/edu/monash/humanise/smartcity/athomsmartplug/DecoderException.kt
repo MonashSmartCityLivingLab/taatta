@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.pcr2
+package edu.monash.humanise.smartcity.athomsmartplug
 
 /**
  * An exception class for decoding errors in [Decoder].

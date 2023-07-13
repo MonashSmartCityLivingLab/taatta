@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.athomsmartplug
+package edu.monash.humanise.smartcity.athomsmartplug.payload
 
 import jakarta.persistence.*
 import java.time.OffsetDateTime
@@ -17,11 +17,14 @@ const val SEQUENCE_NAME = "athom_smart_plug_id_sequence"
 @MappedSuperclass
 open class Payload(
     /**
-     * Device name of where this datapoint is from. his corresponds to the `esphome.name` attribute in the plug's
+     * Device name of where this datapoint is from. This corresponds to the `esphome.name` attribute in the plug's
      * yml file.
      */
     @Column(nullable = false)
     val deviceName: String,
+    /**
+     * Timestamp of datapoint according to MQTT timestamp, or when the message arrived at the collector if the timestamp is not available.
+     */
     @Column(nullable = false)
     val timestamp: OffsetDateTime,
     /**

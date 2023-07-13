@@ -1,4 +1,4 @@
-# DF702
+# Module df702
 
 Recycle Bin data storage service.
 

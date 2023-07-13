@@ -1,0 +1,13 @@
+<configuration>
+    <variable name="LOG_DIR" value="/var/log/smart-city"/>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_DIR}/athom-presence-sensor.log</file>
+        <encoder>
+            <pattern>%date{ISO8601,UTC} %level [%thread] %logger [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

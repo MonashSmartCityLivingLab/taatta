@@ -1,4 +1,4 @@
-# Collector
+# Module collector
 
 MQTT sensor data routing service.
 

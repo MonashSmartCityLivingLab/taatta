@@ -12,6 +12,9 @@ private val logger = KotlinLogging.logger {}
  */
 @Component
 class SensorRoutersConfigLoader {
+    /**
+     * JSON encoder/decoder.
+     */
     private val jsonCoder = Json { ignoreUnknownKeys = true }
 
     /**

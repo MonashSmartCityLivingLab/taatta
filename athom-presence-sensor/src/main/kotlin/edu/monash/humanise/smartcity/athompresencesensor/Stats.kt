@@ -1,4 +1,4 @@
-package edu.monash.humanise.smartcity.athomsmartplug
+package edu.monash.humanise.smartcity.athompresencesensor
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.scheduling.annotation.Scheduled
@@ -22,8 +22,7 @@ class Stats {
     @Scheduled(cron = "0 * * * * *") // print log every minute
     fun printStats() {
         val now = OffsetDateTime.now(ZoneOffset.UTC)
-        val stringBuilder =
-            StringBuilder("Number of payload requests for athom-smart-plug by device from $previousTime to $now:\n")
+        val stringBuilder = StringBuilder("Number of payload requests for athom-presence-sensor by device from $previousTime to $now:\n")
 
         for ((sensor, count) in payloadCount.toSortedMap()) {
             stringBuilder.append("$sensor: $count\n")

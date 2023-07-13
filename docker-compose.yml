@@ -66,6 +66,27 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  athom-presence-sensor:
+    build:
+      context: .
+      target: athom-presence-sensor
+    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-presence-sensor.jar
+    ports:
+      - 4052:4052
+    environment:
+      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
+      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
+      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
+      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4052/actuator/health | grep UP || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 5
   athom-smart-plug:
     build:
       context: .

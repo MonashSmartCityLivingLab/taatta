@@ -22,6 +22,7 @@
         <module>pcr2</module>
         <module>ems701</module>
         <module>athom-smart-plug</module>
+        <module>athom-presence-sensor</module>
     </modules>
 
     <properties>
@@ -219,6 +220,24 @@
                     <sourceDirectories>
                         <dir>${project.basedir}/src</dir>
                     </sourceDirectories>
+                    <includes>
+                        <include>athom-presence-sensor/README.md</include>
+                        <include>athom-smart-plug/README.md</include>
+                        <include>collector/README.md</include>
+                        <include>df702/README.md</include>
+                        <include>ems701/README.md</include>
+                        <include>pcr2/README.md</include>
+                        <include>rhf1s001/README.md</include>
+                        <include>tbs220/README.md</include>
+                        <include>wqm101/README.md</include>
+                    </includes>
+                    <documentedVisibilities>
+                        <visibility>PUBLIC</visibility>
+                        <visibility>PRIVATE</visibility>
+                        <visibility>PROTECTED</visibility>
+                        <visibility>INTERNAL</visibility>
+                        <visibility>PACKAGE</visibility>
+                    </documentedVisibilities>
                 </configuration>
             </plugin>
         </plugins>

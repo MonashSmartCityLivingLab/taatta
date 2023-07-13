@@ -32,6 +32,9 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
     private val jsonCoder = Json { ignoreUnknownKeys = true }
 
     // some internal state for logging purposes
+    /**
+     * Most recent time that [retrySendingData] is called.
+     */
     private var previousTime = OffsetDateTime.now(ZoneOffset.UTC)
 
     init {

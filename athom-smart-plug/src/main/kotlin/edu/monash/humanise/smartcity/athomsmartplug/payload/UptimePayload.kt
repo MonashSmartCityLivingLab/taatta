@@ -1,5 +1,6 @@
-package edu.monash.humanise.smartcity.athomsmartplug
+package edu.monash.humanise.smartcity.athomsmartplug.payload
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import java.time.OffsetDateTime
 
@@ -14,5 +15,6 @@ class UptimePayload(
     /**
      * Uptime, in seconds.
      */
-    val uptime: Long?
+    @Column(nullable = false)
+    val uptime: Long
 ) : Payload(deviceName, timestamp, data)

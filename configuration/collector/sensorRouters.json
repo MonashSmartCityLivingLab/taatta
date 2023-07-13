@@ -37,6 +37,12 @@
       "hostnames": [
         "http://athom-smart-plug:4050"
       ]
+    },
+    {
+      "name": "athom-presence-sensor",
+      "hostnames": [
+        "http://athom-presence-sensor:4052"
+      ]
     }
   ]
 }
