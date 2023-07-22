@@ -48,10 +48,11 @@ jobs:
       matrix:
         include:
           - target: mosquitto
+            image: ghcr.io/taatta-mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Sqt up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -65,7 +66,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/taatta-${{ matrix.target }}
+          images: ${{ matrix.image }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
