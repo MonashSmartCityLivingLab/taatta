@@ -9,6 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -50,9 +51,9 @@ jobs:
       matrix:
         include:
           - target: athom-presence-sensor
-            image: ${{ env.REGISTRY }}/athom-presence-sensor
+            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-athom-presence-sensor
           - target: athom-smart-plug
-            image: ${{ env.REGISTRY }}/athom-smart-plug
+            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-athom-smart-plug
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
