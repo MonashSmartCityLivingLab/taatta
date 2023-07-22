@@ -7,10 +7,6 @@ on:
       - gh-actions
   pull_request:
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_BASE_NAME: taatta
-
 
 jobs:
   build:
@@ -51,14 +47,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - target: athom-presence-sensor
-#          - target: athom-smart-plug
-#          - target: collector
-#          - target: mosquitto
+          - target: mosquitto
+            image: ghcr.io/${{ github.repository }}-mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up QEMU
+      - name: Sqt up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -72,7 +66,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_BASE_NAME }}-${{ matrix.target }}
+          images: ${{ matrix.image }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
