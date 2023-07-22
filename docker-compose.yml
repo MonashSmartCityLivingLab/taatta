@@ -1,9 +1,9 @@
 services:
   collector:
-    image: ghcr.io/taatta-collector
-    build:
-      context: .
-      target: collector
+    image: ghcr.io/monashsmartcitylivinglab/taatta-collector:gh-actions
+#    build:
+#      context: .
+#      target: collector
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/collector.jar
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
@@ -18,10 +18,10 @@ services:
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
   athom-presence-sensor:
-    image: ghcr.io/taatta-athom-presence-sensor
-    build:
-      context: .
-      target: athom-presence-sensor
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-presence-sensor:gh-actions
+#    build:
+#      context: .
+#      target: athom-presence-sensor
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-presence-sensor.jar
     ports:
       - 4052:4052
@@ -40,10 +40,10 @@ services:
       timeout: 5s
       retries: 5
   athom-smart-plug:
-    image: ghcr.io/taatta-athom-smart-plug
-    build:
-      context: .
-      target: athom-smart-plug
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:gh-actions
+#    build:
+#      context: .
+#      target: athom-smart-plug
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-smart-plug.jar
     ports:
       - 4050:4050
@@ -113,10 +113,10 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-    image: ghcr.io/taatta-mosquitto
-    build:
-      context: .
-      target: mosquitto
+    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:gh-actions
+#    build:
+#      context: .
+#      target: mosquitto
     ports:
       - 1883:1883
     volumes:
