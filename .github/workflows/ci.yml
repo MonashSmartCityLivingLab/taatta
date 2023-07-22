@@ -7,6 +7,10 @@ on:
       - gh-actions
   pull_request:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_BASE_NAME: taatta
+
 
 jobs:
   build:
@@ -48,13 +52,9 @@ jobs:
       matrix:
         include:
           - target: athom-presence-sensor
-            image: ghcr.io/taatta-athom-presence-sensor
           - target: athom-smart-plug
-            image: ghcr.io/taatta-athom-smart-plug
           - target: collector
-            image: ghcr.io/taatta-collector
           - target: mosquitto
-            image: ghcr.io/taatta-mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -72,7 +72,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_BASE_NAME }}-${{ matrix.target }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
