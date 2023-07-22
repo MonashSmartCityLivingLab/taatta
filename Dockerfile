@@ -21,7 +21,7 @@ RUN mvn dependency:resolve
 
 COPY . .
 # reduce compile time by only building specific projects we need
-RUN mvn -e package spring-boot:repackage --project athom-presence-sensor athom-smart-plug collector
+RUN mvn --projects athom-presence-sensor,athom-smart-plug,collector -e package spring-boot:repackage
 
 FROM eclipse-temurin:17 AS base
 ENV TAATTA_DOCKER=1
