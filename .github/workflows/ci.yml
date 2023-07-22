@@ -9,35 +9,35 @@ on:
 
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: "17"
-          distribution: temurin
-          cache: maven
-      - name: Build
-        run: mvn -e clean package spring-boot:repackage
-      - name: Build documentation
-        run: mvn -e dokka:dokka dokka:javadoc
-      - name: Save files
-        uses: actions/upload-artifact@v3
-        with:
-          name: taatta
-          path: |
-            **/target/*.jar
-            **/target/dokka
-            **/target/dokkaJavadoc
-            .env.example
-            **/*.service
-            taatta.nginx
-            LICENSE
-            **/README.md
-            docs
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: "17"
+#          distribution: temurin
+#          cache: maven
+#      - name: Build
+#        run: mvn -e clean package spring-boot:repackage
+#      - name: Build documentation
+#        run: mvn -e dokka:dokka dokka:javadoc
+#      - name: Save files
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: taatta
+#          path: |
+#            **/target/*.jar
+#            **/target/dokka
+#            **/target/dokkaJavadoc
+#            .env.example
+#            **/*.service
+#            taatta.nginx
+#            LICENSE
+#            **/README.md
+#            docs
   docker:
     runs-on: ubuntu-latest
     permissions:
@@ -48,7 +48,6 @@ jobs:
       matrix:
         include:
           - target: mosquitto
-            image: ghcr.io/${{ github.repository }}-mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -66,7 +65,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ matrix.image }}
+          images: ghcr.io/taatta-${{ matrix.target }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
