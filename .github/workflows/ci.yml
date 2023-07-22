@@ -43,17 +43,14 @@ jobs:
     permissions:
       contents: read
       packages: write
-    env:
-      REGISTRY: ghcr.io
-      IMAGE_NAME: ${{ github.repository }}
     strategy:
       fail-fast: false
       matrix:
         include:
           - target: athom-presence-sensor
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-athom-presence-sensor
+            image: ghcr.io/${{ github.repository }}-athom-presence-sensor
           - target: athom-smart-plug
-            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-athom-smart-plug
+            image: ghcr.io/${{ github.repository }}-athom-smart-plug
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
