@@ -48,7 +48,6 @@ jobs:
       matrix:
         include:
           - target: mosquitto
-            image: ghcr.io/taatta-mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -66,7 +65,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ matrix.image }}
+          images: ghcr.io/${{ github.repository }}-${{ matrix.target }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
