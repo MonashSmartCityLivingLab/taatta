@@ -9,7 +9,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -46,6 +45,14 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: athom-presence-sensor
+            image: ${{ env.REGISTRY }}/athom-presence-sensor
+          - target: athom-smart-plug
+            image: ${{ env.REGISTRY }}/athom-smart-plug
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -63,11 +70,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ matrix.image }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           platforms: linux/amd64,linux/arm64
+          target: ${{ matrix.target }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
