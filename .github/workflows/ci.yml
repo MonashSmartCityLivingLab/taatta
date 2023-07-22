@@ -52,9 +52,9 @@ jobs:
       matrix:
         include:
           - target: athom-presence-sensor
-          - target: athom-smart-plug
-          - target: collector
-          - target: mosquitto
+#          - target: athom-smart-plug
+#          - target: collector
+#          - target: mosquitto
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
