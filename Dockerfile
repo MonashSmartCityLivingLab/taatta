@@ -20,7 +20,8 @@ ADD wqm101/pom.xml $HOME/wqm101/pom.xml
 RUN mvn dependency:resolve
 
 COPY . .
-RUN mvn -e package spring-boot:repackage
+# reduce compile time by only building specific projects we need
+RUN mvn --projects athom-presence-sensor,athom-smart-plug,collector -e package spring-boot:repackage
 
 FROM eclipse-temurin:17 AS base
 ENV TAATTA_DOCKER=1
@@ -40,37 +41,37 @@ FROM base AS collector
 RUN ln -sf /dev/stdout /var/log/smart-city/collector.log
 COPY --from=builder /taatta/collector/target/collector-$VERSION.jar collector.jar
 
-FROM base AS df702
-RUN ln -sf /dev/stdout /var/log/smart-city/df702.log
-COPY --from=builder /taatta/df702/target/df702-$VERSION.jar df702.jar
-
-FROM base AS ems701
-RUN ln -sf /dev/stdout /var/log/smart-city/ems701.log
-COPY --from=builder /taatta/ems701/target/ems701-$VERSION.jar ems701.jar
-
-FROM base AS eureka-server
-RUN ln -sf /dev/stdout /var/log/smart-city/eureka-server.log
-COPY --from=builder /taatta/eureka-server/target/eureka-server-$VERSION.jar eureka-server.jar
-
-FROM base AS notification
-RUN ln -sf /dev/stdout /var/log/smart-city/notification.log
-COPY --from=builder /taatta/notification/target/notification-$VERSION.jar notification.jar
-
-FROM base AS pcr2
-RUN ln -sf /dev/stdout /var/log/smart-city/pcr2.log
-COPY --from=builder /taatta/pcr2/target/pcr2-$VERSION.jar pcr2.jar
-
-FROM base AS rhf1s001
-RUN ln -sf /dev/stdout /var/log/smart-city/rhf1s001.log
-COPY --from=builder /taatta/rhf1s001/target/rhf1s001-$VERSION.jar rhf1s001.jar
-
-FROM base AS tbs220
-RUN ln -sf /dev/stdout /var/log/smart-city/tbs220.log
-COPY --from=builder /taatta/tbs220/target/tbs220-$VERSION.jar tbs220.jar
-
-FROM base AS wqm101
-RUN ln -sf /dev/stdout /var/log/smart-city/wqm101.log
-COPY --from=builder /taatta/wqm101/target/wqm101-$VERSION.jar wqm101.jar
+#FROM base AS df702
+#RUN ln -sf /dev/stdout /var/log/smart-city/df702.log
+#COPY --from=builder /taatta/df702/target/df702-$VERSION.jar df702.jar
+#
+#FROM base AS ems701
+#RUN ln -sf /dev/stdout /var/log/smart-city/ems701.log
+#COPY --from=builder /taatta/ems701/target/ems701-$VERSION.jar ems701.jar
+#
+#FROM base AS eureka-server
+#RUN ln -sf /dev/stdout /var/log/smart-city/eureka-server.log
+#COPY --from=builder /taatta/eureka-server/target/eureka-server-$VERSION.jar eureka-server.jar
+#
+#FROM base AS notification
+#RUN ln -sf /dev/stdout /var/log/smart-city/notification.log
+#COPY --from=builder /taatta/notification/target/notification-$VERSION.jar notification.jar
+#
+#FROM base AS pcr2
+#RUN ln -sf /dev/stdout /var/log/smart-city/pcr2.log
+#COPY --from=builder /taatta/pcr2/target/pcr2-$VERSION.jar pcr2.jar
+#
+#FROM base AS rhf1s001
+#RUN ln -sf /dev/stdout /var/log/smart-city/rhf1s001.log
+#COPY --from=builder /taatta/rhf1s001/target/rhf1s001-$VERSION.jar rhf1s001.jar
+#
+#FROM base AS tbs220
+#RUN ln -sf /dev/stdout /var/log/smart-city/tbs220.log
+#COPY --from=builder /taatta/tbs220/target/tbs220-$VERSION.jar tbs220.jar
+#
+#FROM base AS wqm101
+#RUN ln -sf /dev/stdout /var/log/smart-city/wqm101.log
+#COPY --from=builder /taatta/wqm101/target/wqm101-$VERSION.jar wqm101.jar
 
 # mosquitto
 FROM eclipse-mosquitto:2 AS mosquitto

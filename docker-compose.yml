@@ -1,8 +1,9 @@
 services:
   collector:
-    build:
-      context: .
-      target: collector
+    image: ghcr.io/monashsmartcitylivinglab/taatta-collector:gh-actions
+#    build:
+#      context: .
+#      target: collector
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/collector.jar
     environment:
       - TAATTA_MOSQUITTO_HOST=${TAATTA_MOSQUITTO_HOST}
@@ -13,63 +14,14 @@ services:
     depends_on:
       mosquitto:
         condition: service_started
-    # Uncomment the dependencies below depending on the services you're running, but don't uncomment those you don't use
-    # since docker will automatically run those services.
-    # This prevents flooding the collector logs with 'connection refused' errors while the logger module isn't ready yet.
-#      rhf1s001:
-#        condition: service_healthy
-#      pcr2:
-#        condition: service_healthy
-#      athom-smart-plug:
-#        condition: service_healthy
     restart: unless-stopped
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
-  rhf1s001:
-    build:
-      context: .
-      target: rhf1s001
-    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/rhf1s001.jar
-    ports:
-      - 4040:4040
-    environment:
-      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
-      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
-      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-    depends_on:
-      postgresql:
-        condition: service_healthy
-    restart: unless-stopped
-    healthcheck:
-      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 5
-  pcr2:
-    build:
-      context: .
-      target: pcr2
-    command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/pcr2.jar
-    ports:
-      - 4048:4048
-    environment:
-      - TAATTA_POSTGRES_HOST=${TAATTA_POSTGRES_HOST}
-      - TAATTA_POSTGRES_PORT=${TAATTA_POSTGRES_PORT}
-      - TAATTA_POSTGRES_USER=${TAATTA_POSTGRES_USER}
-      - TAATTA_POSTGRES_PASSWORD=${TAATTA_POSTGRES_PASSWORD}
-    depends_on:
-      postgresql:
-        condition: service_healthy
-    restart: unless-stopped
-    healthcheck:
-      test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
-      retries: 5
   athom-presence-sensor:
-    build:
-      context: .
-      target: athom-presence-sensor
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-presence-sensor:gh-actions
+#    build:
+#      context: .
+#      target: athom-presence-sensor
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-presence-sensor.jar
     ports:
       - 4052:4052
@@ -88,9 +40,10 @@ services:
       timeout: 5s
       retries: 5
   athom-smart-plug:
-    build:
-      context: .
-      target: athom-smart-plug
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:gh-actions
+#    build:
+#      context: .
+#      target: athom-smart-plug
     command: java -jar -Dspring.profiles.active=prod /usr/local/taatta/athom-smart-plug.jar
     ports:
       - 4050:4050
@@ -160,9 +113,10 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-    build:
-      context: .
-      target: mosquitto
+    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:gh-actions
+#    build:
+#      context: .
+#      target: mosquitto
     ports:
       - 1883:1883
     volumes:
