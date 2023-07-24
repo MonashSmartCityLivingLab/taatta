@@ -1,6 +1,6 @@
 services:
   collector:
-    image: ghcr.io/monashsmartcitylivinglab/taatta-collector:gh-actions
+    image: ghcr.io/monashsmartcitylivinglab/taatta-collector:main
 #    build:
 #      context: .
 #      target: collector
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./configuration/collector/sensorRouters.json:/taatta/collector/sensorRouters.json:ro
   athom-presence-sensor:
-    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-presence-sensor:gh-actions
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-presence-sensor:main
 #    build:
 #      context: .
 #      target: athom-presence-sensor
@@ -40,7 +40,7 @@ services:
       timeout: 5s
       retries: 5
   athom-smart-plug:
-    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:gh-actions
+    image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:main
 #    build:
 #      context: .
 #      target: athom-smart-plug
@@ -113,7 +113,7 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:gh-actions
+    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
 #    build:
 #      context: .
 #      target: mosquitto
