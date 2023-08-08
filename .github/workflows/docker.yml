@@ -20,9 +20,6 @@ jobs:
           - athom-smart-plug
           - collector
           - mosquitto
-        platform:
-          - linux/amd64
-          - linux/arm64
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -46,6 +43,6 @@ jobs:
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          target: ${{ matrix.target }}
+          target: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
