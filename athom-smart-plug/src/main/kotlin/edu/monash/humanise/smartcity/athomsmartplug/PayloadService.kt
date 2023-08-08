@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 private val logger = KotlinLogging.logger {}
 
@@ -76,7 +77,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             }
 
             "debug" -> {
-                logger.info { "${payloadRequest.deviceName}: $data" }
+                logger.info { "${payloadRequest.deviceName} at ${timestamp.format(DateTimeFormatter.ISO_TIME)}: $data" }
             }
 
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
