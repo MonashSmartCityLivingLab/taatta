@@ -75,6 +75,10 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 }
             }
 
+            "debug" -> {
+                logger.info { "${payloadRequest.deviceName}: $data" }
+            }
+
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
             "ip_address", "mac_address", "connected_ssid", "athom_smart_plug_v2_power_button" -> {}
 
