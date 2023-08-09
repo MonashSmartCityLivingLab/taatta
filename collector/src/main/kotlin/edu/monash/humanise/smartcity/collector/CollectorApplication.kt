@@ -74,7 +74,8 @@ class CollectorApplication(private val router: Router) {
             // for esphome
             "+/sensor/+/state",
             "+/binary_sensor/+/state",
-            "+/status" // sensor status
+            "+/status", // sensor status
+            "+/debug"
         )
 
         logger.info { "Connecting to MQTT broker at $brokerUrl with client ID $clientId" }
