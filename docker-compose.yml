@@ -144,6 +144,8 @@ services:
       - '3000:3000'
     volumes:
       - grafanadata:/var/lib/grafana
+    environment:
+      - GF_DATAPROXY_ROW_LIMIT=1000000000000
 
 volumes:
   postgresqldata:
