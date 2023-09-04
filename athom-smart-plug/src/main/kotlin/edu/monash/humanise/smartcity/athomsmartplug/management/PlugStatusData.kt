@@ -1,10 +1,10 @@
-package edu.monash.humanise.smartcity.athompresencesensor.management
+package edu.monash.humanise.smartcity.athomsmartplug.management
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class OccupancyData(
+data class PlugStatusData(
     val timestampMilliseconds: Long,
     val sensorName: String,
-    val occupied: Boolean
+    val isOn: Boolean
 )

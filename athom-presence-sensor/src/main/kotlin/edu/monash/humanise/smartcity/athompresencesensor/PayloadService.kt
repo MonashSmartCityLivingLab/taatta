@@ -1,7 +1,7 @@
 package edu.monash.humanise.smartcity.athompresencesensor
 
 import edu.monash.humanise.smartcity.athompresencesensor.payload.*
-import edu.monash.smartcity.idledevicemanagement.model.OccupancyData
+import edu.monash.humanise.smartcity.athompresencesensor.management.OccupancyData
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
