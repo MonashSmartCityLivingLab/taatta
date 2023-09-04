@@ -2,6 +2,7 @@ package edu.monash.humanise.smartcity.athomsmartplug
 
 import edu.monash.humanise.smartcity.athomsmartplug.payload.*
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -15,6 +16,12 @@ private val logger = KotlinLogging.logger {}
  */
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
+    @Value("\${smart-city.device-management.enabled}")
+    private var deviceManagementEnabled: Boolean = false
+
+    @Value("\${smart-city.device-management.url}")
+    private lateinit var deviceManagementUrl: String
+
 
     /**
      * Decode the payload and save it as an appropriate entity in [Payload].
