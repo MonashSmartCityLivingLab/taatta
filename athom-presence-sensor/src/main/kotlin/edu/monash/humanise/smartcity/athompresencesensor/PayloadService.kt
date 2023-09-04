@@ -1,12 +1,14 @@
 package edu.monash.humanise.smartcity.athompresencesensor
 
 import edu.monash.humanise.smartcity.athompresencesensor.payload.*
+import edu.monash.smartcity.idledevicemanagement.model.OccupancyData
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -22,6 +24,7 @@ private val logger = KotlinLogging.logger {}
 class PayloadService(private val payloadRepository: PayloadRepository) {
     @Value("\${smart-city.device-management.enabled}")
     private var deviceManagementEnabled: Boolean = false
+
     @Value("\${smart-city.device-management.url}")
     private lateinit var deviceManagementUrl: String
 
@@ -55,7 +58,13 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                     val restTemplate = RestTemplate()
                     val url = "$deviceManagementUrl/occupancy"
                     val headers = initHttpHeaders()
-                    // TODO: send data
+                    val body = OccupancyData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, value)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
                 }
             }
 
