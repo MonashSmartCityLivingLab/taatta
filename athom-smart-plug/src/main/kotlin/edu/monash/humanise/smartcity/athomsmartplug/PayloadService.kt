@@ -1,5 +1,6 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
+import edu.monash.humanise.smartcity.athomsmartplug.management.IpAddressData
 import edu.monash.humanise.smartcity.athomsmartplug.management.PlugStatusData
 import edu.monash.humanise.smartcity.athomsmartplug.management.PowerData
 import edu.monash.humanise.smartcity.athomsmartplug.payload.*
@@ -124,8 +125,23 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 }
             }
 
+            "ip_address" -> {
+                if (deviceManagementEnabled) {
+                    val restTemplate = RestTemplate()
+                    val url = "$deviceManagementUrl/ip-address"
+                    val headers = initHttpHeaders()
+                    val body = IpAddressData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, payloadRequest.data)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
+                }
+            }
+
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
-            "ip_address", "mac_address", "connected_ssid" -> {}
+            "mac_address", "connected_ssid" -> {}
 
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
