@@ -109,7 +109,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 logger.info { "${payloadRequest.deviceName} at ${timestamp.format(DateTimeFormatter.ISO_TIME)}: $data" }
             }
 
-            "athom_smart_plug_v2_power_button" -> {
+            "switch" -> {
                 val isOn = Decoder.decodeBinarySensorState(payloadRequest.data)
                 if (deviceManagementEnabled) {
                     val restTemplate = RestTemplate()
@@ -141,7 +141,7 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             }
 
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
-            "mac_address", "connected_ssid" -> {}
+            "athom_smart_plug_v2_power_button", "mac_address", "connected_ssid" -> {}
 
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
