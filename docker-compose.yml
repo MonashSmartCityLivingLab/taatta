@@ -127,6 +127,15 @@ services:
     restart: unless-stopped
     entrypoint: sh ./entrypoint.sh
     command: ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
+  idle-device-management:
+    image: ghcr.io/monashsmartcitylivinglab/idle-device-management:main
+    build:
+      context: .
+    ports:
+      - 4100:4100
+    restart: unless-stopped
+    volumes:
+      - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
 volumes:
   postgresqldata:
   redisdata:
