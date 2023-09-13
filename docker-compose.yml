@@ -118,9 +118,9 @@ services:
       - redisdata:/data
   mosquitto:
     image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
-#    build:
-#      context: .
-#      target: mosquitto
+    build:
+      context: .
+      target: mosquitto
     ports:
       - 1883:1883
     volumes:
@@ -140,6 +140,29 @@ services:
     restart: unless-stopped
     volumes:
       - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
+  loki:
+    image: grafana/loki:2.8.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+  promtail:
+    image: grafana/promtail:2.8.0
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+  grafana:
+    image: grafana/grafana-oss
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafanadata:/var/lib/grafana
+    environment:
+      - GF_DATAPROXY_ROW_LIMIT=1000000000000
+
 volumes:
   postgresqldata:
   redisdata:
+  grafanadata:
