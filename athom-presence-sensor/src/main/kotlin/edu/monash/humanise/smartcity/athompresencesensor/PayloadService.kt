@@ -1,8 +1,15 @@
 package edu.monash.humanise.smartcity.athompresencesensor
 
 import edu.monash.humanise.smartcity.athompresencesensor.payload.*
+import edu.monash.humanise.smartcity.athompresencesensor.management.OccupancyData
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestClientException
+import org.springframework.web.client.RestTemplate
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -15,6 +22,12 @@ private val logger = KotlinLogging.logger {}
  */
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
+    @Value("\${smart-city.device-management.enabled}")
+    private var deviceManagementEnabled: Boolean = false
+
+    @Value("\${smart-city.device-management.url}")
+    private lateinit var deviceManagementUrl: String
+
     /**
      * Decode the payload and save it as an appropriate entity in [Payload].
      */
@@ -39,6 +52,20 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 val value = Decoder.decodeBinarySensorState(data)
                 val payload = OccupancyPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, value)
                 payloadRepository.save(payload)
+
+                // send data to management
+                if (deviceManagementEnabled) {
+                    val restTemplate = RestTemplate()
+                    val url = "$deviceManagementUrl/occupancy"
+                    val headers = initHttpHeaders()
+                    val body = OccupancyData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, value)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
+                }
             }
 
             "uptime_sensor" -> {
@@ -76,6 +103,19 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
             }
+        }
+    }
+
+    companion object {
+        /**
+         * Initializer for the HTTP header.
+         *
+         * @return an instance of [HttpHeaders] with `contentType` set to `application/json`
+         */
+        private fun initHttpHeaders(): HttpHeaders {
+            val httpHeaders = HttpHeaders()
+            httpHeaders.contentType = MediaType.APPLICATION_JSON
+            return httpHeaders
         }
     }
 }

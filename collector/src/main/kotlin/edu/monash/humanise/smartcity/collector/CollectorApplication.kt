@@ -75,7 +75,8 @@ class CollectorApplication(private val router: Router) {
             "+/sensor/+/state",
             "+/binary_sensor/+/state",
             "+/status", // sensor status
-            "+/debug"
+            "+/debug",
+            "+/switch/+/state"
         )
 
         logger.info { "Connecting to MQTT broker at $brokerUrl with client ID $clientId" }

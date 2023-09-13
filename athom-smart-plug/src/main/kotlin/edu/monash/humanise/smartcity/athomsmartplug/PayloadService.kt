@@ -1,8 +1,17 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
+import edu.monash.humanise.smartcity.athomsmartplug.management.IpAddressData
+import edu.monash.humanise.smartcity.athomsmartplug.management.PlugStatusData
+import edu.monash.humanise.smartcity.athomsmartplug.management.PowerData
 import edu.monash.humanise.smartcity.athomsmartplug.payload.*
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.client.RestClientException
+import org.springframework.web.client.RestTemplate
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -15,6 +24,12 @@ private val logger = KotlinLogging.logger {}
  */
 @Service
 class PayloadService(private val payloadRepository: PayloadRepository) {
+    @Value("\${smart-city.device-management.enabled}")
+    private var deviceManagementEnabled: Boolean = false
+
+    @Value("\${smart-city.device-management.url}")
+    private lateinit var deviceManagementUrl: String
+
 
     /**
      * Decode the payload and save it as an appropriate entity in [Payload].
@@ -40,6 +55,20 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 val power = Decoder.decodeFloatSensorState(data)
                 val payload = PowerPayload(payloadRequest.deviceName, timestamp, payloadRequest.data, power)
                 payloadRepository.save(payload)
+
+                // send data to management
+                if (deviceManagementEnabled) {
+                    val restTemplate = RestTemplate()
+                    val url = "$deviceManagementUrl/power"
+                    val headers = initHttpHeaders()
+                    val body = PowerData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, power)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
+                }
             }
 
             "athom_smart_plug_v2_energy" -> {
@@ -80,12 +109,56 @@ class PayloadService(private val payloadRepository: PayloadRepository) {
                 logger.info { "${payloadRequest.deviceName} at ${timestamp.format(DateTimeFormatter.ISO_TIME)}: $data" }
             }
 
+            "switch" -> {
+                val isOn = Decoder.decodeBinarySensorState(payloadRequest.data)
+                if (deviceManagementEnabled) {
+                    val restTemplate = RestTemplate()
+                    val url = "$deviceManagementUrl/plug-status"
+                    val headers = initHttpHeaders()
+                    val body = PlugStatusData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, isOn)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
+                }
+            }
+
+            "ip_address" -> {
+                if (deviceManagementEnabled) {
+                    val restTemplate = RestTemplate()
+                    val url = "$deviceManagementUrl/ip-address"
+                    val headers = initHttpHeaders()
+                    val body = IpAddressData(payloadRequest.timestampMilliseconds, payloadRequest.deviceName, payloadRequest.data)
+                    val request = HttpEntity(body, headers)
+                    try {
+                        restTemplate.postForEntity(url, request, String::class.java)
+                    } catch (e: RestClientException) {
+                        logger.error(e) { "Cannot send occupancy data" }
+                    }
+                }
+            }
+
             // Suppress the logs for known sensor values but ones that we aren't recording at the moment
-            "ip_address", "mac_address", "connected_ssid", "athom_smart_plug_v2_power_button" -> {}
+            "athom_smart_plug_v2_power_button", "mac_address", "connected_ssid" -> {}
 
             else -> {
                 logger.warn { "Unknown or unimplemented sensor: ${payloadRequest.sensor}" }
             }
+        }
+    }
+
+    companion object {
+        /**
+         * Initializer for the HTTP header.
+         *
+         * @return an instance of [HttpHeaders] with `contentType` set to `application/json`
+         */
+        private fun initHttpHeaders(): HttpHeaders {
+            val httpHeaders = HttpHeaders()
+            httpHeaders.contentType = MediaType.APPLICATION_JSON
+            return httpHeaders
         }
     }
 }

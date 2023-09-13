@@ -63,6 +63,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                     val payloadSensor = when (topicComponents[1]) {
                         "status" -> "status"
                         "debug" -> "debug"
+                        "switch" -> "switch"
                         else -> topicComponents[2]
                     }
                     val jsonObject = EspHomePayload(timestamp, deviceName, payloadSensor, payload)
