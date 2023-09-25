@@ -38,8 +38,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:4052/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
   athom-smart-plug:
     image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:main
@@ -62,8 +62,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
   # Chirpstack containers
   # Based on the official template docker-compose.yml at
@@ -108,8 +108,8 @@ services:
 #      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
     restart: unless-stopped
   redis:
@@ -138,8 +138,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:4100/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
     volumes:
       - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
