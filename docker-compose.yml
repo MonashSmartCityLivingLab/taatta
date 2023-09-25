@@ -38,8 +38,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:4052/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
   athom-smart-plug:
     image: ghcr.io/monashsmartcitylivinglab/taatta-athom-smart-plug:main
@@ -62,8 +62,8 @@ services:
     restart: unless-stopped
     healthcheck:
       test: "curl --fail --silent localhost:4050/actuator/health | grep UP || exit 1"
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
   # Chirpstack containers
   # Based on the official template docker-compose.yml at
@@ -108,8 +108,8 @@ services:
 #      - 5432:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 60s
       retries: 5
     restart: unless-stopped
   redis:
@@ -117,7 +117,7 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
+#    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
     build:
       context: .
       target: mosquitto
@@ -129,8 +129,6 @@ services:
       - TAATTA_MOSQUITTO_USER=${TAATTA_MOSQUITTO_USER}
       - TAATTA_MOSQUITTO_PASSWORD=${TAATTA_MOSQUITTO_PASSWORD}
     restart: unless-stopped
-    entrypoint: sh ./entrypoint.sh
-    command: ["/usr/sbin/mosquitto","-c","/mosquitto/config/mosquitto.conf"]
   idle-device-management:
     image: ghcr.io/monashsmartcitylivinglab/idle-device-management:main
     build:
@@ -138,8 +136,25 @@ services:
     ports:
       - 4100:4100
     restart: unless-stopped
+    healthcheck:
+      test: "curl --fail --silent localhost:4100/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 60s
+      retries: 5
     volumes:
       - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
+  device-control-interface:
+    image: ghcr.io/monashsmartcitylivinglab/device-control-interface:main
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      - BACKEND_URL=http://idle-device-management:4100
+    restart: unless-stopped
+    depends_on:
+      idle-device-management:
+        condition: service_healthy
   loki:
     image: grafana/loki:2.8.0
     ports:
