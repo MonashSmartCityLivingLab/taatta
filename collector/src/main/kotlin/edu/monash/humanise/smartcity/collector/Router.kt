@@ -28,7 +28,6 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
     /**
      * JSON encoder/decoder for router.
      */
-    // only decode what's needed and ignore any unknown keys
     private val jsonCoder = jacksonObjectMapper()
 
     // some internal state for logging purposes
