@@ -1,11 +1,11 @@
 package edu.monash.humanise.smartcity.collector.payload
 
-import kotlinx.serialization.Serializable
+
 
 /**
  * Payload body for ESPHome devices.
  */
-@Serializable
+
 data class EspHomePayload(
     /**
      * Timestamp of datapoint according to MQTT timestamp, or when the message arrived at the collector if the timestamp is not available.

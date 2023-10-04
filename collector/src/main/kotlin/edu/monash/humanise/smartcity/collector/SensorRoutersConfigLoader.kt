@@ -1,7 +1,8 @@
 package edu.monash.humanise.smartcity.collector
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.serialization.json.Json
 import org.springframework.stereotype.Component
 import java.io.File
 
@@ -15,7 +16,7 @@ class SensorRoutersConfigLoader {
     /**
      * JSON encoder/decoder.
      */
-    private val jsonCoder = Json { ignoreUnknownKeys = true }
+    private val jsonCoder = jacksonObjectMapper()
 
     /**
      * Load router configuration from disk.
@@ -30,7 +31,7 @@ class SensorRoutersConfigLoader {
         val configFile = File(configPath)
         logger.info { "Reading sensor router config from ${configFile.absolutePath}" }
         val configJson = configFile.readText()
-        val sensorRoutersConfig: SensorRoutersConfig = jsonCoder.decodeFromString(configJson)
+        val sensorRoutersConfig: SensorRoutersConfig = jsonCoder.readValue(configJson)
         logger.info { "Loaded ESPHome routers: ${sensorRoutersConfig.espHomeModules.map { s -> s.name }}" }
         logger.info { "Loaded LoRa routers: ${sensorRoutersConfig.loraModules.map { s -> s.name }}" }
         return sensorRoutersConfig

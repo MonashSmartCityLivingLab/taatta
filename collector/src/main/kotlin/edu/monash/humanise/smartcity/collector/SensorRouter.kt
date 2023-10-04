@@ -1,7 +1,7 @@
 package edu.monash.humanise.smartcity.collector
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.Transient
+
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -15,7 +15,7 @@ private typealias RequestPair = Pair<String, HttpEntity<String>>
 /**
  * Class containing information about a sensor router and method for sending data to logger modules.
  */
-@Serializable
+
 open class SensorRouter(
     /** Sensor name. */
     val name: String,
@@ -25,19 +25,19 @@ open class SensorRouter(
     /**
      * HTTP client for this router.
      */
-    @Transient
+    @JsonIgnore
     private val restTemplate = RestTemplate()
 
     /**
      * HTTP headers for all requests.
      */
-    @Transient
+    @JsonIgnore
     private val headers = initHttpHeaders()
 
     /**
      * A queue of all requests to be sent later.
      */
-    @Transient
+    @JsonIgnore
     private val requestQueue = ArrayDeque<RequestPair>()
 
     /**

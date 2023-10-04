@@ -117,7 +117,7 @@ services:
     volumes:
       - redisdata:/data
   mosquitto:
-#    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
+    image: ghcr.io/monashsmartcitylivinglab/taatta-mosquitto:main
     build:
       context: .
       target: mosquitto

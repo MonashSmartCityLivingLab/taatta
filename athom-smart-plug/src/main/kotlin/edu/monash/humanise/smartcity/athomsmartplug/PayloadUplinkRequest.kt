@@ -1,11 +1,11 @@
 package edu.monash.humanise.smartcity.athomsmartplug
 
-import kotlinx.serialization.Serializable
+
 
 /**
  * Payload data sent from the collector.
  */
-@Serializable
+
 data class PayloadUplinkRequest(
     /**
      * Timestamp of data point, in milliseconds since 1970-01-01T00:00:00Z.
