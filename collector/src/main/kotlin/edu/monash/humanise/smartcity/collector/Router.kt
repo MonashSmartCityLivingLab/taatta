@@ -23,7 +23,7 @@ private val logger = KotlinLogging.logger {}
 @Component
 class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
     /** Sensor config */
-    private val sensorRoutersConfig: SensorRoutersConfig
+    private lateinit var sensorRoutersConfig: SensorRoutersConfig
 
     /**
      * JSON encoder/decoder for router.
