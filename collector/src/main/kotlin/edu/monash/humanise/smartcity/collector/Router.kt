@@ -1,12 +1,12 @@
 package edu.monash.humanise.smartcity.collector
 
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import edu.monash.humanise.smartcity.collector.chirpstack.events.ChirpStackUplinkEvent
 import edu.monash.humanise.smartcity.collector.payload.EspHomePayload
 import edu.monash.humanise.smartcity.collector.payload.LoRaPayload
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlinx.serialization.SerializationException
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.messaging.Message
 import org.springframework.scheduling.annotation.Scheduled
@@ -29,7 +29,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
      * JSON encoder/decoder for router.
      */
     // only decode what's needed and ignore any unknown keys
-    private val jsonCoder = Json { ignoreUnknownKeys = true }
+    private val jsonCoder = jacksonObjectMapper()
 
     // some internal state for logging purposes
     /**
@@ -67,12 +67,12 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                         else -> topicComponents[2]
                     }
                     val jsonObject = EspHomePayload(timestamp, deviceName, payloadSensor, payload)
-                    val results = matchingEspHomeSensor.sendData(jsonCoder.encodeToString(jsonObject))
+                    val results = matchingEspHomeSensor.sendData(jsonCoder.writeValueAsString(jsonObject))
                     results.forEach { result ->
                         result.onSuccess { response -> logger.debug { "Response from ${matchingEspHomeSensor.name} is: $response" } }
                         result.onFailure { error -> logger.debug { "Cannot send data for sensor ${matchingEspHomeSensor.name}: $error" } }
                     }
-                } catch (e: SerializationException) {
+                } catch (e: JsonProcessingException) {
                     logger.error(e) { "Cannot parse JSON for topic $topic" }
                 }
             } else {
@@ -81,7 +81,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
         } else {
             // handle lora sensors
             try {
-                val event: ChirpStackUplinkEvent = jsonCoder.decodeFromString(payload)
+                val event: ChirpStackUplinkEvent = jsonCoder.readValue(payload)
                 if (event.data != null) {
                     val deviceProfile = event.deviceProfileName
                     val sensor = sensorRoutersConfig.loraModules.firstOrNull { sensorModule ->
@@ -89,7 +89,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                     }
                     if (sensor != null) {
                         val jsonObject = LoRaPayload(timestamp, event.deviceName, event.devEUI, event.data)
-                        val results = sensor.sendData(jsonCoder.encodeToString(jsonObject))
+                        val results = sensor.sendData(jsonCoder.writeValueAsString(jsonObject))
                         results.forEach { result ->
                             result.onSuccess { response -> logger.debug { "Response from ${sensor.name} is: $response" } }
                             result.onFailure { error -> logger.debug { "Cannot send data for sensor ${sensor.name}: $error" } }
@@ -100,7 +100,7 @@ class Router @Autowired constructor(configLoader: SensorRoutersConfigLoader) {
                 } else {
                     logger.warn { "Data field not found or null, skipping" }
                 }
-            } catch (e: SerializationException) {
+            } catch (e: JsonProcessingException) {
                 logger.error(e) { "Cannot parse JSON for topic $topic" }
             }
         }
