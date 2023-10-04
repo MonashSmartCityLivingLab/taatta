@@ -21,16 +21,12 @@ jobs:
           cache: maven
       - name: Build
         run: mvn -e clean package spring-boot:repackage
-      - name: Build documentation
-        run: mvn -e dokka:dokka dokka:javadoc
       - name: Save files
         uses: actions/upload-artifact@v3
         with:
           name: taatta
           path: |
             **/target/*.jar
-            **/target/dokka
-            **/target/dokkaJavadoc
             .env.example
             **/*.service
             taatta.nginx
