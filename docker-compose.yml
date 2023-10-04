@@ -140,7 +140,7 @@ services:
       test: "curl --fail --silent localhost:4100/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 60s
-      retries: 5
+      retries: 10
     volumes:
       - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
   device-control-interface:
