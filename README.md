@@ -5,6 +5,8 @@
 
 A data logger for IoT devices and smart sensors that publish their data using MQTT.
 
+This is a fork of [the original](https://github.com/whilemind/taatta) by [Mahabub Alam](https://github.com/whilemind).
+
 ## Architecture
 
 The system adopts a microservices architecture, consisting of a collector module and a logger module for each sensor
@@ -166,3 +168,7 @@ but that's beyond the scope of this project.
 ## Acknowledgements
 
 Special thanks to [Mahabub Alam](https://github.com/whilemind) who initially developed this application.
+
+## Licence
+
+Licensed under [Apache License 2.0](LICENSE).
