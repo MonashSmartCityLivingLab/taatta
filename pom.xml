@@ -32,7 +32,7 @@
         <springBoot.dependencies.version>3.1.2</springBoot.dependencies.version>
         <postgresql.version>42.6.0</postgresql.version>
         <org.projectlombok.version>1.18.28</org.projectlombok.version>
-        <kotlin.version>1.9.10</kotlin.version>
+        <kotlin.version>1.9.20</kotlin.version>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
     </properties>
 
