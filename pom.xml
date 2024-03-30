@@ -29,10 +29,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <springBoot.dependencies.version>3.1.5</springBoot.dependencies.version>
-        <postgresql.version>42.6.0</postgresql.version>
+        <springBoot.dependencies.version>3.2.4</springBoot.dependencies.version>
+        <postgresql.version>42.7.3</postgresql.version>
         <org.projectlombok.version>1.18.32</org.projectlombok.version>
-        <kotlin.version>1.9.20</kotlin.version>
+        <kotlin.version>1.9.23</kotlin.version>
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
     </properties>
 
@@ -79,12 +79,12 @@
         <dependency>
             <groupId>io.github.oshai</groupId>
             <artifactId>kotlin-logging-jvm</artifactId>
-            <version>5.1.0</version>
+            <version>6.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
-            <version>2.15.2</version>
+            <version>2.17.0</version>
         </dependency>
     </dependencies>
 
