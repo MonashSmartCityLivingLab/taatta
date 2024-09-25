@@ -1,0 +1,246 @@
+[
+  {
+    "siteName": "Adel's House",
+    "timeZoneId": "Australia/Melbourne",
+    "rooms": [
+      {
+        "roomName": "Kitchen",
+        "appliances": [
+          {
+            "deviceName": "Pressure Cooker",
+            "sensorName": "athom-smart-plug-v2-a78714",
+            "standbyThreshold": 0.12,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 600,
+            "standardUseTimes": [
+              {
+                "startTime": "10:00",
+                "endTime": "15:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Tea Maker",
+            "sensorName": "athom-smart-plug-v2-cbdcfe",
+            "standbyThreshold": 245,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 600,
+            "standardUseTimes": [
+              {
+                "startTime": "06:00",
+                "endTime": "21:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Rangehood",
+            "sensorName": "athom-smart-plug-v2-a7f73f",
+            "standbyThreshold": 1.6,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "08:00",
+                "endTime": "11:00",
+                "daysOfWeek": [6, 7]
+              },
+              {
+                "startTime": "17:00",
+                "endTime": "21:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Air Fryer",
+            "sensorName": "athom-smart-plug-v2-d781f0",
+            "standbyThreshold": 205,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 300,
+            "standardUseTimes": [
+              {
+                "startTime": "12:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Microwave",
+            "sensorName": "athom-smart-plug-v2-f18175",
+            "standbyThreshold": 1,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "12:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Toaster",
+            "sensorName": "athom-smart-plug-v2-3fec07",
+            "standbyThreshold": 1,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "08:00",
+                "endTime": "20:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Kettle",
+            "sensorName": "athom-smart-plug-v2-a76459",
+            "standbyThreshold": 1,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "08:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Dishwasher",
+            "sensorName": "athom-smart-plug-v2-a786ca",
+            "standbyThreshold": 11,
+            "recommendedForAutoOff": false,
+            "cutoffWaitSeconds": 300,
+            "standardUseTimes": [
+              {
+                "startTime": "10:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Oven",
+            "sensorName": "athom-smart-plug-v2-d7ac05",
+            "standbyThreshold": 11,
+            "recommendedForAutoOff": false,
+            "cutoffWaitSeconds": 300,
+            "standardUseTimes": [
+              {
+                "startTime": "16:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          }
+        ],
+        "motionSensors": [ 
+          {
+            "sensorName": "athom-presence-sensor-f9a74f"
+          }
+        ]
+      },
+      {
+        "roomName": "Laundry",
+        "appliances": [
+          {
+            "deviceName": "Washing Machine",
+            "sensorName": "athom-smart-plug-v2-f1867c",
+            "standbyThreshold": 0.6,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 300,
+            "standardUseTimes": [
+              {
+                "startTime": "09:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          }
+        ],
+        "motionSensors": []
+      },
+      {
+        "roomName": "Study",
+        "appliances": [
+          {
+            "deviceName": "Printer",
+            "sensorName": "athom-smart-plug-v2-f13f8e",
+            "standbyThreshold": 0.21,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 300,
+            "standardUseTimes": [
+              {
+                "startTime": "09:00",
+                "endTime": "22:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Lamp",
+            "sensorName": "athom-smart-plug-v2-f13f8e",
+            "standbyThreshold": 0.2,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 360,
+            "standardUseTimes": [
+              {
+                "startTime": "18:00",
+                "endTime": "23:59",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          }
+        ],
+        "motionSensors": []
+      },
+      {
+        "roomName": "Lounge",
+        "appliances": [
+          {
+            "deviceName": "TV",
+            "sensorName": "athom-smart-plug-v2-f16702",
+            "standbyThreshold": 0.61,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "09:00",
+                "endTime": "13:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              },
+              {
+                "startTime": "16:00",
+                "endTime": "00:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          },
+          {
+            "deviceName": "Heater",
+            "sensorName": "athom-smart-plug-v2-3ff088",
+            "standbyThreshold": 0.61,
+            "recommendedForAutoOff": true,
+            "cutoffWaitSeconds": 180,
+            "standardUseTimes": [
+              {
+                "startTime": "15:00",
+                "endTime": "23:00",
+                "daysOfWeek": [1, 2, 3, 4, 5, 6, 7]
+              }
+            ]
+          }
+        ],
+        "motionSensors": [ 
+          {
+            "sensorName": "athom-presence-sensor-f9a6c5"
+          }
+        ]
+      }
+    ]
+  }
+]
