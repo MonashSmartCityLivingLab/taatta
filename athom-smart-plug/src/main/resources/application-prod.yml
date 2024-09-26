@@ -29,5 +29,5 @@ management:
       enabled: true
 smart-city:
   device-management:
-    enabled: ${TAATTA_ENABLE_DEVICE_MANAGEMENT:#{false}}
+    enabled: ${TAATTA_ENABLE_DEVICE_MANAGEMENT:#{true}}
     url: ${TAATTA_DEVICE_MANAGEMENT_URL:#{"http://localhost:4100"}}

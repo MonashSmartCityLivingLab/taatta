@@ -104,8 +104,8 @@ services:
       - ./configuration/postgresql/initdb:/docker-entrypoint-initdb.d
       - postgresqldata:/var/lib/postgresql/data
     # Uncomment to expose ports
-#    ports:
-#      - 5432:5432
+    ports:
+      - 5431:5432
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -142,7 +142,7 @@ services:
       timeout: 60s
       retries: 10
     volumes:
-      - ./configuration/idle-device-management/config.json:/opt/idle-device-management/config.json:ro
+      - ./configuration/idle-device-management/config.json/config.json:/opt/idle-device-management/config.json:ro
   device-control-interface:
     image: ghcr.io/monashsmartcitylivinglab/device-control-interface:main
     build:
